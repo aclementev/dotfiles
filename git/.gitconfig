@@ -1,0 +1,14 @@
+[core]
+	editor = vim
+[user]
+	email = clemente@bigml.com
+	name = Alvaro Clemente
+[alias]
+	lol = log --graph --oneline --abbrev-commit --all
+	lr = log --graph --oneline --abbrev-commit --all -10
+	co = checkout
+	ci = commit
+	st = status
+	br = branch
+	dc = diff --cached
+	ff = merge --ff-only
