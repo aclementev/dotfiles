@@ -1,0 +1,86 @@
+set nocompatible
+filetype plugin indent on
+syntax enable
+
+let mapleader=" "
+" set background=dark
+"Link system clipboard with unnamed buffer (regular copy and paste)
+set clipboard=unnamed
+
+"Disable beeping
+set vb t_vb=
+
+"Allows for changing buffer without saving (CAUTION!)
+set hidden
+
+"General editing settings
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+set smartindent
+
+set number
+set relativenumber
+set wrap
+set linebreak
+set nolist
+"Statusline settings
+set encoding=utf-8
+set laststatus=2
+
+"General editing settings
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+set smartindent
+
+set number
+set relativenumber
+set wrap
+set linebreak
+set nolist
+
+set backspace=indent,eol,start
+set wildmenu
+set lazyredraw
+set showmatch
+
+"Where does the new file appear when splitting
+set splitright
+set splitbelow
+
+set incsearch
+set hlsearch
+
+"Manage backup files
+set backup
+set backupdir=$HOME/.vim/.tmp//
+set directory=$HOME/.vim/.tmp//
+set writebackup
+
+
+"Folding
+set foldenable
+set foldlevelstart=10
+set foldnestmax=10
+set foldmethod=indent
+
+"Way to open files from current directory
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
+map <leader>ew :e %%
+map <leader>es :sp %%
+map <leader>ev :vsp %%
+map <leader>et :tabe %%
+
+"Map \v to turn very magic mode in searches and substitutions
+nnoremap / /\v
+nnoremap ? ?\v
+vnoremap / /\v
+vnoremap ? ?\v
+
+"Map <Space>h to remove highlight when searching
+nnoremap <Leader>h :nohlsearch<CR>

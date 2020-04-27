@@ -1,0 +1,8 @@
+# Temporary Files #
+###################
+.vim/.netrwhist
+
+# Vim Plug Files #
+################
+.vim/autoload/plug.vim
+.vim/plugged/*

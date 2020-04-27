@@ -1,0 +1,18 @@
+Settings que mirar:
+  - formatoptions (j, n)
+
+Probar las configuraciones de Insert Abbreviations ("iabbr")
+Por ejemplo:
+    iabbr ture true
+    iabbr flase flase
+
+Cada vez que en "Insert Mode" se escribe la palabra en la izquierda y se
+presiona una tecla no caracter (espacio, enter), se sustituye por la derecha.
+Esto es interesante para corregir typos
+
+Plugins para probar:
+    coc.nvim
+    vim-slime (send raw text to other tmux pane, for sending text to a REPL)
+
+NOTAS:
+En vimhelp, el comando para seguir los links es <C-+>, no <C-]>
