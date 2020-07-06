@@ -1,6 +1,7 @@
 {
     "suggest.minTriggerInputLength": 2,
     "diagnostic.displayByAle": false,
+    "diagnostic.errorSign": "✘",
     "coc.preferences.extensionUpdateCheck": "never",
     // "coc.preferences.formatOnSaveFiletypes": ["python"],
     // Python

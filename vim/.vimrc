@@ -93,6 +93,20 @@ set wildmenu
 set lazyredraw
 set showmatch
 
+" Always show signcolumn so that when an error occurs no visual shift happens
+if has('patch-8.1.1564')
+    " Merge the signcolumn and number column
+    set signcolumn=number
+else
+    set signcolumn=yes
+endif
+
+" Mouse support inside tmux
+if !has('nvim')
+    set ttymouse=xterm2
+    set mouse=a
+endif
+
 " Where does the new file appear when splitting
 set splitright
 set splitbelow
@@ -235,15 +249,13 @@ let g:fzf_layout={'down': '~20%'}
 " Coc.vim settings {{{
 " TODO: Test these commented settings
 " For better display for messages
-"set cmdheight=2
+" set cmdheight=2
 
 " You will have bad experience for diagnostic messages when it's
 " default 4000
 set updatetime=300
 " Don't give |ins-completion-menu| messages
 "set shotmess+=c
-" Always show signcolumns
-"set signcolumns=yes
 " Highlight symbol under the cursor
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
@@ -294,6 +306,19 @@ xmap <Leader>f <Plug>(coc-format-selected)
 vmap <Leader>f <Plug>(coc-format-selected)
 command! -nargs=0 Format :call CocAction('format')
 nmap <LocalLeader>f :Format<CR>
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" Mappings for CocList
+" Show all diagnostics
+nnoremap <silent><nowait> <Leader>la :<C-u>CocList diagnostics<CR>
+" Show all commands
+nnoremap <silent><nowait> <Leader>lc :<C-u>CocList commands<CR>
+" Show all extensions
+nnoremap <silent><nowait> <Leader>le :<C-u>CocList extensions<CR>
+" Resume last List
+nnoremap <silent><nowait> <Leader>ll :<C-u>CocListResume<CR>
 " }}}
 
 " Writing
