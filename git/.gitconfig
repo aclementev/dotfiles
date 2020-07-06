@@ -12,3 +12,4 @@
 	br = branch
 	dc = diff --cached
 	ff = merge --ff-only
+    can = commit --amend --no-edit
