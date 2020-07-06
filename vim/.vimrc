@@ -142,6 +142,10 @@ set foldmethod=indent
 " }}}
 
 " Custom MAPPINGS {{{
+
+" Yanking to System Clipboard
+vnoremap <Leader>y "*y
+nnoremap Y y$
 " Split navigation
 nmap <C-H> <C-W>h
 nmap <C-J> <C-W>j
@@ -289,6 +293,7 @@ nmap <Leader>cn <Plug>(coc-rename)
 xmap <Leader>f <Plug>(coc-format-selected)
 vmap <Leader>f <Plug>(coc-format-selected)
 command! -nargs=0 Format :call CocAction('format')
+nmap <LocalLeader>f :Format<CR>
 " }}}
 
 " Writing
@@ -382,6 +387,8 @@ let g:slime_target='tmux'
 let g:slime_paste_file=tempname()
 let g:slime_default_config={"socket_name": "default", "target_pane": "{right-of}"}
 let g:slime_dont_ask_default=1
+" Use IPython's %cpaste magic function to send snippets to IPython easily
+let g:slime_python_ipython=1
 
 " Vim/Vimscript development
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
