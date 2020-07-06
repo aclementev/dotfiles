@@ -1,0 +1,3 @@
+# Karabiner config
+karabiner/
+!karabiner/.config/karabiner/karabiner.json
