@@ -169,7 +169,7 @@ nmap <C-L> <C-W>l
 " Buffer navigation
 nnoremap gb :bn<CR>
 nnoremap gB :bp<CR>
-nnoremap <Leader><Leader> :b#<CR>
+nnoremap <LocalLeader>b :b#<CR>
 
 " Spell Checking
 nnoremap <silent> <F3> :setlocal spell! spelllang=es,en_us<CR>
@@ -193,11 +193,12 @@ nnoremap <silent> <Leader>tW :match<CR>
 
 "(wrapped lines are not ignored)
 " set textwidth=80
-"Map \v to turn very magic mode in searches and substitutions
-nnoremap / /\v
-nnoremap ? ?\v
-vnoremap / /\v
-vnoremap ? ?\v
+""Map \v to turn very magic mode in searches and substitutions
+"nnoremap / /\v
+"nnoremap ? ?\v
+"vnoremap / /\v
+"vnoremap ? ?\v
+
 " Map <Space>h to remove highlight when searching
 nnoremap <silent> <Leader>h :nohlsearch<CR>
 nnoremap <Leader>* /<C-R><C-A><CR>
