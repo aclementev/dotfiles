@@ -7,10 +7,8 @@
 source ~/.vimrc
 
 " Load the package manager (for now we have duplicated config for this
-" TODO: Fix issue with unresponsive <ESC> key
 " TODO: Fix the block cursor in insert mode
-" TODO: Set up highlight on yank
-" TODO: Check the pythonx and other extensions (? see the vim-to-nvim guide)
+"           For now I will try it like this, let's see how I like it
 " TODO: Set up Language Server (this is the main point of this migration)
 " TODO: Set up a more lean status line (this is also needed for main vim)
 call plug#begin(stdpath('config') . 'init.vim')
@@ -24,6 +22,14 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 
 Plug 'jpalardy/vim-slime'
+
+" Completion
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" LSP
+Plug 'neovim/nvim-lsp'
+Plug 'Shougo/deoplete-lsp'
+
 
 " Eye candy
 Plug 'junegunn/vim-easy-align'
@@ -74,3 +80,90 @@ endif
 let g:fzf_layout={'down': '~20%'}
 
 " }}}
+
+" Nvim necessary config
+let g:python3_host_prog = '/Users/alvaro/.virtualenv/neovim/bin/python'
+
+" Integrated terminal mappings
+" Regain control of escape key
+tnoremap <ESC> <C-\><C-N>
+" Simulate i_CTRL-R in terminal mode
+tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+
+" Highligh on yank
+augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=300}
+augroup END
+
+" LSP Settings
+" Client configuration (they are configured best using Lua)
+:lua << END
+    local nvim_lsp = require 'nvim_lsp'
+    vim.lsp.set_log_level(0)
+
+    -- Set up for some known servers
+    python_path = vim.api.nvim_call_function('exepath', {'python3'})
+    -- print('Setting the python interpreter path to: ' .. (python_path or 'EMPTY'))
+    nvim_lsp.pyls_ms.setup{
+        init_options = {
+            interpreter = {
+                properties = {
+                    InterpreterPath = python_path,
+                    Version = "3.7" -- TODO: Make this dynamic
+                }
+            }
+        },
+        settings = {
+            python = {
+                -- pythonPath = python_path,
+                formatting = {
+                    provider = 'yapf'
+                },
+                jediEnabled = false,
+                analysis = {
+                    logLevel = 'Trace'
+                }
+            }
+        }
+    }
+
+    -- nvim_lsp.vimls.setup{}
+    -- Trying to debug
+END
+
+sign define LspDiagnosticsErrorSign text=✘
+sign define LspDiagnosticsWarningSign text=⚠️
+" sign define LspDiagnosticsInformationSign text=
+" sign define LspDiagnosticsHintSign text=
+
+" Mappings
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> gD <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> gI <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gk <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+
+" TODO: Set up file formatting (using yapf or whatever)
+autocmd FileType python,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
+" Completion {{{
+let g:deoplete#enable_at_startup = 1
+set completeopt-=preview
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ deoplete#manual_complete()
+"}}}
+
+" DEBUG
+" call deoplete#enable_logging("DEBUG", "/tmp/deoplete.log")

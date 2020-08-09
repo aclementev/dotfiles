@@ -150,13 +150,6 @@ cmap w!! w !sudo tee > /dev/null %
 " Automatically fix last bad word with the first suggestion
 inoremap <C-l> <C-g>u<Esc>[s1z=`]a<C-g>u
 
-" vim-highlightedyank
-" Compatibility with versions < 8.0.1394
-if !exists('##TextYankPost')
-    map y <Plug>(highlightedyank)
-endif
-
-
 " vim-SLIME
 let g:slime_no_mappings=1
 " Customize the mappings

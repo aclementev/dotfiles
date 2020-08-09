@@ -79,7 +79,6 @@ else
 endif
 
 
-
 " NERDTree settings (make NERDTreeCWD the active buffer's directory) {{{
 "set autochdir
 "let NERDTreeChDirMode=2
@@ -251,4 +250,11 @@ xmap ga <Plug>(EasyAlign)
 " \     ['darkmagenta', 'darkviolet'    ]
 " \   ]
 " \ }
+
+" vim-highlightedyank
+" Compatibility with versions < 8.0.1394
+if !exists('##TextYankPost')
+    map y <Plug>(highlightedyank)
+endif
+
 
