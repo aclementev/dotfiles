@@ -95,6 +95,14 @@ nnoremap gb :bn<CR>
 nnoremap gB :bp<CR>
 nnoremap <LocalLeader>b :b#<CR>
 
+" Window resizing
+" TODO(alvaro): Find a way to make the directions more intuitive by
+" looking if we are at an edge
+nnoremap <silent> <Right> :vertical resize +2<CR>
+nnoremap <silent> <Left> :vertical resize -2<CR>
+nnoremap <silent> <Up> :resize +2<CR>
+nnoremap <silent> <Down> :resize -2<CR>
+
 " Spell Checking
 nnoremap <silent> <F3> :setlocal spell! spelllang=es,en_us<CR>
 
@@ -116,6 +124,7 @@ nnoremap <Leader>ep :execute "rightbelow vsplit " . bufname("#")<cr>
 nnoremap <silent> <Leader>td mz:%s/\s\+$//<CR>`z
 nnoremap <silent> <Leader>tw :match Error /\s\+$/<CR>
 nnoremap <silent> <Leader>tW :match<CR>
+nnoremap <LocalLeader>ee :echo expand('%')<CR>
 
 ""Map \v to turn very magic mode in searches and substitutions
 "nnoremap / /\v
@@ -141,6 +150,19 @@ command! WQ wq
 command! Wq wq
 command! Q q
 " }}}
+"
+
+" Integrated terminal mappings
+" Make the terminal usable
+" Regain control of escape key
+" TODO(alvaro): configure the expected insert mode terminal
+" bindings
+" set termwinkey=<C-]>
+" tnoremap <C-W> <C-]><C-W>
+tnoremap <ESC> <C-\><C-N>
+" Simulate i_CTRL-R in terminal mode
+tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+
 
 " For when we forget to open vim with sudo
 " TODO: This only works on *NIX systems

@@ -18,6 +18,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 " Plug 'w0rp/ale'
 
+Plug 'k0kubun/vim-open-github'
+
 " Language related plugins
 
 " Language Client
@@ -87,13 +89,31 @@ nnoremap <silent> <Leader>n :NERDTreeToggle<CR>
 
 " NOTE: This is duplicated
 " FZF Settings {{{
+
+" A smarter Rg which uses a new call to Rg with every update of the query
+" instead of calling it once and use FZF as finder
+" See https://github.com/junegunn/fzf.vim#example-advanced-ripgrep-integration
+"
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
 nnoremap <Leader>f :GFiles<CR>    " Fuzzy find git tracked files in current directory
 nnoremap <Leader>F :Files<CR>     " Fuzzy find files in current directory
 nnoremap <Leader>/ :BLines<CR>    " Fuzzy find lines in current file
 nnoremap <Leader>b :Buffers<CR>   " Fuzzy find an open buffer
-nnoremap <Leader>r :Rg<CR>        " Fuzzy find text in the working directory
+nnoremap <Leader>r :RG<CR>        " Fuzzy find text using RipgrepFzf function
+nnoremap <Leader>R :Rg<CR>        " Fuzzy find text in the working directory
 nnoremap <Leader>cc :Commands<CR> " Fuzzy find Vim commands (like Ctrl-Shift-P
 nnoremap <Leader>H :Help<CR>     " Fuzzy find files in current directory
+
+" Fuzzy find words under the cursor
+nnoremap <Leader>g :RG <C-R><C-W><CR>
 
 " A mapping to show all files, since by default we ignore some of them
 if executable('rg')

@@ -84,12 +84,6 @@ let g:fzf_layout={'down': '~20%'}
 " Nvim necessary config
 let g:python3_host_prog = '/Users/alvaro/.virtualenv/neovim/bin/python'
 
-" Integrated terminal mappings
-" Regain control of escape key
-tnoremap <ESC> <C-\><C-N>
-" Simulate i_CTRL-R in terminal mode
-tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
-
 " Highligh on yank
 augroup highlight_yank
     autocmd!

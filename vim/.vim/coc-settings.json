@@ -14,14 +14,14 @@
         "typescript",
         "vue"
     ],
-    "eslint.autoFixOnSave": true,
+    "eslint.autoFixOnSave": false,
     // Prettier
     // "prettier.disableLanguages": ["python"],
     // Vetur / Vue
     // Fix bug with integration with coc-vetur and vue-language-server
     // per https://github.com/neoclide/coc-vetur/issues/28#issuecomment-597628197
     // We should install globally vls `sudo npm install -g vls` and point there
-    "vetur.dev.vlsPath": "/usr/local/lib/node_modules/vls",
+    "vetur.dev.vlsPath": "/usr/local/lib/node_modules/vls"
     // LaTeX
     // "coc.source.vimtex.enable": false
 }
