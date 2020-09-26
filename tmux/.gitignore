@@ -1,2 +1,3 @@
 # TPM files
 .tmux/plugins/*
+.tmux/resurrect/
