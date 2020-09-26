@@ -11,7 +11,7 @@ source ~/.vimrc
 "           For now I will try it like this, let's see how I like it
 " TODO: Set up Language Server (this is the main point of this migration)
 " TODO: Set up a more lean status line (this is also needed for main vim)
-call plug#begin(stdpath('config') . 'init.vim')
+call plug#begin(stdpath('config') . '/plugged')
 " Fuzzy finder
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
@@ -23,13 +23,17 @@ Plug 'tpope/vim-fugitive'
 
 Plug 'jpalardy/vim-slime'
 
-" Completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
 " LSP
 Plug 'neovim/nvim-lsp'
-Plug 'Shougo/deoplete-lsp'
+Plug 'neovim/nvim-lspconfig'
+" Plug 'Shougo/deoplete-lsp'
 
+" Completion
+Plug 'nvim-lua/completion-nvim'
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" Diagnostics
+Plug 'nvim-lua/diagnostic-nvim'
 
 " Eye candy
 Plug 'junegunn/vim-easy-align'
@@ -45,8 +49,7 @@ let base16colorspace=256
 colorscheme base16-default-dark
 
 " Merge the signcolumn and number column
-" NOTE(alvaro): Not merged yet into neovim
-" set signcolumn=number
+set signcolumn=number
 
 " Mouse support inside tmux
 " TODO: Check this for neovim
@@ -82,7 +85,7 @@ let g:fzf_layout={'down': '~20%'}
 " }}}
 
 " Nvim necessary config
-let g:python3_host_prog = '/Users/alvaro/.virtualenv/neovim/bin/python'
+let g:python3_host_prog = '~/.virtualenv/neovim/bin/python'
 
 " Highligh on yank
 augroup highlight_yank
@@ -92,44 +95,7 @@ augroup END
 
 " LSP Settings
 " Client configuration (they are configured best using Lua)
-:lua << END
-    local nvim_lsp = require 'nvim_lsp'
-    vim.lsp.set_log_level(0)
-
-    -- Set up for some known servers
-    python_path = vim.api.nvim_call_function('exepath', {'python3'})
-    -- print('Setting the python interpreter path to: ' .. (python_path or 'EMPTY'))
-    nvim_lsp.pyls_ms.setup{
-        init_options = {
-            interpreter = {
-                properties = {
-                    InterpreterPath = python_path,
-                    Version = "3.7" -- TODO: Make this dynamic
-                }
-            }
-        },
-        settings = {
-            python = {
-                -- pythonPath = python_path,
-                formatting = {
-                    provider = 'yapf'
-                },
-                jediEnabled = false,
-                analysis = {
-                    logLevel = 'Trace'
-                }
-            }
-        }
-    }
-
-    -- nvim_lsp.vimls.setup{}
-    -- Trying to debug
-END
-
-sign define LspDiagnosticsErrorSign text=✘
-sign define LspDiagnosticsWarningSign text=⚠️
-" sign define LspDiagnosticsInformationSign text=
-" sign define LspDiagnosticsHintSign text=
+lua require'alvaro.lsp.init'
 
 " Mappings
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.declaration()<CR>
@@ -142,22 +108,67 @@ nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
-" TODO: Set up file formatting (using yapf or whatever)
-autocmd FileType python,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
+" TODO(alvaro): Set up file formatting (using yapf or whatever)
+"     maybe we can even use the builtin LSP for actions for this
+" FIXME(alvaro): Review this setting now that we are using completion-nvim
+" autocmd FileType python,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
+" TODO(alvaro): Review this
 " Completion {{{
-let g:deoplete#enable_at_startup = 1
-set completeopt-=preview
 
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-inoremap <silent><expr> <TAB>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ deoplete#manual_complete()
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
+
+" Every option can be passed through Lua to the dictionary settings for the
+" on_attach callback see:
+" (https://github.com/nvim-lua/completion-nvim/wiki/per-server-setup-by-lua)
+
+" Disable automatic hover triggering
+let g:completion_enable_auto_hover = 0
+" let g:completion_enable_auto_signature = 0
+" let g:completion_matching_ignore_case = 1
+" let g:completion_timer_cycle = 200 " default value is 80
+
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
+
+" function! s:check_back_space() abort
+"     let col = col('.') - 1
+"     return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction
+
+inoremap <silent><expr> <Tab> pumvisible() ? "<C-N>" : "\<Tab>"
+inoremap <silent><expr> <S-Tab> pumvisible() ? "<C-P>" : "\<S-Tab>"
 "}}}
+
+" Diagnostic {{{
+let g:diagnostic_enable_virtual_text = 1
+let g:space_before_virtual_text = 2
+
+let g:diagnostic_enable_underline = 0
+" To avoid showing diagnostics while on insert mode
+let g:diagnostic_insert_delay = 0
+
+" Old way (without diagnostic-nvim
+" sign define LspDiagnosticsErrorSign text=✘
+" sign define LspDiagnosticsWarningSign text=⚠️
+" sign define LspDiagnosticsInformationSign text=
+" sign define LspDiagnosticsHintSign text=
+
+" TODO(alvaro): Set up some highlights for the LspDiagnostics
+highlight link LspDiagnosticsError Exception
+highlight link LspDiagnosticsWarning Label
+highlight link LspDiagnosticsInformation VisualNC
+highlight link LspDiagnosticsHint VisualNC
+
+call sign_define("LspDiagnosticsErrorSign", {"text": "E", "texthl": "LspDiagnosticsError"})
+call sign_define("LspDiagnosticsWarningSign", {"text": "W", "texthl": "LspDiagnosticsWarning"})
+call sign_define("LspDiagnosticsInformationSign", {"text": "I", "texthl": "LspDiagnosticsInformation"})
+call sign_define("LspDiagnosticsHintSign", {"text": "H", "texthl": "LspDiagnosticsHint"})
+
+" TODO(alvaro): Check these options
+" let g:diagnostic_virtual_text_prefix = '' " TODO(alvaro): add this
+" let g:diagnostic_trimmed_virtual_text = '20'
+" }}}
 
 " DEBUG
 " call deoplete#enable_logging("DEBUG", "/tmp/deoplete.log")

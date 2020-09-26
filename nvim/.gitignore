@@ -1,0 +1,4 @@
+**/plugged
+
+# Ignore the plug.vim file
+.config/nvim/autoload/plug.vim
