@@ -13,3 +13,4 @@
 	dc = diff --cached
 	ff = merge --ff-only
     can = commit --amend --no-edit
+	lold = log --graph --pretty=format:\"%h%x09%an%x09%ad%x09%s\"
