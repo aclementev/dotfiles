@@ -1,5 +1,5 @@
 local nvim_lsp = require 'nvim_lsp'
-vim.lsp.set_log_level('trace')
+vim.lsp.set_log_level('info')
 
 -- Function that composes the completion-nvim and diagnostic-nvim on_attach
 -- callbacks
@@ -8,6 +8,7 @@ local function completion_and_diagnostic_on_attach(...)
     require'diagnostic'.on_attach(...)
 end
 
+-- NOTE(alvaro): In case we want to use this
 local function get_python_version()
     local handle = io.popen("python3 --version")
     local result = handle:read() -- Reads only a line, which should be enough
@@ -40,43 +41,46 @@ nvim_lsp.sumneko_lua.setup{
 
 }
 
--- Try to guess the current virtual environment for the pyls-ms configuration
-local python_path = vim.api.nvim_call_function('exepath', {'python3'})
-local python_version = get_python_version()
-
--- TODO(alvaro): This should only run on python related files
-if python_version == nil then
-    print('no python3 found on $PATH')
-else
-    print(string.format('found a python at "%s" (v%s)', python_path, python_version))
-end
-
+-- TODO(alvaro): This is not appearing as a registered client on python files
+-- checked with :lua print(vim.inspect(vim.lsp.get_active_clients()))
+-- and with :lua print(vim.inspect(vim.lsp.buf_get_clients()))
 nvim_lsp.pyls_ms.setup{
+    filetypes = { "python" },
     on_attach=completion_and_diagnostic_on_attach,
     init_options = {
-        interpreter = {
-            properties = {
-                InterpreterPath = python_path,
-                Version = python_version,
-            }
-        }
+        analysisUpdates = true,
+        asyncStartup = true,
+        displayOptions = {},
+        -- interpreter = {
+        --     properties = {
+        --         InterpreterPath = python_path,
+        --         Version = python_version,
+        --     }
+        -- }
     },
-    -- root_dir = ?,
     settings = {
         python = {
+            linting = {
+                enabled = true
+            },
             formatting = {
                 provider = 'yapf'
             },
-            jediEnabled = false,
             analysis = {
                 -- logLevel = 'Trace',
                 disabled = {},
                 errors = {},
                 info = {},
+                -- cachingLevel = "System", -- To cache the standard library's analysis
+            },
+            autocomplete = {
+                -- Add here paths for other places to look for imports
+                extraPaths = {
+                    "./src"
+                }
             }
         }
     }
 }
 
--- nvim_lsp.vimls.setup{}
--- Trying to debug
+nvim_lsp.vimls.setup{ on_attach = completion_and_diagnostic_on_attach }
