@@ -149,6 +149,18 @@ command! W w
 command! WQ wq
 command! Wq wq
 command! Q q
+
+" Quickfix movements
+nnoremap <silent> <LocalLeader>cn :cnext<CR>
+nnoremap <silent> <LocalLeader>cp :cprevious<CR>
+nnoremap <silent> <LocalLeader>co :copen<CR>
+nnoremap <silent> <LocalLeader>cc :cclose<CR>
+
+" Location List movements
+nnoremap <silent> <LocalLeader>ln :lnext<CR>
+nnoremap <silent> <LocalLeader>lp :lprevious<CR>
+nnoremap <silent> <LocalLeader>lo :lopen<CR>
+nnoremap <silent> <LocalLeader>lc :lclose<CR>
 " }}}
 "
 
