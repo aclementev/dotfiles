@@ -46,6 +46,10 @@ nvim_lsp.sumneko_lua.setup{
 -- and with :lua print(vim.inspect(vim.lsp.buf_get_clients()))
 nvim_lsp.pyls_ms.setup{
     filetypes = { "python" },
+    -- TODO(alvaro): Check the order of these patterns
+    -- TODO(alvaro): There seems to be an issue with the extraPaths, since
+    --     with the setup as it is now (manage.py as root) this works fine
+    root_dir = nvim_lsp.util.root_pattern('manage.py', '.git', 'setup.py', vim.fn.getcwd()),
     on_attach=completion_and_diagnostic_on_attach,
     init_options = {
         analysisUpdates = true,
@@ -60,6 +64,7 @@ nvim_lsp.pyls_ms.setup{
     },
     settings = {
         python = {
+            jediEnabled = false,
             linting = {
                 enabled = true
             },
@@ -76,7 +81,8 @@ nvim_lsp.pyls_ms.setup{
             autocomplete = {
                 -- Add here paths for other places to look for imports
                 extraPaths = {
-                    "./src"
+                    "./src",
+                    "./src/daimler/mltoolbox"
                 }
             }
         }

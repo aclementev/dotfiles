@@ -56,9 +56,23 @@ set signcolumn=number
 " set ttymouse=xterm2
 set mouse=a
 
+set scrolloff=10
 
 " NOTE: This is duplicated
 " FZF Settings {{{
+
+" Add a mapping for closing the terminal window for FZF
+autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
 " Fuzzy find git tracked files in current directory
 nnoremap <Leader>f :GFiles<CR>
 " Fuzzy find files in current directory
@@ -67,12 +81,17 @@ nnoremap <Leader>F :Files<CR>
 nnoremap <Leader>/ :BLines<CR>
 " Fuzzy find an open buffer
 nnoremap <Leader>b :Buffers<CR>
-" Fuzzy find text in the working directory
-nnoremap <Leader>r :Rg<CR>
-" Fuzzy find Vim commands (like Ctrl-Shift-P
+" Fuzzy find text in the working directory using RipgrepFzf function
+nnoremap <Leader>r :RG<CR>
+" Fuzzy find text in the working directory using regular FZF.vim
+nnoremap <Leader>R :Rg<CR>
+" Fuzzy find Vim commands (like Ctrl-Shift-P)
 nnoremap <Leader>cc :Commands<CR>
 " Fuzzy find files in current directory
 nnoremap <Leader>H :Help<CR>
+
+" Fuzzy find words under the cursor
+nnoremap <Leader>g :RG <C-R><C-W><CR>
 
 " A mapping to show all files, since by default we ignore some of them
 if executable('rg')
@@ -98,8 +117,8 @@ augroup END
 lua require'alvaro.lsp.init'
 
 " Mappings
-nnoremap <silent> gd <cmd>lua vim.lsp.buf.declaration()<CR>
-nnoremap <silent> gD <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> gI <cmd>lua vim.lsp.buf.type_definition()<CR>
@@ -146,13 +165,14 @@ let g:space_before_virtual_text = 2
 
 let g:diagnostic_enable_underline = 0
 " To avoid showing diagnostics while on insert mode
-let g:diagnostic_insert_delay = 0
+let g:diagnostic_insert_delay = 1
 
 " Old way (without diagnostic-nvim
 " sign define LspDiagnosticsErrorSign text=✘
 " sign define LspDiagnosticsWarningSign text=⚠️
 " sign define LspDiagnosticsInformationSign text=
 " sign define LspDiagnosticsHintSign text=
+
 
 " TODO(alvaro): Set up some highlights for the LspDiagnostics
 highlight link LspDiagnosticsError Exception
@@ -168,7 +188,17 @@ call sign_define("LspDiagnosticsHintSign", {"text": "H", "texthl": "LspDiagnosti
 " TODO(alvaro): Check these options
 " let g:diagnostic_virtual_text_prefix = '' " TODO(alvaro): add this
 " let g:diagnostic_trimmed_virtual_text = '20'
+
+" Mappings
+nnoremap <silent> <LocalLeader>dn :NextDiagnosticCycle<CR>
+nnoremap <silent> <LocalLeader>dp :PrevDiagnosticCycle<CR>
+nnoremap <silent> <LocalLeader>do :OpenDiagnostic<CR>
 " }}}
 
 " DEBUG
 " call deoplete#enable_logging("DEBUG", "/tmp/deoplete.log")
+
+" Allow for project specific settings
+" TODO(alvaro): Look into these settings for project specific overrides
+" set exrc
+" set secure
