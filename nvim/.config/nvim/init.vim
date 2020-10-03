@@ -24,7 +24,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'jpalardy/vim-slime'
 
 " LSP
-Plug 'neovim/nvim-lsp'
 Plug 'neovim/nvim-lspconfig'
 " Plug 'Shougo/deoplete-lsp'
 
@@ -39,9 +38,13 @@ Plug 'nvim-lua/diagnostic-nvim'
 Plug 'junegunn/vim-easy-align'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'mhinz/vim-startify'
 
 " Colorschemes
 Plug 'chriskempson/base16-vim'
+
+" Other languages
+Plug 'cespare/vim-toml'
 call plug#end()
 
 " Set up the colorscheme
@@ -57,6 +60,33 @@ set signcolumn=number
 set mouse=a
 
 set scrolloff=10
+
+" Terminal {{{
+" Add add settings to these autocommands
+augroup alvaro_terminal
+    autocmd!
+    autocmd TermOpen * setlocal nonumber statusline=%{b:term_title} | startinsert
+augroup END
+
+" Mapping to open a quick terminal below
+nnoremap <Leader>ts :20sp +term<CR>
+nnoremap <Leader>tv :vsp +term<CR>
+
+" NOTE(alvaro): This is duplicated from the <C-H/J/K/L> that we have in .vimrc
+" To use `ALT+{h,j,k,l}` to navigate windows from any mode:
+tnoremap <A-h> <C-\><C-N><C-W>h
+tnoremap <A-j> <C-\><C-N><C-W>j
+tnoremap <A-k> <C-\><C-N><C-W>k
+tnoremap <A-l> <C-\><C-N><C-W>l
+inoremap <A-h> <C-\><C-N><C-W>h
+inoremap <A-j> <C-\><C-N><C-W>j
+inoremap <A-k> <C-\><C-N><C-W>k
+inoremap <A-l> <C-\><C-N><C-W>l
+nnoremap <A-h> <C-W>h
+nnoremap <A-j> <C-W>j
+nnoremap <A-k> <C-W>k
+nnoremap <A-l> <C-W>l
+" }}}
 
 " NOTE: This is duplicated
 " FZF Settings {{{
@@ -86,7 +116,7 @@ nnoremap <Leader>r :RG<CR>
 " Fuzzy find text in the working directory using regular FZF.vim
 nnoremap <Leader>R :Rg<CR>
 " Fuzzy find Vim commands (like Ctrl-Shift-P)
-nnoremap <Leader>cc :Commands<CR>
+nnoremap <Leader>lc :Commands<CR>
 " Fuzzy find files in current directory
 nnoremap <Leader>H :Help<CR>
 
@@ -126,6 +156,7 @@ nnoremap <silent> gk <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.formatting()<CR>
 
 " TODO(alvaro): Set up file formatting (using yapf or whatever)
 "     maybe we can even use the builtin LSP for actions for this
@@ -137,6 +168,8 @@ nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
 set completeopt=menuone,noinsert,noselect
 set shortmess+=c
+" Limit the number of completion options to give
+set pumheight=20
 
 " Every option can be passed through Lua to the dictionary settings for the
 " on_attach callback see:
@@ -146,9 +179,11 @@ set shortmess+=c
 let g:completion_enable_auto_hover = 0
 " let g:completion_enable_auto_signature = 0
 " let g:completion_matching_ignore_case = 1
-" let g:completion_timer_cycle = 200 " default value is 80
+let g:completion_timer_cycle = 200 " default value is 80
+" Remove the sorting, asume they are given sorted by the completion source
+let g:completion_sorting = "none"
 
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
+let g:completion_matching_strategy_list = ['exact', 'substring']
 
 " function! s:check_back_space() abort
 "     let col = col('.') - 1
@@ -195,8 +230,10 @@ nnoremap <silent> <LocalLeader>dp :PrevDiagnosticCycle<CR>
 nnoremap <silent> <LocalLeader>do :OpenDiagnostic<CR>
 " }}}
 
-" DEBUG
-" call deoplete#enable_logging("DEBUG", "/tmp/deoplete.log")
+" Startify {{{
+let g:startify_change_to_dir = 0
+let g:startify_fortune_use_unicode = 1
+" }}}
 
 " Allow for project specific settings
 " TODO(alvaro): Look into these settings for project specific overrides

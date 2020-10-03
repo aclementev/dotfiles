@@ -90,3 +90,14 @@ nvim_lsp.pyls_ms.setup{
 }
 
 nvim_lsp.vimls.setup{ on_attach = completion_and_diagnostic_on_attach }
+
+-- Rust
+local function rust_on_attach(...)
+    completion_and_diagnostic_on_attach(...)
+    -- Setup for automatic formatting
+    vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000) ]]
+end
+
+nvim_lsp.rust_analyzer.setup{
+    on_attach = rust_on_attach,
+}
