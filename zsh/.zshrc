@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/alvaro/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 export ZSH_DIR="${0:A:h}/.zsh"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -102,6 +102,9 @@ export EDITOR='vim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Source system specific configuration
+[ -f ~/.bash_system_specific ] && source ~/.bash_system_specific
 
 # Source custom functions
 [ -f $ZSH_DIR/functions.sh ] && source $ZSH_DIR/functions.sh
