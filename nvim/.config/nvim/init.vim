@@ -16,10 +16,12 @@ call plug#begin(stdpath('config') . '/plugged')
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
 
+" All hail the almighty tpope
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-scriptease'
 
 " TODO(alvaro): Try this out see how it works
 Plug 'justinmk/vim-dirvish'
@@ -38,6 +40,9 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
+" TODO(alvaro): Look into this
+" Plug 'romainl/vim-qf'
+
 " Diagnostics
 Plug 'nvim-lua/diagnostic-nvim'
 
@@ -52,6 +57,9 @@ Plug 'chriskempson/base16-vim'
 
 " Other languages
 Plug 'cespare/vim-toml'
+" For Lua in neovim development
+Plug 'tjdevries/nlua.nvim'
+
 call plug#end()
 
 " Set up the colorscheme
@@ -247,3 +255,22 @@ let g:startify_relative_path = 1
 " TODO(alvaro): Look into these settings for project specific overrides
 " set exrc
 " set secure
+
+function! TrimWhitespace()
+    let l:saved_pos = getpos('.')
+    silent %s/\s*$//
+    " Restore the position of the cursor
+    call setpos('.', l:saved_pos)
+endfunction
+
+" Trim the whitespace on certain filetypes
+" NOTE(alvaro): No rust here since we use rustfmt anyway. Same with go
+" TODO(alvaro): Think about vimscript where maybe sometimes we want to keep
+" the whitespace
+autocmd FileType c,cpp,java,javascript,typescript,python,lua,vim autocmd BufWritePre <buffer> call TrimWhitespace()
+
+" Custom mapping for the GithubOpen
+nnoremap <silent> <LocalLeader>g <cmd>GithubOpen<CR>
+" TODO(alvaro): Review this one, we may want to pass the '<,'> range to the
+" command call
+vnoremap <silent> <LocalLeader>g <cmd>:GithubOpen<CR>
