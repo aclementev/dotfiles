@@ -21,7 +21,14 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 
-Plug 'jpalardy/vim-slime'
+" TODO(alvaro): Try this out see how it works
+Plug 'justinmk/vim-dirvish'
+
+" Lisps
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+
+" Plug 'jpalardy/vim-slime'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -233,6 +240,7 @@ nnoremap <silent> <LocalLeader>do :OpenDiagnostic<CR>
 " Startify {{{
 let g:startify_change_to_dir = 0
 let g:startify_fortune_use_unicode = 1
+let g:startify_relative_path = 1
 " }}}
 
 " Allow for project specific settings
