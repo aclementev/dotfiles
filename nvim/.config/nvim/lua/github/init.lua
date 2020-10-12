@@ -68,20 +68,23 @@ local function TransformRemoteGithub(remote_url)
 end
 
 --- Build a Github URL to the contents of the file
-local function BuildGithubURL(raw_url, branch, path, line, url_transformer_fn)
+local function BuildGithubURL(raw_url, branch, path, lines, url_transformer_fn)
+    assert(#lines == 2, 'expected a list of 2 line numbers')
     local remote_url = url_transformer_fn(raw_url)
-    -- TODO(alvaro): Accept line as a list
-    return remote_url .. '/blob/' .. branch .. '/' .. path .. '#L' .. line
+    local github_url = remote_url .. '/blob/' .. branch .. '/' .. path .. '#L' .. lines[1]
+    if lines[1] ~= lines[2] then
+        -- This was called with a multiple lines selected
+        github_url = github_url .. '-L' .. lines[2]
+    end
+    return github_url
 end
 
 --- Open in github the file and line (or range of lines if visual) under
 --- the cursor
-local function GithubOpen()
+local function GithubOpen(startl, endl)
     -- TODO(alvaro): Get the visually selected line
     --      Maybe we could pass it as the arguments using the command instead
     -- TODO(alvaro): Check that the file exists in the version in github
-
-    local line = vim.fn.getpos('.')[2]
     -- Get the current file path from the git base
     local normalized_path = GitFilePath()
     -- Get the current branch
@@ -91,7 +94,7 @@ local function GithubOpen()
     local github_url = BuildGithubURL(raw_url,
                                       branch,
                                       normalized_path,
-                                      line,
+                                      {startl, endl},
                                       TransformRemoteGithub)
     -- TODO(alvaro): Handle better the open command for multi platform compat
     os.execute('xdg-open ' .. github_url)

@@ -270,7 +270,7 @@ endfunction
 autocmd FileType c,cpp,java,javascript,typescript,python,lua,vim autocmd BufWritePre <buffer> call TrimWhitespace()
 
 " Custom mapping for the GithubOpen
-nnoremap <silent> <LocalLeader>g <cmd>GithubOpen<CR>
+nnoremap <silent> <LocalLeader>g :<C-U>GithubOpen<CR>
 " TODO(alvaro): Review this one, we may want to pass the '<,'> range to the
 " command call
-vnoremap <silent> <LocalLeader>g <cmd>:GithubOpen<CR>
+xnoremap <silent> <LocalLeader>g :GithubOpen<CR>

@@ -8,4 +8,12 @@
 " endif
 " let g:github_loaded = 1
 
-command -nargs=0 -range GithubOpen lua require('github').GithubOpen()
+function! RunGithubOpen(start, end)
+    " TODO(alvaro): Get the line ranges
+    " TODO(alvaro): Call the GithubOpen function
+    echom "The start line is " . a:start
+    echom "The end line is " . a:end
+endfunction
+
+command -nargs=0 -range GithubOpen lua require('github').GithubOpen(<line1>, <line2>)
+" command -nargs=0 -range GithubOpen call RunGithubOpen(<line1>, <line2>)
