@@ -23,23 +23,27 @@ local function get_python_version()
 end
 
 -- Set up for some known servers
--- LUA
-nvim_lsp.sumneko_lua.setup{
-    -- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
-    on_attach=completion_and_diagnostic_on_attach,
-    settings = {
-        Lua = {
-            runtime = {
-                version = "LuaJIT"
-            },
-            diagnostics = {
-                enable = true,
-                globals = { "vim" }
-            }
-        }
-    }
+-- Lua
+-- nvim_lsp.sumneko_lua.setup{
+--     -- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
+--     on_attach=completion_and_diagnostic_on_attach,
+--     settings = {
+--         Lua = {
+--             runtime = {
+--                 version = "LuaJIT"
+--             },
+--             diagnostics = {
+--                 enable = true,
+--                 globals = { "vim" }
+--             }
+--         }
+--     }
+-- }
 
-}
+-- Set up using TJ's nlua.nvim
+require('nlua.lsp.nvim').setup(nvim_lsp, {
+    on_attach = completion_and_diagnostic_on_attach
+})
 
 -- TODO(alvaro): This is not appearing as a registered client on python files
 -- checked with :lua print(vim.inspect(vim.lsp.get_active_clients()))
