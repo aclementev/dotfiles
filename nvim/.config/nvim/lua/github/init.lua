@@ -4,6 +4,9 @@
 -- TODO(alvaro): Do we want to support Gitlab as well? Once Github is setup I
 --     think we can easily support other styles of URLs, or even accept a function
 --     that transforms the remotes into URLS
+-- TODO(alvaro): Support for opening files on directories in arbitrary locations
+--     in the filesystem, not only taking into account nvim's CWD
+local utils = require('alvaro.utils')
 
 --- Run a simple command and return the result
 local function RunCommand(cmd)
@@ -47,7 +50,7 @@ end
 local function GitFilePath()
     local git_head = GitBasePath(true) -- We ask for a trailing `/`
     local full_path = vim.fn.expand('%:p')
-    local normalized_path = string.gsub(full_path, git_head, '', 1)
+    local normalized_path = full_path:gsub(utils.escape_pattern(git_head), '', 1)
     return normalized_path
 end
 
@@ -59,9 +62,15 @@ local function TransformRemoteGithub(remote_url)
         local url_parts = vim.split(remote_url, ':')
         assert(#url_parts == 2, "invalid format of the remote_url")
 
-        local base_url = url_parts[1]
+        -- TODO(alvaro): Look at the first part, the domain, and do something
+        --     smart about it depending on how it looks
+        --     For instance, this may not work on ssh custom domains such as
+        --     personal.github.com  -> this is an alias defined in .ssh/config
+        -- local _domain_url = url_parts[1]
         local repo = url_parts[2]
-        return 'https://' .. base_url .. '/' .. repo
+        -- strip a potential `.git` in the last part of the address
+        repo = repo:gsub('.git$', '', 1)
+        return 'https://github.com/' .. repo
     else
         return remote_url
     end
@@ -96,8 +105,13 @@ local function GithubOpen(startl, endl)
                                       normalized_path,
                                       {startl, endl},
                                       TransformRemoteGithub)
-    -- TODO(alvaro): Handle better the open command for multi platform compat
-    os.execute('xdg-open ' .. github_url)
+                                      --
+    -- TODO(alvaro): Handle more platforms
+    local open_cmd = 'xdg-open' -- Most portable default
+    if vim.fn.has('macunix') then
+        open_cmd = 'open'
+    end
+    os.execute(open_cmd .. ' ' .. github_url)
 end
 
 

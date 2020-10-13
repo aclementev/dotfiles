@@ -3,10 +3,10 @@
 "  - GithubOpen that opens github on the current branch and file, and will
 "  mark the line as well for easy sharing
 
-" if exists('g:github_loaded')
-"     finish
-" endif
-" let g:github_loaded = 1
+if exists('g:github_loaded')
+    finish
+endif
+let g:github_loaded = 1
 
 function! RunGithubOpen(start, end)
     " TODO(alvaro): Get the line ranges
