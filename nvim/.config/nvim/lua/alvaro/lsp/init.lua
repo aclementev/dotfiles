@@ -45,49 +45,84 @@ require('nlua.lsp.nvim').setup(nvim_lsp, {
     on_attach = completion_and_diagnostic_on_attach
 })
 
--- TODO(alvaro): This is not appearing as a registered client on python files
--- checked with :lua print(vim.inspect(vim.lsp.get_active_clients()))
--- and with :lua print(vim.inspect(vim.lsp.buf_get_clients()))
-nvim_lsp.pyls_ms.setup{
-    filetypes = { "python" },
-    -- TODO(alvaro): Check the order of these patterns
-    -- TODO(alvaro): There seems to be an issue with the extraPaths, since
-    --     with the setup as it is now (manage.py as root) this works fine
-    root_dir = nvim_lsp.util.root_pattern('manage.py', '.git', 'setup.py', vim.fn.getcwd()),
-    on_attach=completion_and_diagnostic_on_attach,
-    init_options = {
-        analysisUpdates = true,
-        asyncStartup = true,
-        displayOptions = {},
-        -- interpreter = {
-        --     properties = {
-        --         InterpreterPath = python_path,
-        --         Version = python_version,
-        --     }
-        -- }
-    },
+-- -- TODO(alvaro): This is not appearing as a registered client on python files
+-- -- checked with :lua print(vim.inspect(vim.lsp.get_active_clients()))
+-- -- and with :lua print(vim.inspect(vim.lsp.buf_get_clients()))
+-- nvim_lsp.pyls_ms.setup{
+--     filetypes = { "python" },
+--     -- TODO(alvaro): Check the order of these patterns
+--     -- TODO(alvaro): There seems to be an issue with the extraPaths, since
+--     --     with the setup as it is now (manage.py as root) this works fine
+--     root_dir = nvim_lsp.util.root_pattern('manage.py', '.git', 'setup.py', vim.fn.getcwd()),
+--     on_attach=completion_and_diagnostic_on_attach,
+--     init_options = {
+--         analysisUpdates = true,
+--         asyncStartup = true,
+--         displayOptions = {},
+--         -- interpreter = {
+--         --     properties = {
+--         --         InterpreterPath = python_path,
+--         --         Version = python_version,
+--         --     }
+--         -- }
+--     },
+--     settings = {
+--         python = {
+--             jediEnabled = false,
+--             linting = {
+--                 enabled = true
+--             },
+--             formatting = {
+--                 provider = 'yapf'
+--             },
+--             analysis = {
+--                 -- logLevel = 'Trace',
+--                 disabled = {},
+--                 errors = {},
+--                 info = {},
+--                 -- cachingLevel = "System", -- To cache the standard library's analysis
+--             },
+--             autocomplete = {
+--                 -- Add here paths for other places to look for imports
+--                 extraPaths = {
+--                     "./src",
+--                     "./src/daimler/mltoolbox"
+--                 }
+--             }
+--         }
+--     },
+--     log_level = vim.lsp.protocol.MessageType.Log,
+--     message_level = vim.lsp.protocol.MessageType.Log
+-- }
+
+nvim_lsp.pyls.setup{
+    on_attach = completion_and_diagnostic_on_attach,
     settings = {
-        python = {
-            jediEnabled = false,
-            linting = {
-                enabled = true
-            },
-            formatting = {
-                provider = 'yapf'
-            },
-            analysis = {
-                -- logLevel = 'Trace',
-                disabled = {},
-                errors = {},
-                info = {},
-                -- cachingLevel = "System", -- To cache the standard library's analysis
-            },
-            autocomplete = {
-                -- Add here paths for other places to look for imports
-                extraPaths = {
-                    "./src",
-                    "./src/daimler/mltoolbox"
-                }
+        pyls = {
+            plugins = {
+                jedi_completion = {
+                    enabled = true,
+                    extra_paths = {
+                        "./src",
+                        "./src/daimler/mltoolbox"
+                    },
+                    fuzzy = false,
+                },
+                pycodestyle = {
+                    enabled = true
+                },
+                pylint = {
+                    enabled = false
+                },
+                autopep8 = {
+                    enabled = false
+                },
+                pydocstyle = {
+                    enabled = false
+                },
+                pyflakes = {
+                    enabled = false
+                },
             }
         }
     }
