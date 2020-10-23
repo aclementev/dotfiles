@@ -71,6 +71,7 @@ DISABLE_MAGIC_FUNCTIONS=true
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
+    poetry
     zsh-autosuggestions
     zsh-syntax-highlighting # This one MUST be last
 )
@@ -103,14 +104,15 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# NOTE(alvaro): This needs to run first to add necessary configuration variables
+# Load shell global variables such as PATH
+[ -f ~/.shell_globals ] && source ~/.shell_globals
+
 # Source system specific configuration
 [ -f ~/.bash_system_specific ] && source ~/.bash_system_specific
 
 # Source custom functions
 [ -f $ZSH_DIR/functions.sh ] && source $ZSH_DIR/functions.sh
-
-# Load shell global variables such as PATH
-[ -f ~/.shell_globals ] && source ~/.shell_globals
 
 # Source default aliases
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
