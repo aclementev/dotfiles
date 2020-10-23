@@ -56,7 +56,8 @@ Plug 'mhinz/vim-startify'
 Plug 'chriskempson/base16-vim'
 
 " Other languages
-Plug 'cespare/vim-toml'
+Plug 'sheerun/vim-polyglot'
+
 " For Lua in neovim development
 Plug 'tjdevries/nlua.nvim'
 
@@ -119,22 +120,26 @@ endfunction
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 " Fuzzy find git tracked files in current directory
-nnoremap <Leader>f :GFiles<CR>
-" Fuzzy find files in current directory
-nnoremap <Leader>F :Files<CR>
+nnoremap <Leader>fg :GFiles<CR>
+" Fuzzy find files in current directory (git ls-files)
+nnoremap <Leader>ff :Files<CR>
+" Fuzzy find git tracked and untracked files in current directory (git status)
+nnoremap <Leader>fs :GFiles?<CR>
 " Fuzzy find lines in current file
-nnoremap <Leader>/ :BLines<CR>
+nnoremap <Leader>f/ :BLines<CR>
 " Fuzzy find an open buffer
-nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>fb :Buffers<CR>
+" Fuzzy find Vim commands (like Ctrl-Shift-P)
+nnoremap <Leader>fc :Commands<CR>
+" Fuzzy find files in current directory
+nnoremap <Leader>fh :Help<CR>
+" Fuzzy find files in oldfiles
+nnoremap <Leader>fo :History<CR>
+
 " Fuzzy find text in the working directory using RipgrepFzf function
 nnoremap <Leader>r :RG<CR>
 " Fuzzy find text in the working directory using regular FZF.vim
-nnoremap <Leader>R :Rg<CR>
-" Fuzzy find Vim commands (like Ctrl-Shift-P)
-nnoremap <Leader>lc :Commands<CR>
-" Fuzzy find files in current directory
-nnoremap <Leader>H :Help<CR>
-
+nnoremap <Leader>fr :Rg<CR>
 " Fuzzy find words under the cursor
 nnoremap <Leader>g :RG <C-R><C-W><CR>
 
@@ -144,7 +149,10 @@ if executable('rg')
         \ call fzf#run(fzf#wrap({'source': 'rg --files --hidden --no-ignore-vcs'}))
 endif
 
-let g:fzf_layout={'down': '~20%'}
+" Fuzzy find all files without ingoring any
+nnoremap <Leader>fa :All<CR>
+
+let g:fzf_layout={'down': '~25%'}
 
 " }}}
 
@@ -274,3 +282,7 @@ nnoremap <silent> <LocalLeader>g :<C-U>GithubOpen<CR>
 " TODO(alvaro): Review this one, we may want to pass the '<,'> range to the
 " command call
 xnoremap <silent> <LocalLeader>g :GithubOpen<CR>
+
+" Some settings from different languages by vim-polyglot
+let g:python_highlight_space_errors = 0
+let g:python_highlight_all = 1
