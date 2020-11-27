@@ -30,7 +30,7 @@ Plug 'justinmk/vim-dirvish'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 
-" Plug 'jpalardy/vim-slime'
+Plug 'jpalardy/vim-slime'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -120,9 +120,9 @@ endfunction
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 " Fuzzy find git tracked files in current directory
-nnoremap <Leader>fg :GFiles<CR>
+nnoremap <Leader>ff :GFiles<CR>
 " Fuzzy find files in current directory (git ls-files)
-nnoremap <Leader>ff :Files<CR>
+nnoremap <Leader>fa :Files<CR>
 " Fuzzy find git tracked and untracked files in current directory (git status)
 nnoremap <Leader>fs :GFiles?<CR>
 " Fuzzy find lines in current file
@@ -180,6 +180,8 @@ nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.formatting()<CR>
+
+inoremap <silent> <C-H> <cmd>lua vim.lsp.buf.signature_help()<CR>
 
 " TODO(alvaro): Set up file formatting (using yapf or whatever)
 "     maybe we can even use the builtin LSP for actions for this

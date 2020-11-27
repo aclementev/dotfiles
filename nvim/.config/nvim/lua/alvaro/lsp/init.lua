@@ -1,4 +1,4 @@
-local nvim_lsp = require 'nvim_lsp'
+local lspconfig = require 'lspconfig'
 vim.lsp.set_log_level('info')
 
 -- Function that composes the completion-nvim and diagnostic-nvim on_attach
@@ -24,7 +24,7 @@ end
 
 -- Set up for some known servers
 -- Lua
--- nvim_lsp.sumneko_lua.setup{
+-- lspconfig.sumneko_lua.setup{
 --     -- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
 --     on_attach=completion_and_diagnostic_on_attach,
 --     settings = {
@@ -41,19 +41,19 @@ end
 -- }
 
 -- Set up using TJ's nlua.nvim
-require('nlua.lsp.nvim').setup(nvim_lsp, {
+require('nlua.lsp.nvim').setup(lspconfig, {
     on_attach = completion_and_diagnostic_on_attach
 })
 
 -- -- TODO(alvaro): This is not appearing as a registered client on python files
 -- -- checked with :lua print(vim.inspect(vim.lsp.get_active_clients()))
 -- -- and with :lua print(vim.inspect(vim.lsp.buf_get_clients()))
--- nvim_lsp.pyls_ms.setup{
+-- lspconfig.pyls_ms.setup{
 --     filetypes = { "python" },
 --     -- TODO(alvaro): Check the order of these patterns
 --     -- TODO(alvaro): There seems to be an issue with the extraPaths, since
 --     --     with the setup as it is now (manage.py as root) this works fine
---     root_dir = nvim_lsp.util.root_pattern('manage.py', '.git', 'setup.py', vim.fn.getcwd()),
+--     root_dir = lspconfig.util.root_pattern('manage.py', '.git', 'setup.py', vim.fn.getcwd()),
 --     on_attach=completion_and_diagnostic_on_attach,
 --     init_options = {
 --         analysisUpdates = true,
@@ -95,23 +95,28 @@ require('nlua.lsp.nvim').setup(nvim_lsp, {
 --     message_level = vim.lsp.protocol.MessageType.Log
 -- }
 
-nvim_lsp.pyls.setup{
+lspconfig.pyls.setup{
     on_attach = completion_and_diagnostic_on_attach,
     settings = {
         pyls = {
             plugins = {
-                jedi_completion = {
-                    enabled = true,
+                jedi = {
                     extra_paths = {
                         "./src",
                         "./src/daimler/mltoolbox"
                     },
+                },
+                jedi_completion = {
+                    enabled = true,
                     fuzzy = false,
                 },
                 pycodestyle = {
                     enabled = true
                 },
                 pylint = {
+                    enabled = false
+                },
+                mccabe = {
                     enabled = false
                 },
                 autopep8 = {
@@ -128,7 +133,7 @@ nvim_lsp.pyls.setup{
     }
 }
 
-nvim_lsp.vimls.setup{ on_attach = completion_and_diagnostic_on_attach }
+lspconfig.vimls.setup{ on_attach = completion_and_diagnostic_on_attach }
 
 -- Rust
 local function rust_on_attach(...)
@@ -137,6 +142,6 @@ local function rust_on_attach(...)
     vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000) ]]
 end
 
-nvim_lsp.rust_analyzer.setup{
+lspconfig.rust_analyzer.setup{
     on_attach = rust_on_attach,
 }
