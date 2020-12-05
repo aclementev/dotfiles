@@ -109,8 +109,17 @@ lspconfig.pyls.setup{
                     enabled = true,
                     fuzzy = false,
                 },
-                pycodestyle = {
+                black = {
                     enabled = true
+                },
+                isort = {
+                    enabled = true
+                },
+                flake8 = {
+                    enabled = true
+                },
+                pycodestyle = {
+                    enabled = false
                 },
                 pylint = {
                     enabled = false
