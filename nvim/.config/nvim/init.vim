@@ -43,9 +43,6 @@ Plug 'nvim-lua/completion-nvim'
 " TODO(alvaro): Look into this
 " Plug 'romainl/vim-qf'
 
-" Diagnostics
-Plug 'nvim-lua/diagnostic-nvim'
-
 " Eye candy
 Plug 'junegunn/vim-easy-align'
 Plug 'vim-airline/vim-airline'
@@ -159,6 +156,10 @@ let g:fzf_layout={'down': '~25%'}
 " Nvim necessary config
 let g:python3_host_prog = '~/.virtualenv/neovim/bin/python'
 
+
+" Load the Lua basic configuration
+lua require'alvaro'
+
 " Highligh on yank
 augroup highlight_yank
     autocmd!
@@ -180,6 +181,7 @@ nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.formatting()<CR>
+xnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.range_formatting()<CR>
 
 inoremap <silent> <C-H> <cmd>lua vim.lsp.buf.signature_help()<CR>
 
@@ -220,12 +222,18 @@ inoremap <silent><expr> <S-Tab> pumvisible() ? "<C-P>" : "\<S-Tab>"
 "}}}
 
 " Diagnostic {{{
-let g:diagnostic_enable_virtual_text = 1
-let g:space_before_virtual_text = 2
+" NOTE(alvaro): See lua/alvaro/lsp/init.lua for more diagnostic configuration
+" directly in Lua
 
-let g:diagnostic_enable_underline = 0
-" To avoid showing diagnostics while on insert mode
-let g:diagnostic_insert_delay = 1
+" TODO(alvaro): Set up some highlights for the LspDiagnostics
+highlight link LspDiagnosticsVirtualTextError Exception
+highlight link LspDiagnosticsVirtualTextWarning Label
+highlight link LspDiagnosticsVirtualTextInformation VisualNC
+highlight link LspDiagnosticsVirtualTextHint VisualNC
+highlight link LspDiagnosticsSignError Exception
+highlight link LspDiagnosticsSignWarning Label
+highlight link LspDiagnosticsSignInformation VisualNC
+highlight link LspDiagnosticsSignHint VisualNC
 
 " Old way (without diagnostic-nvim
 " sign define LspDiagnosticsErrorSign text=✘
@@ -233,26 +241,21 @@ let g:diagnostic_insert_delay = 1
 " sign define LspDiagnosticsInformationSign text=
 " sign define LspDiagnosticsHintSign text=
 
+" TODO(alvaro): Review these
+sign define LspDiagnosticsSignError text=E texthl=LspDiagnosticsSignError linehl= numhl=
+sign define LspDiagnosticsSignWarning text=W texthl=LspDiagnosticsSignWarning linehl= numhl=
+sign define LspDiagnosticsSignInformation text=I texthl=LspDiagnosticsSignInformation linehl= numhl=
+sign define LspDiagnosticsSignHint text=H texthl=LspDiagnosticsSignHint linehl= numhl=
 
-" TODO(alvaro): Set up some highlights for the LspDiagnostics
-highlight link LspDiagnosticsError Exception
-highlight link LspDiagnosticsWarning Label
-highlight link LspDiagnosticsInformation VisualNC
-highlight link LspDiagnosticsHint VisualNC
-
-call sign_define("LspDiagnosticsErrorSign", {"text": "E", "texthl": "LspDiagnosticsError"})
-call sign_define("LspDiagnosticsWarningSign", {"text": "W", "texthl": "LspDiagnosticsWarning"})
-call sign_define("LspDiagnosticsInformationSign", {"text": "I", "texthl": "LspDiagnosticsInformation"})
-call sign_define("LspDiagnosticsHintSign", {"text": "H", "texthl": "LspDiagnosticsHint"})
 
 " TODO(alvaro): Check these options
 " let g:diagnostic_virtual_text_prefix = '' " TODO(alvaro): add this
 " let g:diagnostic_trimmed_virtual_text = '20'
 
 " Mappings
-nnoremap <silent> <LocalLeader>dn :NextDiagnosticCycle<CR>
-nnoremap <silent> <LocalLeader>dp :PrevDiagnosticCycle<CR>
-nnoremap <silent> <LocalLeader>do :OpenDiagnostic<CR>
+nnoremap <silent> <LocalLeader>dn <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent> <LocalLeader>dp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> <LocalLeader>do <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
 " }}}
 
 " Startify {{{

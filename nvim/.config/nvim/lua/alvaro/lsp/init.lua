@@ -1,11 +1,10 @@
 local lspconfig = require 'lspconfig'
-vim.lsp.set_log_level('info')
+vim.lsp.set_log_level('warn')
 
 -- Function that composes the completion-nvim and diagnostic-nvim on_attach
 -- callbacks
-local function completion_and_diagnostic_on_attach(...)
+local function custom_on_attach(...)
     require'completion'.on_attach(...)
-    require'diagnostic'.on_attach(...)
 end
 
 -- NOTE(alvaro): In case we want to use this
@@ -26,7 +25,7 @@ end
 -- Lua
 -- lspconfig.sumneko_lua.setup{
 --     -- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
---     on_attach=completion_and_diagnostic_on_attach,
+--     on_attach=custom_on_attach,
 --     settings = {
 --         Lua = {
 --             runtime = {
@@ -42,7 +41,7 @@ end
 
 -- Set up using TJ's nlua.nvim
 require('nlua.lsp.nvim').setup(lspconfig, {
-    on_attach = completion_and_diagnostic_on_attach
+    on_attach = custom_on_attach
 })
 
 -- -- TODO(alvaro): This is not appearing as a registered client on python files
@@ -54,7 +53,7 @@ require('nlua.lsp.nvim').setup(lspconfig, {
 --     -- TODO(alvaro): There seems to be an issue with the extraPaths, since
 --     --     with the setup as it is now (manage.py as root) this works fine
 --     root_dir = lspconfig.util.root_pattern('manage.py', '.git', 'setup.py', vim.fn.getcwd()),
---     on_attach=completion_and_diagnostic_on_attach,
+--     on_attach=custom_on_attach,
 --     init_options = {
 --         analysisUpdates = true,
 --         asyncStartup = true,
@@ -96,7 +95,7 @@ require('nlua.lsp.nvim').setup(lspconfig, {
 -- }
 
 lspconfig.pyls.setup{
-    on_attach = completion_and_diagnostic_on_attach,
+    on_attach = custom_on_attach,
     settings = {
         pyls = {
             plugins = {
@@ -133,11 +132,11 @@ lspconfig.pyls.setup{
     }
 }
 
-lspconfig.vimls.setup{ on_attach = completion_and_diagnostic_on_attach }
+lspconfig.vimls.setup{ on_attach = custom_on_attach }
 
 -- Rust
 local function rust_on_attach(...)
-    completion_and_diagnostic_on_attach(...)
+    custom_on_attach(...)
     -- Setup for automatic formatting
     vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000) ]]
 end
@@ -145,3 +144,19 @@ end
 lspconfig.rust_analyzer.setup{
     on_attach = rust_on_attach,
 }
+
+-- Diagnostic setup
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        -- Disable underline for diagnostics
+        underline = false,
+        -- Enable virtual_text and add some spacing
+        virtual_text = {
+            spacing = 2,
+        },
+        -- Show the Signs in the signcolumn
+        signs = true,
+        -- Update the diagnostics while on insert mode
+        update_in_insert = false,
+    }
+)
