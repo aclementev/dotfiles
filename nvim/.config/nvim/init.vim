@@ -271,7 +271,10 @@ let g:startify_relative_path = 1
 
 function! TrimWhitespace()
     let l:saved_pos = getpos('.')
-    silent %s/\s*$//
+    " NOTE(alvaro): This uses g: to only run this command on the lines that
+    " require it, since it could make undo operations VERY slow on larger
+    " files
+    silent g/\s\+$/s/\s*$//
     " Restore the position of the cursor
     call setpos('.', l:saved_pos)
 endfunction
