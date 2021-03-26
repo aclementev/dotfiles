@@ -161,6 +161,9 @@ nnoremap <silent> <LocalLeader>ln :lnext<CR>
 nnoremap <silent> <LocalLeader>lp :lprevious<CR>
 nnoremap <silent> <LocalLeader>lo :lopen<CR>
 nnoremap <silent> <LocalLeader>lc :lclose<CR>
+
+" Other mappings
+nnoremap <Leader>cw :%s/\<<C-R><C-W>\>/
 " }}}
 "
 
