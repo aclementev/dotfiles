@@ -47,4 +47,9 @@ vpn() {
     esac
 }
 
+# Quickly format as JSON the contents of the clipboard
+format-json() {
+    pbpaste | jq '.' | pbcopy
+}
+
 # vim: set filetype=bash :
