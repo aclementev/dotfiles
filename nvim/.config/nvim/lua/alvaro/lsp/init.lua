@@ -23,26 +23,46 @@ end
 
 -- Set up for some known servers
 -- Lua
--- lspconfig.sumneko_lua.setup{
---     -- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
---     on_attach=custom_on_attach,
---     settings = {
---         Lua = {
---             runtime = {
---                 version = "LuaJIT"
---             },
---             diagnostics = {
---                 enable = true,
---                 globals = { "vim" }
---             }
---         }
---     }
--- }
+-- Inspired from this https://www.chrisatmachine.com/Neovim/28-neovim-lua-development/
+local sumneko_root_path
+local sumneko_binary
+if vim.fn.has('mac') then
+    USER = vim.fn.expand("$USER")
+    sumneko_root_path = '/Users/' .. USER .. '/github/lua-language-server'
+    sumneko_binary = sumneko_root_path .. '/bin/macOS/lua-language-server'
+else
+    sumneko_root_path = ''
+    sumneko_binary = ''
+    print('Unsupported system for sumneko')
+end
 
--- Set up using TJ's nlua.nvim
-require('nlua.lsp.nvim').setup(lspconfig, {
-    on_attach = custom_on_attach
-})
+lspconfig.sumneko_lua.setup{
+    -- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
+    cmd = {sumneko_binary, '-E', sumneko_root_path .. '/main.lua'},
+    on_attach=custom_on_attach,
+    settings = {
+        Lua = {
+            runtime = {
+                version = "LuaJIT",
+                -- TODO(alvaro): Review this
+                path = vim.split(package.path, ";"),
+            },
+            diagnostics = {
+                globals = { "vim" },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = {
+                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                    [vim.fn.expand("$VIMRUNTIME/lua/lsp")] = true,
+                }
+            },
+            telemetry = {
+                enable = false
+            },
+        }
+    }
+}
 
 -- -- TODO(alvaro): This is not appearing as a registered client on python files
 -- -- checked with :lua print(vim.inspect(vim.lsp.get_active_clients()))
