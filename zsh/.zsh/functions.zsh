@@ -1,7 +1,12 @@
 # Custom functions for Alvaro
 
 vpn_ip() {
-    ifconfig | awk 'f == "ppp0:" {print $2} {f=$1}'
+    # TODO(alvaro): Fix this to work more generally by looking for utunX and 
+    # and IPv4 address
+    # ifconfig | awk 'f == "utun2:" {print $2} {f=$1}'
+    # With Tunnelblick, we end up with multiple utun devices with IPv6 
+    # addresses, but only 1 with the IPv4 that we want 
+    ifconfig | awk '(f == "utun") && ($1 == "inet") {print $2} {f=substr($1, 1, 4)}'
 }
 
 # Copy the pwd to the clipboard
@@ -52,4 +57,4 @@ format-json() {
     pbpaste | jq '.' | pbcopy
 }
 
-# vim: set filetype=bash :
+# vim: set filetype=zsh :
