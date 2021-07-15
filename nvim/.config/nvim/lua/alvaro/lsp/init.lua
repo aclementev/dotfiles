@@ -1,11 +1,63 @@
 local lspconfig = require 'lspconfig'
 vim.lsp.set_log_level('warn')
 
--- Function that composes the completion-nvim and diagnostic-nvim on_attach
+-- Setup the common options (completion, diagnostics, keymaps)
+local on_attach_general = function(client, bufnr)
+    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+    -- Mappings
+    local opts = { noremap=true, silent=true }
+    buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    buf_set_keymap('n', 'gI', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    buf_set_keymap('n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    buf_set_keymap('n', 'g0', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
+    buf_set_keymap('n', 'gW', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
+    buf_set_keymap('n', '<LocalLeader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    buf_set_keymap('i', '<C-H>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+
+    -- Diagnostics
+    buf_set_keymap('n', '<LocalLeader>dd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+    buf_set_keymap('n', '<LocalLeader>dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+    buf_set_keymap('n', '<LocalLeader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+    buf_set_keymap('n', '<LocalLeader>do', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+    -- Formatting (Conditional to Capabilities)
+    if client.resolved_capabilities.document_formatting then
+        buf_set_keymap('n', '<LocalLeader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+        -- TODO(alvaro): Is this necessary anymore?
+        buf_set_keymap('x', '<LocalLeader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    elseif client.resolved_capabilities.document_range_formatting then
+        buf_set_keymap('n', '<LocalLeader>f', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
+    end
+
+    -- Autocommand for Highlights
+    -- TODO(alvaro): Make this more subtle, for now it's just annoying
+    -- if client.resolved_capabilities.document_highlight then
+    --     vim.api.nvim_exec([[
+    --       hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+    --       hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+    --       hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+    --       augroup lsp_document_highlight
+    --         autocmd! * <buffer>
+    --         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+    --         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    --       augroup END
+    --     ]], false)
+    -- end
+end
+
+-- Function that composes the completion-nvim and on_attach
 -- callbacks
 local function custom_on_attach(...)
     require'completion'.on_attach(...)
+    return on_attach_general(...)
 end
+
 
 -- NOTE(alvaro): In case we want to use this
 local function get_python_version()
@@ -165,9 +217,9 @@ lspconfig.vimls.setup{ on_attach = custom_on_attach }
 
 -- Rust
 local function rust_on_attach(...)
-    custom_on_attach(...)
     -- Setup for automatic formatting
     vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000) ]]
+    return custom_on_attach(...)
 end
 
 lspconfig.rust_analyzer.setup{

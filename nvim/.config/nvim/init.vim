@@ -182,19 +182,19 @@ augroup END
 lua require'alvaro.lsp.init'
 
 " Mappings
-nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
-nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gI <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gk <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.formatting()<CR>
-xnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.range_formatting()<CR>
+" nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
+" nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+" nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+" nnoremap <silent> gI <cmd>lua vim.lsp.buf.type_definition()<CR>
+" nnoremap <silent> gk <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+" nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
+" nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+" nnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.formatting()<CR>
+" xnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.range_formatting()<CR>
 
-inoremap <silent> <C-H> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" inoremap <silent> <C-H> <cmd>lua vim.lsp.buf.signature_help()<CR>
 
 " TODO(alvaro): Set up file formatting (using yapf or whatever)
 "     maybe we can even use the builtin LSP for actions for this
@@ -264,9 +264,9 @@ sign define LspDiagnosticsSignHint text=H texthl=LspDiagnosticsSignHint linehl= 
 " let g:diagnostic_trimmed_virtual_text = '20'
 
 " Mappings
-nnoremap <silent> <LocalLeader>dn <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-nnoremap <silent> <LocalLeader>dp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent> <LocalLeader>do <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+" nnoremap <silent> <LocalLeader>dn <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+" nnoremap <silent> <LocalLeader>dp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+" nnoremap <silent> <LocalLeader>do <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
 " }}}
 
 " Startify {{{
