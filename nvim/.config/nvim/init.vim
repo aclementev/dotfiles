@@ -51,6 +51,8 @@ Plug 'mhinz/vim-startify'
 
 " Colorschemes
 Plug 'chriskempson/base16-vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'ayu-theme/ayu-vim'
 
 " Other languages
 Plug 'sheerun/vim-polyglot'
@@ -61,8 +63,17 @@ Plug 'tjdevries/nlua.nvim'
 call plug#end()
 
 " Set up the colorscheme
-let base16colorspace=256
-colorscheme base16-default-dark
+set termguicolors
+" Not bad, looks clean and good but lacks contrast
+" colorscheme nord
+" Let's try this one first
+let ayucolor="dark"  " light/mirage/dark
+colorscheme ayu
+
+" TODO(alvaro): Check if this exists, default to vim's dark
+" colorscheme base16-default-dark
+" let base16colorspace=256
+" colorscheme default
 
 " Merge the signcolumn and number column
 set signcolumn=number
