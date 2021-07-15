@@ -47,7 +47,12 @@ set splitbelow
 set colorcolumn=80
 
 "diffing settings
-set diffopt+=vertical
+if &diff
+    " We need to explicitly remove internal, or else it will complain in macOS
+    " (see https://github.com/thoughtbot/dotfiles/issues/655)
+    set diffopt-=internal
+    set diffopt+=vertical
+endif
 " }}}
 
 " Statusline settings {{{
