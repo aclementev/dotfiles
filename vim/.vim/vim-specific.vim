@@ -49,14 +49,29 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'chriskempson/base16-vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'ayu-theme/ayu-vim'
 call plug#end()
 " }}}
 
 syntax enable
 set background=dark
 " Set up the colorscheme
-let base16colorspace=256
-colorscheme base16-default-dark
+if(has("termguicolors"))
+    set termguicolors
+    " colorscheme nord
+    let ayucolor="dark"  " light/mirage/dark
+    colorscheme ayu
+else
+    colorscheme default
+endif
+" try
+"     colorscheme nord
+" catch /^Vim\%((\a\+)\)\=:E185/
+"     " deal with it
+"     let base16colorspace=256
+"     colorscheme base16-default-dark
+" endtry
 
 " General editing settings {{{
 set autoindent
