@@ -18,6 +18,7 @@ local on_attach_general = function(client, bufnr)
     buf_set_keymap('n', 'g0', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
     buf_set_keymap('n', 'gW', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
     buf_set_keymap('n', '<LocalLeader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    buf_set_keymap('n', '<LocalLeader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_set_keymap('i', '<C-H>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
 
     -- Diagnostics
@@ -210,10 +211,18 @@ lspconfig.pyls.setup{
                 },
             }
         }
-    }
+    },
+    flags = {
+        debounce_text_changes = 150,
+    },
 }
 
-lspconfig.vimls.setup{ on_attach = custom_on_attach }
+lspconfig.vimls.setup{
+    on_attach = custom_on_attach,
+    flags = {
+        debounce_text_changes = 150,
+    },
+}
 
 -- Rust
 local function rust_on_attach(...)
@@ -224,6 +233,9 @@ end
 
 lspconfig.rust_analyzer.setup{
     on_attach = rust_on_attach,
+    flags = {
+        debounce_text_changes = 150,
+    },
 }
 
 -- Diagnostic setup
