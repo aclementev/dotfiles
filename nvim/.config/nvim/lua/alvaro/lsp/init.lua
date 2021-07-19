@@ -167,10 +167,11 @@ lspconfig.sumneko_lua.setup{
 --     message_level = vim.lsp.protocol.MessageType.Log
 -- }
 
-lspconfig.pyls.setup{
+lspconfig.pylsp.setup{
     on_attach = custom_on_attach,
     settings = {
-        pyls = {
+        pylsp = {
+            configurationSources = {'flake8'},
             plugins = {
                 jedi = {
                     extra_paths = {
