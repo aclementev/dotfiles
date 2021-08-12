@@ -89,6 +89,9 @@ set foldmethod=indent
 " Yanking to System Clipboard
 vnoremap <Leader>y "*y
 nnoremap Y y$
+" Copy the whole buffer into the system clipboard
+nnoremap <Leader>ya :%y*<CR>
+
 " Split navigation
 nmap <C-H> <C-W>h
 nmap <C-J> <C-W>j
