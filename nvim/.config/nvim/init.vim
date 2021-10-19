@@ -57,6 +57,12 @@ Plug 'ayu-theme/ayu-vim'
 " Other languages
 Plug 'sheerun/vim-polyglot'
 
+" Clojure
+Plug 'Olical/conjure', { 'tag': 'v4.25.0' }
+Plug 'tpope/vim-dispatch'
+Plug 'clojure-vim/vim-jack-in'
+Plug 'radenling/vim-dispatch-neovim'
+
 " For Lua in neovim development
 Plug 'tjdevries/nlua.nvim'
 
