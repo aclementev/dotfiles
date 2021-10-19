@@ -198,39 +198,11 @@ augroup END
 " Client configuration (they are configured best using Lua)
 lua require'alvaro.lsp'
 
-" Mappings
-" nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-" nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
-" nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
-" nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
-" nnoremap <silent> gI <cmd>lua vim.lsp.buf.type_definition()<CR>
-" nnoremap <silent> gk <cmd>lua vim.lsp.buf.signature_help()<CR>
-" nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-" nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
-" nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-" nnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.formatting()<CR>
-" xnoremap <silent> <LocalLeader>f <cmd>lua vim.lsp.buf.range_formatting()<CR>
-
-" inoremap <silent> <C-H> <cmd>lua vim.lsp.buf.signature_help()<CR>
-
-" TODO(alvaro): Set up file formatting (using yapf or whatever)
-"     maybe we can even use the builtin LSP for actions for this
-" FIXME(alvaro): Review this setting now that we are using completion-nvim
-" autocmd FileType python,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
-" TODO(alvaro): Review this after full `nvim-cmp` integration
 " Completion {{{
-
 lua require'alvaro.completion'
-" set shortmess+=c
 
-
-" TODO(alvaro): See if we want this
-" Limit the number of completion options to give
-" set pumheight=20
-
-" inoremap <silent><expr> <Tab> pumvisible() ? "<C-N>" : "\<Tab>"
-" inoremap <silent><expr> <S-Tab> pumvisible() ? "<C-P>" : "\<S-Tab>"
+" Remove the autocomplete option in some buffers
+autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
 "}}}
 
 " Diagnostic {{{

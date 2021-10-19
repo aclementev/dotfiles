@@ -11,7 +11,11 @@ cmp.setup {
     snippet = {
         expand = function() end  -- Do nothing for now
     },
-    completion = {},
+    completion = {
+        -- Remove this (DO NOT SET TO `true`, just remove) to enable
+        -- autocompletion
+        autocomplete = false,
+    },
     mapping = {
         ['<C-n>'] = function()
             if cmp.visible() then
@@ -64,6 +68,10 @@ cmp.setup {
         })
     },
 }
+
+-- TODO(alvaro): Figure out how to set up that autocommand from here
+--  For now this is done in `init.vim`
+-- Remove the autocomplete in some buffers
 
 -- NOTE(alvaro): This has to marked as a capability inside the LSP configuration
 -- require('lspconfig')[%YOUR_LSP_SERVER%].setup {
