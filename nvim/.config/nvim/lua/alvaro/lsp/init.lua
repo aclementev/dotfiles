@@ -55,7 +55,7 @@ end
 -- Function that composes the completion-nvim and on_attach
 -- callbacks
 local function custom_on_attach(...)
-    require'completion'.on_attach(...)
+    -- For now this does not do anything special
     return on_attach_general(...)
 end
 
@@ -216,6 +216,9 @@ lspconfig.pylsp.setup{
     flags = {
         debounce_text_changes = 150,
     },
+    capabilities = require('cmp_nvim_lsp').update_capabilities(
+        vim.lsp.protocol.make_client_capabilities()
+    )
 }
 
 lspconfig.vimls.setup{
@@ -223,6 +226,9 @@ lspconfig.vimls.setup{
     flags = {
         debounce_text_changes = 150,
     },
+    capabilities = require('cmp_nvim_lsp').update_capabilities(
+        vim.lsp.protocol.make_client_capabilities()
+    )
 }
 
 -- Rust
@@ -237,6 +243,9 @@ lspconfig.rust_analyzer.setup{
     flags = {
         debounce_text_changes = 150,
     },
+    capabilities = require('cmp_nvim_lsp').update_capabilities(
+        vim.lsp.protocol.make_client_capabilities()
+    )
 }
 
 -- Diagnostic setup

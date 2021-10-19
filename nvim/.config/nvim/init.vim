@@ -37,8 +37,13 @@ Plug 'neovim/nvim-lspconfig'
 " Plug 'Shougo/deoplete-lsp'
 
 " Completion
-Plug 'nvim-lua/completion-nvim'
+" NOTE(alvaro): This project is unmaintained
+" Plug 'nvim-lua/completion-nvim'
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'onsails/lspkind-nvim'
 
 " TODO(alvaro): Look into this
 " Plug 'romainl/vim-qf'
@@ -191,7 +196,7 @@ augroup END
 
 " LSP Settings
 " Client configuration (they are configured best using Lua)
-lua require'alvaro.lsp.init'
+lua require'alvaro.lsp'
 
 " Mappings
 " nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
@@ -213,35 +218,19 @@ lua require'alvaro.lsp.init'
 " FIXME(alvaro): Review this setting now that we are using completion-nvim
 " autocmd FileType python,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
-" TODO(alvaro): Review this
+" TODO(alvaro): Review this after full `nvim-cmp` integration
 " Completion {{{
 
-set completeopt=menuone,noinsert,noselect
-set shortmess+=c
+lua require'alvaro.completion'
+" set shortmess+=c
+
+
+" TODO(alvaro): See if we want this
 " Limit the number of completion options to give
-set pumheight=20
+" set pumheight=20
 
-" Every option can be passed through Lua to the dictionary settings for the
-" on_attach callback see:
-" (https://github.com/nvim-lua/completion-nvim/wiki/per-server-setup-by-lua)
-
-" Disable automatic hover triggering
-let g:completion_enable_auto_hover = 0
-" let g:completion_enable_auto_signature = 0
-" let g:completion_matching_ignore_case = 1
-let g:completion_timer_cycle = 200 " default value is 80
-" Remove the sorting, asume they are given sorted by the completion source
-let g:completion_sorting = "none"
-
-let g:completion_matching_strategy_list = ['exact', 'substring']
-
-" function! s:check_back_space() abort
-"     let col = col('.') - 1
-"     return !col || getline('.')[col - 1]  =~ '\s'
-" endfunction
-
-inoremap <silent><expr> <Tab> pumvisible() ? "<C-N>" : "\<Tab>"
-inoremap <silent><expr> <S-Tab> pumvisible() ? "<C-P>" : "\<S-Tab>"
+" inoremap <silent><expr> <Tab> pumvisible() ? "<C-N>" : "\<Tab>"
+" inoremap <silent><expr> <S-Tab> pumvisible() ? "<C-P>" : "\<S-Tab>"
 "}}}
 
 " Diagnostic {{{
