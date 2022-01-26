@@ -13,6 +13,10 @@ function find_in_dir(dir)
     return require('telescope.builtin').find_files({search_dirs={dir}})
 end
 
+-- fidget.nvim
+-- progress bar for the LSP
+require('fidget').setup{}
+
 -- Telescope
 require('telescope').setup{
     defaults = {

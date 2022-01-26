@@ -53,6 +53,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'mhinz/vim-startify'
+Plug 'j-hui/fidget.nvim'
 
 " Colorschemes
 Plug 'chriskempson/base16-vim'
