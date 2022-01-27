@@ -130,58 +130,6 @@ nnoremap <A-k> <C-W>k
 nnoremap <A-l> <C-W>l
 " }}}
 
-" FIXME(alvaro): Superseeded by Telescope in init.lua
-" FZF Settings {{{
-
-" Add a mapping for closing the terminal window for FZF
-" autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
-
-" function! RipgrepFzf(query, fullscreen)
-"   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-"   let initial_command = printf(command_fmt, shellescape(a:query))
-"   let reload_command = printf(command_fmt, '{q}')
-"   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-"   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-" endfunction
-" command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-" " Fuzzy find git tracked files in current directory
-" nnoremap <Leader>ff :GFiles<CR>
-" " Fuzzy find files in current directory (git ls-files)
-" nnoremap <Leader>fa :Files<CR>
-" " Fuzzy find git tracked and untracked files in current directory (git status)
-" nnoremap <Leader>fs :GFiles?<CR>
-" " Fuzzy find lines in current file
-" nnoremap <Leader>f/ :BLines<CR>
-" " Fuzzy find an open buffer
-" nnoremap <Leader>fb :Buffers<CR>
-" " Fuzzy find Vim commands (like Ctrl-Shift-P)
-" nnoremap <Leader>fc :Commands<CR>
-" " Fuzzy find files in current directory
-" nnoremap <Leader>fh :Help<CR>
-" " Fuzzy find files in oldfiles
-" nnoremap <Leader>fo :History<CR>
-
-" " Fuzzy find text in the working directory using RipgrepFzf function
-" nnoremap <Leader>r :RG<CR>
-" " Fuzzy find text in the working directory using regular FZF.vim
-" nnoremap <Leader>fr :Rg<CR>
-" " Fuzzy find words under the cursor
-" nnoremap <Leader>g :RG <C-R><C-W><CR>
-
-" " A mapping to show all files, since by default we ignore some of them
-" if executable('rg')
-"     command! -bang -nargs=* All
-"         \ call fzf#run(fzf#wrap({'source': 'rg --files --hidden --no-ignore-vcs'}))
-" endif
-
-" " Fuzzy find all files without ingoring any
-" nnoremap <Leader>fa :All<CR>
-
-" let g:fzf_layout={'down': '~25%'}
-
-" }}}
-
 " Nvim necessary config
 let g:python3_host_prog = '~/.virtualenv/neovim/bin/python'
 
@@ -279,3 +227,13 @@ xnoremap <silent> <LocalLeader>g :GithubOpen<CR>
 " Some settings from different languages by vim-polyglot
 let g:python_highlight_space_errors = 0
 let g:python_highlight_all = 1
+
+
+" Colorscheme / Highlight related stuff
+function! SynGroup()
+    let l:s = synID(line('.'), col('.'), 1)
+    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+endfun
+
+command! SynGroup :call SynGroup()
+nnoremap <silent> <LocalLeader>sg :<C-U>SynGroup<CR>

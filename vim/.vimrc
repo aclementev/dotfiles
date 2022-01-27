@@ -17,8 +17,8 @@ set showmode
 set ignorecase
 set smartcase
 
-nnoremap j gj
-nnoremap k gk
+nnoremap <silent> j gj
+nnoremap <silent> k gk
 " }}}
 
 " General editing settings {{{
@@ -86,11 +86,15 @@ set foldmethod=indent
 
 " Custom MAPPINGS {{{
 
+" TODO(alvaro): Make this work on WSL2
 " Yanking to System Clipboard
 vnoremap <Leader>y "*y
 nnoremap Y y$
 " Copy the whole buffer into the system clipboard
 nnoremap <Leader>ya :%y*<CR>
+
+" Command (Ex) mode niceties
+cnoremap <C-a> <C-b>
 
 " Split navigation
 nmap <C-H> <C-W>h

@@ -20,6 +20,11 @@ require('fidget').setup{}
 -- Telescope
 require('telescope').setup{
     defaults = {
+        path_display = {
+            "truncate",
+            -- "shorten",
+            -- "smart",
+        },
         mappings = {
             -- i = {
             --     ["<c-j>"] = "move_selection_next",
