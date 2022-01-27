@@ -21,6 +21,10 @@ local on_attach_general = function(client, bufnr)
     buf_set_keymap('n', '<LocalLeader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_set_keymap('i', '<C-H>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
 
+    -- Others
+    -- TODO(alvaro): Do this all in a custom command in lua, now is a bit flickery
+    buf_set_keymap('n', 'gs', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
+
     -- Diagnostics
     buf_set_keymap('n', '<LocalLeader>dd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
     buf_set_keymap('n', '<LocalLeader>dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
@@ -80,8 +84,8 @@ end
 local sumneko_root_path
 local sumneko_binary
 if vim.fn.has('mac') then
-    USER = vim.fn.expand("$USER")
-    sumneko_root_path = '/Users/' .. USER .. '/github/lua-language-server'
+    HOME = vim.fn.expand("$HOME")
+    sumneko_root_path = HOME .. '/github/lua-language-server'
     sumneko_binary = sumneko_root_path .. '/bin/macOS/lua-language-server'
 else
     sumneko_root_path = ''
@@ -183,32 +187,43 @@ lspconfig.pylsp.setup{
                     enabled = true,
                     fuzzy = false,
                 },
+                jedi_definition = {
+                    enabled = true,
+                },
                 black = {
-                    enabled = true
+                    enabled = true,
                 },
                 isort = {
-                    enabled = true
+                    enabled = true,
                 },
                 flake8 = {
-                    enabled = true
+                    enabled = true,
                 },
+                -- Temporarily disable these globally (should be per-project)
+                -- TODO(alvaro): Make this work so we can remove the awful
+                -- `pylsp-mypy.cfg` file
+                pyls_mypy = {
+                    enabled = false,
+                    live_mode = true,
+                },
+                -- Disable these plugins explicitly
                 pycodestyle = {
-                    enabled = false
+                    enabled = false,
                 },
                 pylint = {
-                    enabled = false
+                    enabled = false,
                 },
                 mccabe = {
-                    enabled = false
+                    enabled = false,
                 },
                 autopep8 = {
-                    enabled = false
+                    enabled = false,
                 },
                 pydocstyle = {
-                    enabled = false
+                    enabled = false,
                 },
                 pyflakes = {
-                    enabled = false
+                    enabled = false,
                 },
             }
         }

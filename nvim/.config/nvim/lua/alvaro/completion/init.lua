@@ -34,6 +34,9 @@ cmp.setup {
         ['<C-d>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-e>'] = cmp.mapping.close(),
+        ['<C-y>'] = cmp.mapping.confirm({
+                select = true,
+            }),
         -- FIXME(alvaro): Make this work
         -- ['<CR>'] = cmp.mapping.confirm({
         --     select = true,
