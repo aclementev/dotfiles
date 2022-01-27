@@ -57,4 +57,23 @@ format-json() {
     pbpaste | jq '.' | pbcopy
 }
 
+
+# Parse psql to csv
+psql-to-csv() {
+    # Steps:
+    #   1. Remove '-----' and (N rows) lines 
+    #   2. Transform '|' to ','
+    #   3. Strip whitespace from begin/end of line
+    #   4. Remove trailing whiteshape in cell (alignment)
+    #   5. Remove beginning whiteshape in cell (alignment)
+    sed -E '/(^-+)|(\([[:digit:]]+ rows?\))/d; s/\|/,/g; s/(^[[:space:]]+)|([[:space:]]+$)//g; s/[[:space:]]+,/,/g; s/,[[:space:]]+/,/g' $1
+}
+
+
+# Docker related
+# Purge all the containers running and stopped 
+docker-purge() {
+    docker ps -a | awk '{print $1}' | tail -n+2 | xargs docker rm -f
+}
+
 # vim: set filetype=zsh :
