@@ -61,6 +61,7 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
 
 " Other languages
+Plug 'simrat39/rust-tools.nvim'
 Plug 'sheerun/vim-polyglot'
 
 " Clojure
@@ -149,6 +150,7 @@ lua require'alvaro.lsp'
 
 " Completion {{{
 lua require'alvaro.completion'
+
 
 " Remove the autocomplete option in some buffers
 autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }

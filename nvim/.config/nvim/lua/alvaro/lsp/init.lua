@@ -253,15 +253,43 @@ local function rust_on_attach(...)
     return custom_on_attach(...)
 end
 
-lspconfig.rust_analyzer.setup{
-    on_attach = rust_on_attach,
-    flags = {
-        debounce_text_changes = 150,
+require('rust-tools').setup{
+    tools = {
+        autoSetHints = true,
+        hover_with_actions = true,
+        -- test this out
+        -- inlay_hints = {
+        --     show_parameter_hints = false,
+        --     parameter_hints_prefix = "",
+        --     other_hints_prefix = "",
+        -- }
     },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-    )
+    -- These options are passed to `nvim-lspconfig`
+    server = {
+        on_attach = rust_on_attach,
+        flags = {
+            debounce_text_changes = 150,
+        },
+        settings = {
+            ["rust-analyzer"] = {
+                -- enable clippy on save
+                checkOnSave = {
+                    command = "clippy",
+                }
+            }
+        }
+    },
 }
+
+-- lspconfig.rust_analyzer.setup{
+--     on_attach = rust_on_attach,
+--     flags = {
+--         debounce_text_changes = 150,
+--     },
+--     capabilities = require('cmp_nvim_lsp').update_capabilities(
+--         vim.lsp.protocol.make_client_capabilities()
+--     )
+-- }
 
 -- Diagnostic setup
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
