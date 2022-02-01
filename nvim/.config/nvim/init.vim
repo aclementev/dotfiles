@@ -26,6 +26,9 @@ Plug 'tpope/vim-scriptease'
 " TODO(alvaro): Try this out see how it works
 Plug 'justinmk/vim-dirvish'
 
+" Testing
+Plug 'vim-test/vim-test'
+
 " Lisps
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
@@ -62,6 +65,7 @@ Plug 'ayu-theme/ayu-vim'
 
 " Other languages
 Plug 'simrat39/rust-tools.nvim'
+" TODO(alvaro): Get rid of this
 Plug 'sheerun/vim-polyglot'
 
 " Clojure
@@ -203,6 +207,19 @@ let g:startify_relative_path = 1
 " TODO(alvaro): Look into these settings for project specific overrides
 " set exrc
 " set secure
+
+
+" Vim test
+nnoremap <silent> <Leader>tt :TestNearest<CR>
+nnoremap <silent> <Leader>tf :TestFile<CR>
+nnoremap <silent> <Leader>ta :TestSuite<CR>
+nnoremap <silent> <Leader>tl :TestLast<CR>
+nnoremap <silent> <Leader>tg :TestVisit<CR>
+
+let g:test#strategy = "neovim"
+" TODO(alvaro): Test if we want this
+" let g:test#neovim#start_normal = 1 " If using neovim strategy
+
 
 function! TrimWhitespace()
     let l:saved_pos = getpos('.')
