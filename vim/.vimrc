@@ -103,8 +103,8 @@ nmap <C-K> <C-W>k
 nmap <C-L> <C-W>l
 
 " Buffer navigation
-nnoremap gb :bn<CR>
-nnoremap gB :bp<CR>
+nnoremap <silent> gb :bn<CR>
+nnoremap <silent> gB :bp<CR>
 nnoremap <LocalLeader>b :b#<CR>
 
 " Window resizing
