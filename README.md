@@ -165,6 +165,11 @@ sudo ldconfig
 And it _should_ be ready to go (I have not checked yet though).
 
 
+### Pretty Icons for LSP
+
+The pretty icons for the LSP are provided by the [lspkind](https://github.com/onsails/lspkind-nvim) plugin.
+To show the icons, you need to install VSCode `codeicon` font and setup your shell to use that font for non-ASCI glyphs.
+
 ### Tmux
 
 To fully install `tmux` and `tmuxinator`, you need to install first the `Tmux Plugin Manager` (TPM).
