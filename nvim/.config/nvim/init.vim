@@ -90,7 +90,7 @@ set termguicolors
 " Not bad, looks clean and good but lacks contrast
 " colorscheme nord
 " Let's try this one first
-let ayucolor="dark"  " light/mirage/dark
+let ayucolor="mirage"  " light/mirage/dark
 colorscheme ayu
 
 " TODO(alvaro): Check if this exists, default to vim's dark
