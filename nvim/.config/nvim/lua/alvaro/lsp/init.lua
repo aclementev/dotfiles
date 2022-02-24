@@ -1,6 +1,7 @@
 local lspconfig = require 'lspconfig'
 vim.lsp.set_log_level('warn')
 
+-- TODO(alvaro): migrate to the new vim.keymap.set API
 -- Setup the common options (completion, diagnostics, keymaps)
 local on_attach_general = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -118,7 +119,10 @@ lspconfig.sumneko_lua.setup{
                 enable = false
             },
         }
-    }
+    },
+    capabilities = require('cmp_nvim_lsp').update_capabilities(
+        vim.lsp.protocol.make_client_capabilities()
+    )
 }
 
 -- -- TODO(alvaro): This is not appearing as a registered client on python files
@@ -290,6 +294,19 @@ require('rust-tools').setup{
 --         vim.lsp.protocol.make_client_capabilities()
 --     )
 -- }
+
+-- Javascript / Vue
+lspconfig.vuels.setup{
+    settings = {
+        vetur = {
+            ignoreProjectWarning = true,
+        }
+    },
+    capabilities = require('cmp_nvim_lsp').update_capabilities(
+        vim.lsp.protocol.make_client_capabilities()
+    )
+}
+
 
 -- Diagnostic setup
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(

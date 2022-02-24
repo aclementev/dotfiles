@@ -1,7 +1,12 @@
 -- Setup for completion
 -- For now we will use this with `hrsh7th/nvim-cmp`
-
 local cmp = require('cmp')
+
+-- Setup pretty icons
+require('lspkind').init {
+    mode = 'symbol_text',
+    preset = 'codicons',
+}
 
 -- Limit the size of the PUM
 vim.o.pumheight = 20
@@ -65,9 +70,7 @@ cmp.setup {
     formatting = {
         -- TODO(alvaro): Make the icons pretty
         format = require('lspkind').cmp_format({
-            with_text = false,
-            preset = 'codicons',
-            maxwidth = 50
+            maxwidth = 50,
         })
     },
 }
