@@ -62,11 +62,11 @@ Plug 'j-hui/fidget.nvim'
 Plug 'chriskempson/base16-vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
+" TreeSitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Other languages
 Plug 'simrat39/rust-tools.nvim'
-" TODO(alvaro): Get rid of this
-Plug 'sheerun/vim-polyglot'
 
 " Clojure
 Plug 'Olical/conjure', { 'tag': 'v4.25.0' }
@@ -87,6 +87,7 @@ call plug#end()
 
 " Set up the colorscheme
 set termguicolors
+set background=dark
 " Not bad, looks clean and good but lacks contrast
 " colorscheme nord
 " Let's try this one first
@@ -151,6 +152,9 @@ augroup END
 " LSP Settings
 " Client configuration (they are configured best using Lua)
 lua require'alvaro.lsp'
+
+" TreeSitter
+lua require'alvaro.treesitter'
 
 " Completion {{{
 lua require'alvaro.completion'
