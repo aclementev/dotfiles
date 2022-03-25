@@ -1,11 +1,11 @@
 # Custom functions for Alvaro
 
 vpn_ip() {
-    # TODO(alvaro): Fix this to work more generally by looking for utunX and 
+    # TODO(alvaro): Fix this to work more generally by looking for utunX and
     # and IPv4 address
     # ifconfig | awk 'f == "utun2:" {print $2} {f=$1}'
-    # With Tunnelblick, we end up with multiple utun devices with IPv6 
-    # addresses, but only 1 with the IPv4 that we want 
+    # With Tunnelblick, we end up with multiple utun devices with IPv6
+    # addresses, but only 1 with the IPv4 that we want
     ifconfig | awk '(f == "utun") && ($1 == "inet") {print $2} {f=substr($1, 1, 4)}'
 }
 
@@ -61,7 +61,7 @@ format-json() {
 # Parse psql to csv
 psql-to-csv() {
     # Steps:
-    #   1. Remove '-----' and (N rows) lines 
+    #   1. Remove '-----' and (N rows) lines
     #   2. Transform '|' to ','
     #   3. Strip whitespace from begin/end of line
     #   4. Remove trailing whiteshape in cell (alignment)
@@ -71,9 +71,39 @@ psql-to-csv() {
 
 
 # Docker related
-# Purge all the containers running and stopped 
+# Purge all the containers running and stopped
 docker-purge() {
     docker ps -a | awk '{print $1}' | tail -n+2 | xargs docker rm -f
+}
+
+
+# cht.sh
+# A great API for quick questions about many programming languages
+# (see https://github.com/chubin/cheat.sh)
+cheat() {
+    if [ "$#" -lt 2 ]; then
+        echo "usage: cheat [lang] [question]"
+        return
+    fi
+    LANG=$1
+    QUESTION=$(echo "${@:2}" | tr ' ' '+')
+    curl "cht.sh/${LANG}/${QUESTION}?Q"
+}
+
+cheatpy() {
+    cheat python $@
+}
+
+cheatlua() {
+    cheat lua $@
+}
+
+cheatjs() {
+    cheat javascript $@
+}
+
+cheatbash() {
+    cheat bash $@
 }
 
 # vim: set filetype=zsh :
