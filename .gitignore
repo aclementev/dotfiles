@@ -1,3 +1,6 @@
 # Karabiner config
 karabiner/
 !karabiner/.config/karabiner/karabiner.json
+
+# OS specific
+**/.DS_Store
