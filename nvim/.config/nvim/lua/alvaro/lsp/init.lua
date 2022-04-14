@@ -26,12 +26,6 @@ local on_attach_general = function(client, bufnr)
     -- TODO(alvaro): Do this all in a custom command in lua, now is a bit flickery
     buf_set_keymap('n', 'gs', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
 
-    -- Diagnostics
-    buf_set_keymap('n', '<LocalLeader>dd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-    buf_set_keymap('n', '<LocalLeader>dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    buf_set_keymap('n', '<LocalLeader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    buf_set_keymap('n', '<LocalLeader>do', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
     -- Formatting (Conditional to Capabilities)
     if client.resolved_capabilities.document_formatting then
         buf_set_keymap('n', '<LocalLeader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
@@ -306,20 +300,3 @@ lspconfig.vuels.setup{
         vim.lsp.protocol.make_client_capabilities()
     )
 }
-
-
--- Diagnostic setup
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        -- Disable underline for diagnostics
-        underline = false,
-        -- Enable virtual_text and add some spacing
-        virtual_text = {
-            spacing = 2,
-        },
-        -- Show the Signs in the signcolumn
-        signs = true,
-        -- Update the diagnostics while on insert mode
-        update_in_insert = false,
-    }
-)
