@@ -227,3 +227,13 @@ endfun
 
 command! SynGroup :call SynGroup()
 nnoremap <silent> <LocalLeader>sg :<C-U>SynGroup<CR>
+
+
+" Other mappings {{{
+
+" TODO(alvaro): Make this work on a range
+" JSON formatting using `jq`
+command! JSONFormat :%! jq .
+command! JSONCompact :%! jq -c .
+
+" }}}
