@@ -13,54 +13,37 @@ lsp_installer.settings {
     }
 }
 
--- TODO(alvaro): migrate to the new vim.keymap.set API
 -- Setup the common options (completion, diagnostics, keymaps)
 local on_attach_general = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
     -- Mappings
-    local opts = { noremap=true, silent=true }
-    buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    buf_set_keymap('n', 'gI', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    buf_set_keymap('n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', 'g0', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
-    buf_set_keymap('n', 'gW', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
-    buf_set_keymap('n', '<LocalLeader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    buf_set_keymap('n', '<LocalLeader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-    buf_set_keymap('i', '<C-H>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    local opts = { silent = true, buffer=0 }
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', 'gI', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', 'gk', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', 'g0', vim.lsp.buf.document_symbol, opts)
+    vim.keymap.set('n', 'gW', vim.lsp.buf.workspace_symbol, opts)
+    vim.keymap.set('n', '<LocalLeader>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<LocalLeader>ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('i', '<C-H>', vim.lsp.buf.signature_help, opts)
 
     -- Others
     -- TODO(alvaro): Do this all in a custom command in lua, now is a bit flickery
-    buf_set_keymap('n', 'gs', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
+    vim.keymap.set('n', 'gs', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
 
     -- Formatting (Conditional to Capabilities)
     if client.resolved_capabilities.document_formatting then
-        buf_set_keymap('n', '<LocalLeader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+        vim.keymap.set('n', '<LocalLeader>f', vim.lsp.buf.formatting, opts)
         -- TODO(alvaro): Is this necessary anymore?
-        buf_set_keymap('x', '<LocalLeader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+        vim.keymap.set('x', '<LocalLeader>f', vim.lsp.buf.formatting, opts)
     elseif client.resolved_capabilities.document_range_formatting then
-        buf_set_keymap('n', '<LocalLeader>f', '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
+        vim.keymap.set('n', '<LocalLeader>f', vim.lsp.buf.range_formatting, opts)
     end
-
-    -- Autocommand for Highlights
-    -- TODO(alvaro): Make this more subtle, for now it's just annoying
-    -- if client.resolved_capabilities.document_highlight then
-    --     vim.api.nvim_exec([[
-    --       hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-    --       hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-    --       hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-    --       augroup lsp_document_highlight
-    --         autocmd! * <buffer>
-    --         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-    --         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    --       augroup END
-    --     ]], false)
-    -- end
 end
 
 -- Function that composes the completion-nvim and on_attach
@@ -73,7 +56,7 @@ end
 -- sumneko_lua
 local lua_opts = {
     -- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
-    on_attach=custom_on_attach,
+    on_attach = custom_on_attach,
     settings = {
         Lua = {
             runtime = {
@@ -106,7 +89,7 @@ local python_opts = {
     on_attach = custom_on_attach,
     settings = {
         pylsp = {
-            configurationSources = {'flake8'},
+            configurationSources = { 'flake8' },
             plugins = {
                 jedi = {
                     extra_paths = {
@@ -163,7 +146,7 @@ local python_opts = {
         debounce_text_changes = 150,
     },
     capabilities = require('cmp_nvim_lsp').update_capabilities(
-    vim.lsp.protocol.make_client_capabilities()
+        vim.lsp.protocol.make_client_capabilities()
     )
 
 }
@@ -200,7 +183,7 @@ local vue_opts = {
 --     return custom_on_attach(...)
 -- end
 
-require('rust-tools').setup{
+require('rust-tools').setup {
     tools = {
         autoSetHints = true,
         hover_with_actions = true,
