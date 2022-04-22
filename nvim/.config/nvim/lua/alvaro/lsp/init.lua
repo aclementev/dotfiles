@@ -1,5 +1,17 @@
 local lspconfig = require 'lspconfig'
+local lsp_installer = require 'nvim-lsp-installer'
 vim.lsp.set_log_level('warn')
+
+-- Prepare the installer
+lsp_installer.settings {
+    ui = {
+        icons = {
+            server_installed = "✓",
+            server_pending = "➜",
+            server_uninstalled = "✗",
+        }
+    }
+}
 
 -- TODO(alvaro): migrate to the new vim.keymap.set API
 -- Setup the common options (completion, diagnostics, keymaps)
@@ -58,39 +70,9 @@ local function custom_on_attach(...)
     return on_attach_general(...)
 end
 
-
--- NOTE(alvaro): In case we want to use this
-local function get_python_version()
-    local handle = io.popen("python3 --version")
-    local result = handle:read() -- Reads only a line, which should be enough
-    handle:close()
-
-    if result == nil then
-        return nil
-    else
-        -- Extract the major and minor versions from here
-        return string.match(result, "%d.%d")
-    end
-end
-
--- Set up for some known servers
--- Lua
--- Inspired from this https://www.chrisatmachine.com/Neovim/28-neovim-lua-development/
-local sumneko_root_path
-local sumneko_binary
-if vim.fn.has('mac') then
-    HOME = vim.fn.expand("$HOME")
-    sumneko_root_path = HOME .. '/github/lua-language-server'
-    sumneko_binary = sumneko_root_path .. '/bin/macOS/lua-language-server'
-else
-    sumneko_root_path = ''
-    sumneko_binary = ''
-    print('Unsupported system for sumneko')
-end
-
-lspconfig.sumneko_lua.setup{
+-- sumneko_lua
+local lua_opts = {
     -- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
-    cmd = {sumneko_binary, '-E', sumneko_root_path .. '/main.lua'},
     on_attach=custom_on_attach,
     settings = {
         Lua = {
@@ -119,57 +101,8 @@ lspconfig.sumneko_lua.setup{
     )
 }
 
--- -- TODO(alvaro): This is not appearing as a registered client on python files
--- -- checked with :lua print(vim.inspect(vim.lsp.get_active_clients()))
--- -- and with :lua print(vim.inspect(vim.lsp.buf_get_clients()))
--- lspconfig.pyls_ms.setup{
---     filetypes = { "python" },
---     -- TODO(alvaro): Check the order of these patterns
---     -- TODO(alvaro): There seems to be an issue with the extraPaths, since
---     --     with the setup as it is now (manage.py as root) this works fine
---     root_dir = lspconfig.util.root_pattern('manage.py', '.git', 'setup.py', vim.fn.getcwd()),
---     on_attach=custom_on_attach,
---     init_options = {
---         analysisUpdates = true,
---         asyncStartup = true,
---         displayOptions = {},
---         -- interpreter = {
---         --     properties = {
---         --         InterpreterPath = python_path,
---         --         Version = python_version,
---         --     }
---         -- }
---     },
---     settings = {
---         python = {
---             jediEnabled = false,
---             linting = {
---                 enabled = true
---             },
---             formatting = {
---                 provider = 'yapf'
---             },
---             analysis = {
---                 -- logLevel = 'Trace',
---                 disabled = {},
---                 errors = {},
---                 info = {},
---                 -- cachingLevel = "System", -- To cache the standard library's analysis
---             },
---             autocomplete = {
---                 -- Add here paths for other places to look for imports
---                 extraPaths = {
---                     "./src",
---                     "./src/daimler/mltoolbox"
---                 }
---             }
---         }
---     },
---     log_level = vim.lsp.protocol.MessageType.Log,
---     message_level = vim.lsp.protocol.MessageType.Log
--- }
-
-lspconfig.pylsp.setup{
+-- pylsp
+local python_opts = {
     on_attach = custom_on_attach,
     settings = {
         pylsp = {
@@ -230,11 +163,13 @@ lspconfig.pylsp.setup{
         debounce_text_changes = 150,
     },
     capabilities = require('cmp_nvim_lsp').update_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
+    vim.lsp.protocol.make_client_capabilities()
     )
+
 }
 
-lspconfig.vimls.setup{
+-- vimls
+local vim_opts = {
     on_attach = custom_on_attach,
     flags = {
         debounce_text_changes = 150,
@@ -244,12 +179,26 @@ lspconfig.vimls.setup{
     )
 }
 
+
+-- vuels
+local vue_opts = {
+    settings = {
+        vetur = {
+            ignoreProjectWarning = true,
+        }
+    },
+    capabilities = require('cmp_nvim_lsp').update_capabilities(
+        vim.lsp.protocol.make_client_capabilities()
+    )
+}
+
 -- Rust
-local function rust_on_attach(...)
-    -- Setup for automatic formatting
-    vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000) ]]
-    return custom_on_attach(...)
-end
+-- Rust is managed by `rust-tools`, so for now we won't use LspInstall
+-- local function rust_on_attach(...)
+--     -- Setup for automatic formatting
+--     vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000) ]]
+--     return custom_on_attach(...)
+-- end
 
 require('rust-tools').setup{
     tools = {
@@ -279,24 +228,25 @@ require('rust-tools').setup{
     },
 }
 
--- lspconfig.rust_analyzer.setup{
---     on_attach = rust_on_attach,
---     flags = {
---         debounce_text_changes = 150,
---     },
---     capabilities = require('cmp_nvim_lsp').update_capabilities(
---         vim.lsp.protocol.make_client_capabilities()
---     )
--- }
+-- Wrap with nvim-lsp-installer
+lsp_installer.on_server_ready(function(server)
+    local opts = {}
 
--- Javascript / Vue
-lspconfig.vuels.setup{
-    settings = {
-        vetur = {
-            ignoreProjectWarning = true,
-        }
-    },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-    )
-}
+    -- Custom server configurations
+    if server.name == "sumneko_lua" then
+        opts = lua_opts
+    elseif server.name == "pylsp" then
+        -- NOTE(alvaro): pylsp has extensions, and they can be installed
+        -- with the :PylspInstall command that is added to the environment
+        -- after installing the pylsp server first
+        -- see: https://github.com/williamboman/nvim-lsp-installer/blob/main/lua/nvim-lsp-installer/servers/pylsp/README.md
+        opts = python_opts
+    elseif server.name == "vimls" then
+        opts = vim_opts
+    elseif server.name == "vuels" then
+        opts = vue_opts
+    end
+    -- Call the server's setup function with the provided configuration
+    -- if empty, will use the server's defaults
+    server:setup(opts)
+end)

@@ -37,7 +37,7 @@ Plug 'jpalardy/vim-slime'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
-" Plug 'Shougo/deoplete-lsp'
+Plug 'williamboman/nvim-lsp-installer'
 
 " Completion
 " NOTE(alvaro): This project is unmaintained
