@@ -79,9 +79,6 @@ local lua_opts = {
             },
         }
     },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-    )
 }
 
 -- pylsp
@@ -145,10 +142,6 @@ local python_opts = {
     flags = {
         debounce_text_changes = 150,
     },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-    )
-
 }
 
 -- vimls
@@ -157,9 +150,6 @@ local vim_opts = {
     flags = {
         debounce_text_changes = 150,
     },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-    )
 }
 
 
@@ -170,9 +160,6 @@ local vue_opts = {
             ignoreProjectWarning = true,
         }
     },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-    )
 }
 
 -- Rust
@@ -196,7 +183,7 @@ require('rust-tools').setup {
     },
     -- These options are passed to `nvim-lspconfig`
     server = {
-        on_attach = rust_on_attach,
+        on_attach = custom_on_attach,
         flags = {
             debounce_text_changes = 150,
         },
@@ -229,6 +216,12 @@ lsp_installer.on_server_ready(function(server)
     elseif server.name == "vuels" then
         opts = vue_opts
     end
+
+    -- Update the capabilities as suggested by cmp-nvim-lsp
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    opts.capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+
     -- Call the server's setup function with the provided configuration
     -- if empty, will use the server's defaults
     server:setup(opts)
