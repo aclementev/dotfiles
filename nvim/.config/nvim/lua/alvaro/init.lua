@@ -10,9 +10,8 @@ end
 
 -- Find files in directory
 function find_in_dir(dir)
-    return require('telescope.builtin').find_files({search_dirs={dir}})
+    return require('telescope.builtin').find_files({ search_dirs = { dir } })
 end
-
 
 -- Generates a function that will call find appending a set of hardcoded
 -- excludes (useful when not in a git repo with a .gitignore)
@@ -44,10 +43,10 @@ fd_all_with_excludes = fd_with_excludes(DIRS_TO_IGNORE)
 
 -- fidget.nvim
 -- progress bar for the LSP
-require('fidget').setup{}
+require('fidget').setup {}
 
 -- Telescope
-require('telescope').setup{
+require('telescope').setup {
     defaults = {
         path_display = {
             "truncate",
@@ -60,14 +59,23 @@ require('telescope').setup{
             --     ["<c-k>"] = "move_selection_previous",
             -- }
         }
+    },
+    extensions = {
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown {
+                -- Any DropDown options
+            }
+        }
     }
 }
 -- This requires an external installation to work properly:
 -- https://github.com/nvim-telescope/telescope-fzy-native.nvim
 require('telescope').load_extension('fzy_native')
+require('telescope').load_extension('ui-select')
 
 
 -- Telescope Mappings
+-- -- TODO(alvaro): Move these to `vim.keymap.set`
 -- -- TODO(alvaro): Maybe we want to show_untracked here?
 vim.api.nvim_set_keymap('n', '<Leader>ff', [[<cmd>lua require('telescope.builtin').git_files({show_untracked = false})<CR>]], { noremap = true, silent = true })
 -- TODO(alvaro): Make this mapping default to `find` if `fd` is not installed

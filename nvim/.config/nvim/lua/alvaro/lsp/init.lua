@@ -2,6 +2,9 @@ local lspconfig = require 'lspconfig'
 local lsp_installer = require 'nvim-lsp-installer'
 vim.lsp.set_log_level('warn')
 
+-- TODO(alvaro): Checkout lspsaga for some nicer UI for `K` and hover docs
+-- and other things
+
 -- Prepare the installer
 lsp_installer.settings {
     ui = {
