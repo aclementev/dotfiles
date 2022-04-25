@@ -37,7 +37,7 @@ Plug 'jpalardy/vim-slime'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
-" Plug 'Shougo/deoplete-lsp'
+Plug 'williamboman/nvim-lsp-installer'
 
 " Completion
 " NOTE(alvaro): This project is unmaintained
@@ -45,6 +45,7 @@ Plug 'neovim/nvim-lspconfig'
 " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'onsails/lspkind-nvim'
 
@@ -165,40 +166,7 @@ autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = fal
 "}}}
 
 " Diagnostic {{{
-" NOTE(alvaro): See lua/alvaro/lsp/init.lua for more diagnostic configuration
-" directly in Lua
-
-" TODO(alvaro): Set up some highlights for the LspDiagnostics
-highlight link LspDiagnosticsVirtualTextError Exception
-highlight link LspDiagnosticsVirtualTextWarning Label
-highlight link LspDiagnosticsVirtualTextInformation VisualNC
-highlight link LspDiagnosticsVirtualTextHint VisualNC
-highlight link LspDiagnosticsSignError Exception
-highlight link LspDiagnosticsSignWarning Label
-highlight link LspDiagnosticsSignInformation VisualNC
-highlight link LspDiagnosticsSignHint VisualNC
-
-" Old way (without diagnostic-nvim
-" sign define LspDiagnosticsErrorSign text=✘
-" sign define LspDiagnosticsWarningSign text=⚠️
-" sign define LspDiagnosticsInformationSign text=
-" sign define LspDiagnosticsHintSign text=
-
-" TODO(alvaro): Review these
-sign define LspDiagnosticsSignError text=E texthl=LspDiagnosticsSignError linehl= numhl=
-sign define LspDiagnosticsSignWarning text=W texthl=LspDiagnosticsSignWarning linehl= numhl=
-sign define LspDiagnosticsSignInformation text=I texthl=LspDiagnosticsSignInformation linehl= numhl=
-sign define LspDiagnosticsSignHint text=H texthl=LspDiagnosticsSignHint linehl= numhl=
-
-
-" TODO(alvaro): Check these options
-" let g:diagnostic_virtual_text_prefix = '' " TODO(alvaro): add this
-" let g:diagnostic_trimmed_virtual_text = '20'
-
-" Mappings
-" nnoremap <silent> <LocalLeader>dn <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-" nnoremap <silent> <LocalLeader>dp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-" nnoremap <silent> <LocalLeader>do <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+lua require'alvaro.diagnostic'
 " }}}
 
 " Startify {{{
@@ -260,3 +228,13 @@ endfun
 
 command! SynGroup :call SynGroup()
 nnoremap <silent> <LocalLeader>sg :<C-U>SynGroup<CR>
+
+
+" Other mappings {{{
+
+" TODO(alvaro): Make this work on a range
+" JSON formatting using `jq`
+command! JSONFormat :%! jq .
+command! JSONCompact :%! jq -c .
+
+" }}}

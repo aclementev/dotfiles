@@ -64,7 +64,15 @@ cmp.setup {
     sources = {
         -- The order inside this table represents the order of the results
         { name = 'nvim_lsp' },
-        { name = 'buffer' },
+        {
+            name = 'buffer',
+            option = {
+                -- To add other-buffer autocompletion
+                get_bufnrs = function()
+                    return vim.api.nvim_list_bufs()
+                end
+            }
+        },
         { name = 'path' },
     },
     formatting = {
@@ -74,12 +82,3 @@ cmp.setup {
         })
     },
 }
-
--- TODO(alvaro): Figure out how to set up that autocommand from here
---  For now this is done in `init.vim`
--- Remove the autocomplete in some buffers
-
--- NOTE(alvaro): This has to marked as a capability inside the LSP configuration
--- require('lspconfig')[%YOUR_LSP_SERVER%].setup {
---     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
--- }
