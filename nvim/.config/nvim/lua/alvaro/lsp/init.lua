@@ -40,12 +40,16 @@ local on_attach_general = function(client, bufnr)
     vim.keymap.set('n', 'gs', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
 
     -- Formatting (Conditional to Capabilities)
-    if client.resolved_capabilities.document_formatting then
+    if client.server_capabilities.documentFormattingProvider then
         print("setting up formatting bindings")
-        vim.keymap.set('n', '<LocalLeader>f', vim.lsp.buf.formatting, opts)
+        vim.keymap.set('n', '<LocalLeader>f', function()
+            vim.lsp.buf.format{ async = true }
+        end, opts)
         -- TODO(alvaro): Is this necessary anymore?
-        vim.keymap.set('x', '<LocalLeader>f', vim.lsp.buf.formatting, opts)
-    elseif client.resolved_capabilities.document_range_formatting then
+        vim.keymap.set('x', '<LocalLeader>f', function()
+            vim.lsp.buf.format{ async = true }
+        end, opts)
+    elseif client.server_capabilities.documentRangeFormattingProvider then
         vim.keymap.set('n', '<LocalLeader>f', vim.lsp.buf.range_formatting, opts)
     else
         print("No formatting capabilities reported")
@@ -159,11 +163,26 @@ local vim_opts = {
 }
 
 
+-- TODO(alvaro): Make this work
 -- vuels
 local vue_opts = {
+    on_attach = custom_on_attach,
     settings = {
+        javascript = {
+            format = {
+                enable = true,
+            }
+        },
         vetur = {
             ignoreProjectWarning = true,
+            format = {
+                enable = true,
+                defaultFormatter = {
+                    js = "prettier",
+                    html = "prettier",
+                    css = "prettier",
+                }
+            }
         }
     },
 }
@@ -234,7 +253,6 @@ lsp_installer.on_server_ready(function(server)
     -- Update the capabilities as suggested by cmp-nvim-lsp
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     opts.capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
 
     -- Call the server's setup function with the provided configuration
     -- if empty, will use the server's defaults
