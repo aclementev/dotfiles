@@ -62,7 +62,9 @@ Plug 'j-hui/fidget.nvim'
 " Colorschemes
 Plug 'chriskempson/base16-vim'
 Plug 'arcticicestudio/nord-vim'
-Plug 'ayu-theme/ayu-vim'
+Plug 'ayu-theme/ayu-vim' " NOTE(alvaro): This is un-maintained, we should look
+" into a fork (e.g: Luxed/ayu-vim)
+
 " TreeSitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
@@ -96,11 +98,6 @@ set background=dark
 let ayucolor="mirage"  " light/mirage/dark
 colorscheme ayu
 
-" TODO(alvaro): Check if this exists, default to vim's dark
-" colorscheme base16-default-dark
-" let base16colorspace=256
-" colorscheme default
-
 " Merge the signcolumn and number column
 set signcolumn=number
 
@@ -110,6 +107,10 @@ set signcolumn=number
 set mouse=a
 
 set scrolloff=10
+
+" Statusline
+" TODO(alvaro): Figure out how to set the `:h fillchars` to see something
+" set laststatus=3
 
 " Terminal {{{
 " Add add settings to these autocommands
