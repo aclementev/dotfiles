@@ -21,7 +21,7 @@ local on_attach_general = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 
     -- Mappings
-    local opts = { silent = true, buffer=0 }
+    local opts = { silent = true, buffer = 0 }
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
@@ -41,11 +41,14 @@ local on_attach_general = function(client, bufnr)
 
     -- Formatting (Conditional to Capabilities)
     if client.resolved_capabilities.document_formatting then
+        print("setting up formatting bindings")
         vim.keymap.set('n', '<LocalLeader>f', vim.lsp.buf.formatting, opts)
         -- TODO(alvaro): Is this necessary anymore?
         vim.keymap.set('x', '<LocalLeader>f', vim.lsp.buf.formatting, opts)
     elseif client.resolved_capabilities.document_range_formatting then
         vim.keymap.set('n', '<LocalLeader>f', vim.lsp.buf.range_formatting, opts)
+    else
+        print("No formatting capabilities reported")
     end
 end
 
@@ -165,6 +168,12 @@ local vue_opts = {
     },
 }
 
+local volar_opts = {
+    -- TODO(alvaro): See if this is what we want? This is for "Take Over Mode"
+    -- filetypes = {"typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json"}
+    on_attach = custom_on_attach,
+}
+
 -- Rust
 -- Rust is managed by `rust-tools`, so for now we won't use LspInstall
 -- local function rust_on_attach(...)
@@ -218,6 +227,8 @@ lsp_installer.on_server_ready(function(server)
         opts = vim_opts
     elseif server.name == "vuels" then
         opts = vue_opts
+    elseif server.name == "volar" then
+        opts = volar_opts
     end
 
     -- Update the capabilities as suggested by cmp-nvim-lsp
