@@ -1,20 +1,21 @@
 local lspconfig = require 'lspconfig'
-local lsp_installer = require 'nvim-lsp-installer'
+-- NOTE: The pacakges are installed at `vim.fn.stdpath("data") / "mason"` which
+-- points to: `$HOME/.local/share/nvim/mason`
+require('mason').setup {
+    ui = {
+        icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗",
+        }
+    },
+    log_level = vim.log.levels.INFO, -- Set to DEBUG when debugging issues
+}
+require('mason-lspconfig').setup()
 vim.lsp.set_log_level('warn')
 
 -- TODO(alvaro): Checkout lspsaga for some nicer UI for `K` and hover docs
 -- and other things
-
--- Prepare the installer
-lsp_installer.settings {
-    ui = {
-        icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗",
-        }
-    }
-}
 
 -- Setup the common options (completion, diagnostics, keymaps)
 local on_attach_general = function(client, bufnr)
@@ -56,17 +57,14 @@ local on_attach_general = function(client, bufnr)
     end
 end
 
--- Function that composes the completion-nvim and on_attach
--- callbacks
-local function custom_on_attach(...)
-    -- For now this does not do anything special
-    return on_attach_general(...)
-end
+-- Update the capabilities as suggested by `cmp-nvim-lsp`
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 -- sumneko_lua
-local lua_opts = {
+lspconfig.sumneko_lua.setup {
     -- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
-    on_attach = custom_on_attach,
+    on_attach = on_attach_general,
     settings = {
         Lua = {
             runtime = {
@@ -89,11 +87,12 @@ local lua_opts = {
             },
         }
     },
+    capabilities=capabilities,
 }
 
 -- pylsp
-local python_opts = {
-    on_attach = custom_on_attach,
+lspconfig.pylsp.setup {
+    on_attach = on_attach_general,
     settings = {
         pylsp = {
             configurationSources = { 'flake8' },
@@ -152,21 +151,23 @@ local python_opts = {
     flags = {
         debounce_text_changes = 150,
     },
+    capabilities=capabilities,
 }
 
 -- vimls
-local vim_opts = {
-    on_attach = custom_on_attach,
+lspconfig.vimls.setup {
+    on_attach = on_attach_general,
     flags = {
         debounce_text_changes = 150,
     },
+    capabilities=capabilities,
 }
 
 
--- TODO(alvaro): Make this work
+-- TODO(alvaro): vuels (vetur) works for vue 2, for Vue 3 use `volar`
 -- vuels
-local vue_opts = {
-    on_attach = custom_on_attach,
+lspconfig.vuels.setup {
+    on_attach = on_attach_general,
     settings = {
         javascript = {
             format = {
@@ -185,22 +186,17 @@ local vue_opts = {
             }
         }
     },
+    capabilities=capabilities,
 }
 
-local volar_opts = {
+-- lspconfig.volar.setup {
     -- TODO(alvaro): See if this is what we want? This is for "Take Over Mode"
     -- filetypes = {"typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json"}
-    on_attach = custom_on_attach,
-}
+    -- on_attach = on_attach_general,
+    -- capabilities=capabilities,
+-- }
 
 -- Rust
--- Rust is managed by `rust-tools`, so for now we won't use LspInstall
--- local function rust_on_attach(...)
---     -- Setup for automatic formatting
---     vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000) ]]
---     return custom_on_attach(...)
--- end
-
 require('rust-tools').setup {
     tools = {
         autoSetHints = true,
@@ -214,7 +210,7 @@ require('rust-tools').setup {
     },
     -- These options are passed to `nvim-lspconfig`
     server = {
-        on_attach = custom_on_attach,
+        on_attach = on_attach_general,
         flags = {
             debounce_text_changes = 150,
         },
@@ -227,34 +223,5 @@ require('rust-tools').setup {
             }
         }
     },
+    capabilities=capabilities,
 }
-
--- Wrap with nvim-lsp-installer
-lsp_installer.on_server_ready(function(server)
-    local opts = {}
-
-    -- Custom server configurations
-    if server.name == "sumneko_lua" then
-        opts = lua_opts
-    elseif server.name == "pylsp" then
-        -- NOTE(alvaro): pylsp has extensions, and they can be installed
-        -- with the :PylspInstall command that is added to the environment
-        -- after installing the pylsp server first
-        -- see: https://github.com/williamboman/nvim-lsp-installer/blob/main/lua/nvim-lsp-installer/servers/pylsp/README.md
-        opts = python_opts
-    elseif server.name == "vimls" then
-        opts = vim_opts
-    elseif server.name == "vuels" then
-        opts = vue_opts
-    elseif server.name == "volar" then
-        opts = volar_opts
-    end
-
-    -- Update the capabilities as suggested by cmp-nvim-lsp
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    opts.capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
-    -- Call the server's setup function with the provided configuration
-    -- if empty, will use the server's defaults
-    server:setup(opts)
-end)

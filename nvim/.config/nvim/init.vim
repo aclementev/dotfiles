@@ -37,7 +37,8 @@ Plug 'jpalardy/vim-slime'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
-Plug 'williamboman/nvim-lsp-installer'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 
 " Completion
 " NOTE(alvaro): This project is unmaintained
