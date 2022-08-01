@@ -11,36 +11,29 @@ vim.diagnostic.config {
     severity_sort = true,
 }
 
--- FIXME(alvaro): This is probably not necessary anymore
--- Diagnostic setup
--- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
---     vim.lsp.diagnostic.on_publish_diagnostics, {
---         -- Disable underline for diagnostics
---         underline = false,
---         -- Enable virtual_text and add some spacing
---         virtual_text = {
---             spacing = 2,
---         },
---         -- Show the Signs in the signcolumn
---         signs = true,
---         -- Update the diagnostics while on insert mode
---         update_in_insert = false,
---     }
--- )
-
 -- Setup the Mappings
-local map_opts = { noremap=true, silent=true }
+local map_opts = { noremap = true, silent = true }
 local goto_opts = { wrap = true, float = true }
+local saga_diag = require 'lspsaga.diagnostic'
 
-vim.keymap.set("n", "<LocalLeader>dd", function()
-    vim.diagnostic.open_float()
+-- vim.keymap.set("n", "<LocalLeader>dd", function()
+--     vim.diagnostic.open_float()
+-- end, map_opts)
+-- vim.keymap.set("n", "<LocalLeader>dn", function()
+--     vim.diagnostic.goto_next(goto_opts)
+-- end, map_opts)
+-- vim.keymap.set("n", "<LocalLeader>dp", function()
+--     vim.diagnostic.goto_prev(goto_opts)
+-- end, map_opts)
+vim.keymap.set('n', '<LocalLeader>dl', vim.diagnostic.setloclist, map_opts)
+
+-- Some LSP Saga related diagnostics
+vim.keymap.set('n', '<LocalLeader>dd', saga_diag.show_line_diagnostics, map_opts)
+vim.keymap.set('n', '<LocalLeader>dn', saga_diag.goto_next, map_opts)
+vim.keymap.set('n', '<LocalLeader>dp', saga_diag.goto_prev, map_opts)
+vim.keymap.set('n', '<LocalLeader>en', function()
+    saga_diag.goto_next { severity = vim.diagnostic.severity.ERROR }
 end, map_opts)
-vim.keymap.set("n", "<LocalLeader>dn", function()
-    vim.diagnostic.goto_next(goto_opts)
-end, map_opts)
-vim.keymap.set("n", "<LocalLeader>dp", function()
-    vim.diagnostic.goto_prev(goto_opts)
-end, map_opts)
-vim.keymap.set("n", "<LocalLeader>do", function()
-    vim.diagnostic.setloclist()
+vim.keymap.set('n', '<LocalLeader>ep', function()
+    saga_diag.goto_prev { severity = vim.diagnostic.severity.ERROR }
 end, map_opts)

@@ -1,4 +1,5 @@
 local lspconfig = require 'lspconfig'
+
 -- NOTE: The pacakges are installed at `vim.fn.stdpath("data") / "mason"` which
 -- points to: `$HOME/.local/share/nvim/mason`
 require('mason').setup {
@@ -14,35 +15,52 @@ require('mason').setup {
 require('mason-lspconfig').setup()
 vim.lsp.set_log_level('warn')
 
--- TODO(alvaro): Checkout lspsaga for some nicer UI for `K` and hover docs
--- and other things
+-- Setup lspsaga
+require('lspsaga').init_lsp_saga{}
+
 
 -- Setup the common options (completion, diagnostics, keymaps)
-local on_attach_general = function(client, bufnr)
-    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-
+local on_attach_general = function(client)
     -- Mappings
     local opts = { silent = true, buffer = 0 }
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    -- vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', 'gI', vim.lsp.buf.type_definition, opts)
     vim.keymap.set('n', 'gk', vim.lsp.buf.signature_help, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', 'g0', vim.lsp.buf.document_symbol, opts)
     vim.keymap.set('n', 'gW', vim.lsp.buf.workspace_symbol, opts)
-    vim.keymap.set('n', '<LocalLeader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', '<LocalLeader>ca', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('i', '<C-H>', vim.lsp.buf.signature_help, opts)
+    -- vim.keymap.set('n', '<LocalLeader>rn', vim.lsp.buf.rename, opts)
+    -- vim.keymap.set('n', '<LocalLeader>ca', vim.lsp.buf.code_action, opts)
+    -- vim.keymap.set('i', '<C-H>', vim.lsp.buf.signature_help, opts)
+
+    -- LSPSaga related mappings
+    vim.keymap.set('n', '<LocalLeader>ca', require('lspsaga.codeaction').code_action, opts)
+    vim.keymap.set('v', '<LocalLeader>ca', function()
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-U>", true, false, true))
+        require('lspsaga.codeaction').range_code_action()
+    end, opts)
+    vim.keymap.set('n', 'K', require('lspsaga.hover').render_hover_doc, opts)
+    vim.keymap.set('n', '<C-f>', function()
+        require('lspsaga.action').smart_scroll_with_saga(1)
+    end, opts)
+    vim.keymap.set('n', '<C-b>', function()
+        require('lspsaga.action').smart_scroll_with_saga(-1)
+    end, opts)
+    vim.keymap.set('n', 'gs', require('lspsaga.signaturehelp').signature_help, opts)
+    vim.keymap.set('i', '<C-H>', require('lspsaga.signaturehelp').signature_help, opts)
+    vim.keymap.set('n', '<LocalLeader>rn', require('lspsaga.rename').lsp_rename, opts)
+    vim.keymap.set('n', 'gp', require('lspsaga.definition').preview_definition, opts)
 
     -- Others
     -- TODO(alvaro): Do this all in a custom command in lua, now is a bit flickery
-    vim.keymap.set('n', 'gs', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
+    vim.keymap.set('n', 'gv', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
+    vim.keymap.set('n', 'gx', ':sp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
 
     -- Formatting (Conditional to Capabilities)
     if client.server_capabilities.documentFormattingProvider then
-        print("setting up formatting bindings")
         vim.keymap.set('n', '<LocalLeader>f', function()
             vim.lsp.buf.format{ async = true }
         end, opts)
