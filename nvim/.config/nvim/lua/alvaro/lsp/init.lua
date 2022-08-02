@@ -16,7 +16,11 @@ require('mason-lspconfig').setup()
 vim.lsp.set_log_level('warn')
 
 -- Setup lspsaga
-require('lspsaga').init_lsp_saga{}
+require('lspsaga').init_lsp_saga{
+    code_action_lightbulb = {
+        enable = false,
+    }
+}
 
 
 -- Setup the common options (completion, diagnostics, keymaps)
