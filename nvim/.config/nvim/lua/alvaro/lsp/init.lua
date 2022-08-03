@@ -53,14 +53,14 @@ local on_attach_general = function(client)
     vim.keymap.set('n', '<C-b>', function()
         require('lspsaga.action').smart_scroll_with_saga(-1)
     end, opts)
-    vim.keymap.set('n', 'gs', require('lspsaga.signaturehelp').signature_help, opts)
+    vim.keymap.set('n', 'gh', require('lspsaga.signaturehelp').signature_help, opts)
     vim.keymap.set('i', '<C-H>', require('lspsaga.signaturehelp').signature_help, opts)
     vim.keymap.set('n', '<LocalLeader>rn', require('lspsaga.rename').lsp_rename, opts)
     vim.keymap.set('n', 'gp', require('lspsaga.definition').preview_definition, opts)
 
     -- Others
     -- TODO(alvaro): Do this all in a custom command in lua, now is a bit flickery
-    vim.keymap.set('n', 'gv', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
+    vim.keymap.set('n', 'gs', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
     vim.keymap.set('n', 'gx', ':sp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
 
     -- Formatting (Conditional to Capabilities)
