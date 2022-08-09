@@ -9,19 +9,19 @@ function buf_show_clients()
 end
 
 -- Find files in directory
-function find_in_dir(dir)
+local function find_in_dir(dir)
     return require('telescope.builtin').find_files({ search_dirs = { dir } })
 end
 
 -- Generates a function that will call find appending a set of hardcoded
 -- excludes (useful when not in a git repo with a .gitignore)
-function fd_with_excludes(excludes)
-    exclude_tbl = {}
+local function fd_with_excludes(excludes)
+    local exclude_tbl = {}
     for _, dir in ipairs(excludes) do
         table.insert(exclude_tbl, '--exclude')
         table.insert(exclude_tbl, dir)
     end
-    find_options = {
+    local find_options = {
         find_command = vim.list_extend({ 'fd', '--type', 'f' }, exclude_tbl),
         follow = true,
         hidden = true,
@@ -38,7 +38,7 @@ DIRS_TO_IGNORE = {
     '.pytest_cache',
     '__pycache__',
 }
-fd_all_with_excludes = fd_with_excludes(DIRS_TO_IGNORE)
+local fd_all_with_excludes = fd_with_excludes(DIRS_TO_IGNORE)
 
 
 -- fidget.nvim
@@ -75,23 +75,38 @@ require('telescope').load_extension('ui-select')
 
 
 -- Telescope Mappings
--- -- TODO(alvaro): Move these to `vim.keymap.set`
+local opts = { silent = true }
+local builtin = require('telescope.builtin')
+
 -- -- TODO(alvaro): Maybe we want to show_untracked here?
-vim.api.nvim_set_keymap('n', '<Leader>ff', [[<cmd>lua require('telescope.builtin').git_files({show_untracked = false})<CR>]], { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>ff', function()
+    return builtin.git_files({ show_untracked = false })
+end, opts)
 -- TODO(alvaro): Make this mapping default to `find` if `fd` is not installed
-vim.api.nvim_set_keymap('n', '<Leader>fa', [[<cmd>lua fd_all_with_excludes()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fA', [[<cmd>lua require('telescope.builtin').find_files({find_command = { 'fd', '--type', 'f' , '--exclude', '.git'}, follow = true, hidden = true, no_ignore = true})<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fb', [[<cmd>lua require('telescope.builtin').buffers()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fh', [[<cmd>lua require('telescope.builtin').help_tags()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fo', [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fC', [[<cmd>lua require('telescope.builtin').commands()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fz', [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fc', [[<cmd>lua find_in_dir('~/.config/nvim')<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fD', [[<cmd>lua find_in_dir('~/dotfiles')<CR>]], { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>fa', fd_all_with_excludes, opts)
+vim.keymap.set('n', '<Leader>fA', function()
+    return builtin.find_files({ find_command = { 'fd', '--type', 'f', '--exclude', '.git' }, follow = true, hidden = true,
+        no_ignore = true })
+end, opts)
+vim.keymap.set('n', '<Leader>fb', builtin.buffers, opts)
+vim.keymap.set('n', '<Leader>fh', builtin.help_tags, opts)
+vim.keymap.set('n', '<Leader>fo', builtin.oldfiles, opts)
+vim.keymap.set('n', '<Leader>fC', builtin.commands, opts)
+vim.keymap.set('n', '<Leader>fz', builtin.current_buffer_fuzzy_find, opts)
+vim.keymap.set('n', '<Leader>fc', function()
+    return find_in_dir('~/.config/nvim')
+end, opts)
+vim.keymap.set('n', '<Leader>fD', function()
+    return find_in_dir('~/dotfiles')
+end, opts)
 -- Telescope + LSP
-vim.api.nvim_set_keymap('n', '<Leader>fr', [[<cmd>lua require('telescope.builtin').lsp_references()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fx', [[<cmd>lua require('telescope.builtin').lsp_code_actions()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>fd', [[<cmd>lua require('telescope.builtin').lsp_document_diagnostics()<CR>]], { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>fs', builtin.lsp_document_symbols, opts)
+vim.keymap.set('n', '<Leader>fS', builtin.lsp_workspace_symbols, opts)
+vim.keymap.set('n', '<Leader>fr', builtin.lsp_references, opts)
+vim.keymap.set('n', '<Leader>fd', function()
+    return builtin.diagnostics({ bufnr = 0 })
+end, opts)
+vim.keymap.set('n', '<Leader>fD', builtin.diagnostics, opts)
 -- Telescope + Grep
-vim.api.nvim_set_keymap('n', '<Leader>g', [[<cmd>lua require('telescope.builtin').grep_string()<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>r', [[<cmd>lua require('telescope.builtin').live_grep()<CR>]], { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>g', builtin.grep_string, opts)
+vim.keymap.set('n', '<Leader>r', builtin.live_grep, opts)
