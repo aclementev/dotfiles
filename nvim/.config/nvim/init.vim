@@ -63,6 +63,7 @@ Plug 'mhinz/vim-startify'
 Plug 'j-hui/fidget.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
+Plug 'norcalli/nvim-colorizer.lua'
 
 " Colorschemes
 Plug 'chriskempson/base16-vim'
