@@ -64,6 +64,7 @@ Plug 'j-hui/fidget.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 Plug 'norcalli/nvim-colorizer.lua'
+Plug 'lewis6991/gitsigns.nvim'
 
 " Colorschemes
 Plug 'chriskempson/base16-vim'
@@ -106,6 +107,9 @@ colorscheme ayu
 
 " Merge the signcolumn and number column
 set signcolumn=number
+" TODO(alvaro): Figure out this styling better, maybe we need to make
+" the signcolumn permanent but make sure the background matches the rest
+" set signcolumn=yes:1
 
 " Mouse support inside tmux
 " TODO: Check this for neovim
