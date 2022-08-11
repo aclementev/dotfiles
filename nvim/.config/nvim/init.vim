@@ -61,6 +61,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'mhinz/vim-startify'
 Plug 'j-hui/fidget.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
 " Colorschemes
 Plug 'chriskempson/base16-vim'
