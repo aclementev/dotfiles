@@ -171,11 +171,8 @@ lua require'alvaro.lsp'
 lua require'alvaro.treesitter'
 
 " Completion {{{
-lua require'alvaro.completion'
-
-
 " Remove the autocomplete option in some buffers
-autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
+" autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }
 "}}}
 
 " Diagnostic {{{
@@ -200,6 +197,7 @@ nnoremap <silent> <Leader>tf :TestFile<CR>
 nnoremap <silent> <Leader>ta :TestSuite<CR>
 nnoremap <silent> <Leader>tl :TestLast<CR>
 nnoremap <silent> <Leader>tg :TestVisit<CR>
+
 
 let g:test#strategy = "neovim"
 " TODO(alvaro): Test if we want this
