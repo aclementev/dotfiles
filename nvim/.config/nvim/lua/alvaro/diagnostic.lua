@@ -13,18 +13,9 @@ vim.diagnostic.config {
 
 -- Setup the Mappings
 local map_opts = { noremap = true, silent = true }
-local goto_opts = { wrap = true, float = true }
 local saga_diag = require 'lspsaga.diagnostic'
 
--- vim.keymap.set("n", "<LocalLeader>dd", function()
---     vim.diagnostic.open_float()
--- end, map_opts)
--- vim.keymap.set("n", "<LocalLeader>dn", function()
---     vim.diagnostic.goto_next(goto_opts)
--- end, map_opts)
--- vim.keymap.set("n", "<LocalLeader>dp", function()
---     vim.diagnostic.goto_prev(goto_opts)
--- end, map_opts)
+vim.keymap.set('n', '<LocalLeader>dq', vim.diagnostic.setqflist, map_opts)
 vim.keymap.set('n', '<LocalLeader>dl', vim.diagnostic.setloclist, map_opts)
 
 -- Some LSP Saga related diagnostics

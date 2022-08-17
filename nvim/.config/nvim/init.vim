@@ -1,20 +1,13 @@
 " Alvaro's Neovim configuration
-"
+
 " Load shared vim configuration
-" set runtimepath^=~/.vim runtimepath+=~/.vim/after
-" let &packpath = &runtimepath
-" NOTE(alvaro): For now we don't want to share packages between vim and Neovim
+" FIXME(alvaro): Review the shared configuration with base vim
+" Maybe move the common configuration to a `vimrc-no-plugins` file
 source ~/.vimrc
 
 " Load the package manager (for now we have duplicated config for this
-" TODO: Fix the block cursor in insert mode
-"           For now I will try it like this, let's see how I like it
-" TODO: Set up Language Server (this is the main point of this migration)
-" TODO: Set up a more lean status line (this is also needed for main vim)
 call plug#begin(stdpath('config') . '/plugged')
 " Fuzzy finder
-" Plug '~/.fzf'
-" Plug 'junegunn/fzf.vim'
 
 " All hail the almighty tpope
 Plug 'tpope/vim-surround'
@@ -32,7 +25,6 @@ Plug 'vim-test/vim-test'
 " Lisps
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
-
 Plug 'jpalardy/vim-slime'
 
 " LSP

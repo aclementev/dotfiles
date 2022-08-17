@@ -24,5 +24,4 @@ bufferline.setup {
         always_show_bufferline = true,
         separator_style = "padded_slant",
     }
-
 }
