@@ -35,8 +35,7 @@ local function load_mode()
     end
 end
 
-function RefreshColorscheme()
-    local mode = load_mode()
+local function apply_colorscheme(mode)
     if mode == 'dark' then
         -- Apply the ayu-mirage colorscheme
         vim.o.background = 'dark'
@@ -51,8 +50,24 @@ function RefreshColorscheme()
     end
 end
 
+function RefreshColorscheme()
+    local mode = load_mode()
+    apply_colorscheme(mode)
+end
+
+function SwitchColorscheme(opts)
+    local mode = opts["fargs"][1]
+    apply_colorscheme(mode)
+end
+
 -- Register a command for refreshing the colorscheme
 vim.api.nvim_create_user_command('RefreshColorscheme', RefreshColorscheme, { nargs = 0 })
+vim.api.nvim_create_user_command('SwitchColorscheme', SwitchColorscheme, {
+    nargs = 1,
+    complete = function()
+        return { 'dark', 'light' }
+    end
+})
 
 -- Actually apply the colorscheme
 RefreshColorscheme()
