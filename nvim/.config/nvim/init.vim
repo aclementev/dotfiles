@@ -61,8 +61,10 @@ Plug 'lewis6991/gitsigns.nvim'
 " Colorschemes
 Plug 'chriskempson/base16-vim'
 Plug 'arcticicestudio/nord-vim'
-Plug 'ayu-theme/ayu-vim' " NOTE(alvaro): This is un-maintained, we should look
-" into a fork (e.g: Luxed/ayu-vim)
+" NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
+Plug 'ayu-theme/ayu-vim'
+" As a light scheme
+Plug 'ericbn/vim-solarized'
 
 " TreeSitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
