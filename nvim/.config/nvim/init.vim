@@ -92,13 +92,6 @@ Plug 'nvim-telescope/telescope-file-browser.nvim'
 call plug#end()
 
 " Set up the colorscheme
-" set termguicolors
-" set background=dark
-" Not bad, looks clean and good but lacks contrast
-" colorscheme nord
-" Let's try this one first
-" let ayucolor="mirage"  " light/mirage/dark
-" colorscheme ayu
 lua require 'alvaro.colorscheme'
 
 " Merge the signcolumn and number column
