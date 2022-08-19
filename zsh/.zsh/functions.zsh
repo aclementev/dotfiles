@@ -1,4 +1,13 @@
 # Custom functions for Alvaro
+light_mode() {
+    # TODO(alvaro): Change the iTerm2 profile (if applicable)
+    echo 'light' > $HOME/.alvaro_screen_mode
+}
+
+dark_mode() {
+    # TODO(alvaro): Change the iTerm2 profile (if applicable)
+    echo 'dark' > $HOME/.alvaro_screen_mode
+}
 
 vpn_ip() {
     # TODO(alvaro): Fix this to work more generally by looking for utunX and
