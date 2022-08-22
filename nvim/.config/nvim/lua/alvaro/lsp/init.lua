@@ -17,13 +17,18 @@ require('mason-lspconfig').setup()
 vim.lsp.set_log_level('warn')
 
 -- Setup lspsaga
-require('lspsaga').init_lsp_saga {
-    code_action_lightbulb = {
-        enable = false,
+local lspsaga_status, lspsaga = pcall(require, 'lspsaga')
+if lspsaga_status then
+    require('lspsaga').init_lsp_saga {
+        code_action_lightbulb = {
+            enable = false,
+        }
     }
-}
+end
 
 
+-- NOTE(alvaro): Since lspsaga v0.2 it requires mappings to use
+-- `<cmd>` based rhs for `vim.keymap.set`
 -- Setup the common options (completion, diagnostics, keymaps)
 local on_attach_general = function(client)
     -- Mappings
@@ -42,22 +47,23 @@ local on_attach_general = function(client)
     -- vim.keymap.set('i', '<C-H>', vim.lsp.buf.signature_help, opts)
 
     -- LSPSaga related mappings
-    vim.keymap.set('n', '<LocalLeader>ca', require('lspsaga.codeaction').code_action, opts)
-    vim.keymap.set('v', '<LocalLeader>ca', function()
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-U>", true, false, true))
-        require('lspsaga.codeaction').range_code_action()
-    end, opts)
-    vim.keymap.set('n', 'K', require('lspsaga.hover').render_hover_doc, opts)
-    vim.keymap.set('n', '<C-f>', function()
-        require('lspsaga.action').smart_scroll_with_saga(1)
-    end, opts)
-    vim.keymap.set('n', '<C-b>', function()
-        require('lspsaga.action').smart_scroll_with_saga(-1)
-    end, opts)
-    vim.keymap.set('n', 'gh', require('lspsaga.signaturehelp').signature_help, opts)
-    vim.keymap.set('i', '<C-H>', require('lspsaga.signaturehelp').signature_help, opts)
-    vim.keymap.set('n', '<LocalLeader>rn', require('lspsaga.rename').lsp_rename, opts)
-    vim.keymap.set('n', 'gp', require('lspsaga.definition').preview_definition, opts)
+    if lspsaga_status then
+        print('setting the lspsaga keymaps')
+        vim.keymap.set('n', '<LocalLeader>ca', '<cmd>Lspsaga code_action<CR>', opts)
+        vim.keymap.set('v', '<LocalLeader>ca', '<cmd><C-U>Lspsaga range_code_action<CR>', opts)
+        vim.keymap.set('n', 'K', '<cmd>Lspsaga hover_doc<CR>', opts)
+        -- FIXME(alvaro): update these mappings, although they may just work
+        vim.keymap.set('n', '<C-f>', function()
+            require('lspsaga.action').smart_scroll_with_saga(1)
+        end, opts)
+        vim.keymap.set('n', '<C-b>', function()
+            require('lspsaga.action').smart_scroll_with_saga(-1)
+        end, opts)
+        vim.keymap.set('n', 'gh', '<cmd>Lspsaga signature_help<CR>', opts)
+        vim.keymap.set('i', '<C-H>', '<cmd>Lspsaga signature_help<CR>', opts)
+        vim.keymap.set('n', '<LocalLeader>rn', '<cmd>Lspsaga rename<CR>', opts)
+        vim.keymap.set('n', 'gp', '<cmd>Lspsaga preview_definition<CR>', opts)
+    end
 
     -- Others
     -- TODO(alvaro): Do this all in a custom command in lua, now is a bit flickery
