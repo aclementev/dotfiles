@@ -1,11 +1,15 @@
 local status, bufferline = pcall(require, "bufferline")
 if (not status) then return end
 
+
 bufferline.setup {
     options = {
         mode = "buffers",
         numbers = "none",
-        indicator_icon = '▎',
+        indicator = {
+            icon = '▎',
+            style = 'icon',
+        },
         buffer_close_icon = '',
         modified_icon = '●',
         close_icon = '',

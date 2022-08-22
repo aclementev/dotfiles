@@ -1,4 +1,5 @@
-local lspconfig = require 'lspconfig'
+local status, lspconfig = pcall(require, 'lspconfig')
+if (not status) then return end
 
 -- NOTE: The pacakges are installed at `vim.fn.stdpath("data") / "mason"` which
 -- points to: `$HOME/.local/share/nvim/mason`
@@ -16,7 +17,7 @@ require('mason-lspconfig').setup()
 vim.lsp.set_log_level('warn')
 
 -- Setup lspsaga
-require('lspsaga').init_lsp_saga{
+require('lspsaga').init_lsp_saga {
     code_action_lightbulb = {
         enable = false,
     }
@@ -66,11 +67,11 @@ local on_attach_general = function(client)
     -- Formatting (Conditional to Capabilities)
     if client.server_capabilities.documentFormattingProvider then
         vim.keymap.set('n', '<LocalLeader>f', function()
-            vim.lsp.buf.format{ async = true }
+            vim.lsp.buf.format { async = true }
         end, opts)
         -- TODO(alvaro): Is this necessary anymore?
         vim.keymap.set('x', '<LocalLeader>f', function()
-            vim.lsp.buf.format{ async = true }
+            vim.lsp.buf.format { async = true }
         end, opts)
     elseif client.server_capabilities.documentRangeFormattingProvider then
         vim.keymap.set('n', '<LocalLeader>f', vim.lsp.buf.range_formatting, opts)
@@ -113,7 +114,7 @@ lspconfig.sumneko_lua.setup {
             },
         }
     },
-    capabilities=capabilities,
+    capabilities = capabilities,
 }
 
 -- pylsp
@@ -177,7 +178,7 @@ lspconfig.pylsp.setup {
     flags = {
         debounce_text_changes = 150,
     },
-    capabilities=capabilities,
+    capabilities = capabilities,
 }
 
 -- vimls
@@ -186,7 +187,7 @@ lspconfig.vimls.setup {
     flags = {
         debounce_text_changes = 150,
     },
-    capabilities=capabilities,
+    capabilities = capabilities,
 }
 
 
@@ -212,42 +213,64 @@ lspconfig.vuels.setup {
             }
         }
     },
-    capabilities=capabilities,
+    capabilities = capabilities,
 }
 
 -- lspconfig.volar.setup {
-    -- TODO(alvaro): See if this is what we want? This is for "Take Over Mode"
-    -- filetypes = {"typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json"}
-    -- on_attach = on_attach_general,
-    -- capabilities=capabilities,
+-- TODO(alvaro): See if this is what we want? This is for "Take Over Mode"
+-- filetypes = {"typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json"}
+-- on_attach = on_attach_general,
+-- capabilities=capabilities,
 -- }
 
 -- Rust
-require('rust-tools').setup {
-    tools = {
-        autoSetHints = true,
-        hover_with_actions = true,
-        -- test this out
-        -- inlay_hints = {
-        --     show_parameter_hints = false,
-        --     parameter_hints_prefix = "",
-        --     other_hints_prefix = "",
-        -- }
-    },
-    -- These options are passed to `nvim-lspconfig`
-    server = {
-        on_attach = on_attach_general,
-        flags = {
-            debounce_text_changes = 150,
+local rust_status, rt = pcall(require, 'rust-tools')
+if rust_status then
+    rt.setup {
+        tools = {
+            executor = require('rust-tools/executors').termopen,
+            reload_workspace_from_cargo_toml = true,
+            inlay_hints = {
+                only_current_line = true,
+                show_parameter_hints = true,
+                -- TODO(alvaro): Test these
+                -- parameter_hints_prefix = "",  -- default is ="<- "
+                -- other_hints_prefix = "",  -- default is "=> "
+                -- TODO(alvaro): You can also right align
+                max_len_align = true,
+                max_len_align_padding = 1,
+                highlight = "Commend",
+            },
+            -- FIXME(alvaro): This is throwing a deprecated error
+            -- hover_with_actions = true,
         },
-        settings = {
-            ["rust-analyzer"] = {
-                -- enable clippy on save
-                checkOnSave = {
-                    command = "clippy",
+        -- These options are passed to `nvim-lspconfig`
+        server = {
+            on_attach = on_attach_general,
+            flags = {
+                debounce_text_changes = 150,
+            },
+            settings = {
+                ["rust-analyzer"] = {
+                    -- enable clippy on save
+                    checkOnSave = {
+                        command = "clippy",
+                    }
                 }
+            },
+            -- Standalone file support
+            -- setting it to false may improve startup time
+            standalone = false,
+        },
+        -- debugging stuff
+        -- FIXME(alvaro): Unused and untested for now
+        dap = {
+            adapter = {
+                type = "executable",
+                command = "lldb-vscode",
+                name = "rt_lldb",
             }
-        }
-    },
-    capabilities=capabilities,
-}
+        },
+        capabilities = capabilities,
+    }
+end
