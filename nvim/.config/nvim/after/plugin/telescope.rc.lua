@@ -2,8 +2,6 @@ local status, telescope = pcall(require, "telescope")
 if (not status) then return end
 
 local builtin = require("telescope.builtin")
-local actions = require("telescope.actions")
-local fb_actions = telescope.extensions.file_browser.actions
 
 -- Find files in directory
 local function find_in_dir(dir)

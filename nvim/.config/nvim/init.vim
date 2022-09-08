@@ -41,6 +41,8 @@ Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
+" TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lua
+" TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lsp-document-symbol
 Plug 'hrsh7th/nvim-cmp'
 Plug 'onsails/lspkind-nvim'
 
@@ -88,6 +90,10 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
+
+" Snippets
+Plug 'L3MON4D3/LuaSnip', {'tag': 'v1.*'}
+Plug 'saadparwaiz1/cmp_luasnip'
 
 call plug#end()
 

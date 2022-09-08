@@ -18,7 +18,10 @@ vim.o.shortmess = vim.o.shortmess .. 'c'
 -- TODO(alvaro): Add lsp document symbols as well hrsh7th/cmp-nvim-lsp-document-symbol
 cmp.setup {
     snippet = {
-        expand = function() end  -- Do nothing for now
+        expand = function(args)
+            -- Use LuaSnip for snippets
+            require 'luasnip'.lsp_expand(args.body)
+        end
     },
     completion = {
         -- Remove this (DO NOT SET TO `true`, just remove) to enable
@@ -69,6 +72,7 @@ cmp.setup {
     },
     sources = {
         -- The order inside this table represents the order of the results
+        { name = 'luasnip' },
         { name = 'nvim_lsp' },
         {
             name = 'buffer',
