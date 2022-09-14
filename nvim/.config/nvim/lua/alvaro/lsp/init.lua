@@ -237,7 +237,7 @@ if rust_status then
             executor = require('rust-tools/executors').termopen,
             reload_workspace_from_cargo_toml = true,
             inlay_hints = {
-                only_current_line = true,
+                only_current_line = false,
                 show_parameter_hints = true,
                 -- TODO(alvaro): Test these
                 -- parameter_hints_prefix = "",  -- default is ="<- "
@@ -245,7 +245,7 @@ if rust_status then
                 -- TODO(alvaro): You can also right align
                 max_len_align = true,
                 max_len_align_padding = 1,
-                highlight = "Commend",
+                highlight = "Comment",
             },
             -- FIXME(alvaro): This is throwing a deprecated error
             -- hover_with_actions = true,

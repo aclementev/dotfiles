@@ -29,8 +29,8 @@ cmp.setup {
         autocomplete = false,
     },
     window = {
-        -- completion = cmp.config.window.bordered
-        -- documentation = cmp.config.window.bordered
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
     },
     mapping = {
         ['<C-n>'] = function()
