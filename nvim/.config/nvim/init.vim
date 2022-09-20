@@ -70,6 +70,9 @@ Plug 'ericbn/vim-solarized'
 
 " TreeSitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+Plug 'nvim-treesitter/nvim-treesitter-context'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 " Other languages
 Plug 'simrat39/rust-tools.nvim'
@@ -160,9 +163,6 @@ augroup END
 " LSP Settings
 " Client configuration (they are configured best using Lua)
 lua require'alvaro.lsp'
-
-" TreeSitter
-lua require'alvaro.treesitter'
 
 " Completion {{{
 " Remove the autocomplete option in some buffers

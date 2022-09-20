@@ -48,7 +48,6 @@ local on_attach_general = function(client)
 
     -- LSPSaga related mappings
     if lspsaga_status then
-        print('setting the lspsaga keymaps')
         vim.keymap.set('n', '<LocalLeader>ca', '<cmd>Lspsaga code_action<CR>', opts)
         vim.keymap.set('v', '<LocalLeader>ca', '<cmd><C-U>Lspsaga range_code_action<CR>', opts)
         vim.keymap.set('n', 'K', '<cmd>Lspsaga hover_doc<CR>', opts)
