@@ -35,9 +35,6 @@ Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 
 " Completion
-" NOTE(alvaro): This project is unmaintained
-" Plug 'nvim-lua/completion-nvim'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
@@ -51,8 +48,6 @@ Plug 'onsails/lspkind-nvim'
 
 " Eye candy
 Plug 'junegunn/vim-easy-align'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'mhinz/vim-startify'
 Plug 'j-hui/fidget.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
@@ -67,6 +62,7 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
 " As a light scheme
 Plug 'ericbn/vim-solarized'
+Plug 'nvim-lualine/lualine.nvim'  " This also can use nvim-web-devicons
 
 " TreeSitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
