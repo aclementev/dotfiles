@@ -97,14 +97,21 @@ Plug 'rafamadriz/friendly-snippets'
 
 call plug#end()
 
+" Merge the signcolumn and number column
+set signcolumn=yes:1
+
+" Fix the colorscheme so that the SignColumn does not have a different
+" background
+" Make sure it is applied everytime we change the colorscheme
+" NOTE: This must happen before sourcing the colorscheme, or else it's not
+" applied on first execution
+augroup transparent_signs
+    autocmd!
+    autocmd ColorScheme * highlight SignColumn guibg=NONE
+augroup END
+
 " Set up the colorscheme
 lua require 'alvaro.colorscheme'
-
-" Merge the signcolumn and number column
-set signcolumn=number
-" TODO(alvaro): Figure out this styling better, maybe we need to make
-" the signcolumn permanent but make sure the background matches the rest
-" set signcolumn=yes:1
 
 " Mouse support inside tmux
 " TODO: Check this for neovim
@@ -112,10 +119,6 @@ set signcolumn=number
 set mouse=a
 
 set scrolloff=10
-
-" Statusline
-" TODO(alvaro): Figure out how to set the `:h fillchars` to see something
-" set laststatus=3
 
 " Terminal {{{
 " Add add settings to these autocommands
