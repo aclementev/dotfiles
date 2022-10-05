@@ -47,10 +47,10 @@ cmp.setup {
                 cmp.complete()
             end
         end,
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-e>'] = cmp.mapping.abort(),
-        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
         ['<Tab>'] = function(fallback)
             if cmp.visible() then
                 cmp.select_next_item({ "i", "s" })
@@ -65,15 +65,11 @@ cmp.setup {
                 fallback()
             end
         end,
-        -- FIXME(alvaro): Make this work
-        -- ['<CR>'] = cmp.mapping.confirm({
-        --     select = true,
-        -- }),
     },
     sources = {
         -- The order inside this table represents the order of the results
-        { name = 'luasnip' },
         { name = 'nvim_lsp' },
+        { name = 'luasnip' },
         {
             name = 'buffer',
             option = {
