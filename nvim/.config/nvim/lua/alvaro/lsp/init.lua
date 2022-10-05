@@ -44,7 +44,8 @@ local on_attach_general = function(client)
     vim.keymap.set('n', 'gW', vim.lsp.buf.workspace_symbol, opts)
     -- vim.keymap.set('n', '<LocalLeader>rn', vim.lsp.buf.rename, opts)
     -- vim.keymap.set('n', '<LocalLeader>ca', vim.lsp.buf.code_action, opts)
-    -- vim.keymap.set('i', '<C-H>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('i', '<C-H>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', 'gh', vim.lsp.buf.signature_help, opts)
 
     -- LSPSaga related mappings
     if lspsaga_status then
@@ -53,13 +54,11 @@ local on_attach_general = function(client)
         vim.keymap.set('n', 'K', '<cmd>Lspsaga hover_doc<CR>', opts)
         -- FIXME(alvaro): update these mappings, although they may just work
         vim.keymap.set('n', '<C-f>', function()
-            require('lspsaga.action').smart_scroll_with_saga(1)
+            require('lspsaga.action').smart_scroll_with_saga(4)
         end, opts)
         vim.keymap.set('n', '<C-b>', function()
-            require('lspsaga.action').smart_scroll_with_saga(-1)
+            require('lspsaga.action').smart_scroll_with_saga(-4)
         end, opts)
-        vim.keymap.set('n', 'gh', '<cmd>Lspsaga signature_help<CR>', opts)
-        vim.keymap.set('i', '<C-H>', '<cmd>Lspsaga signature_help<CR>', opts)
         vim.keymap.set('n', '<LocalLeader>rn', '<cmd>Lspsaga rename<CR>', opts)
         vim.keymap.set('n', 'gp', '<cmd>Lspsaga preview_definition<CR>', opts)
     end
