@@ -59,7 +59,7 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'chriskempson/base16-vim'
 Plug 'arcticicestudio/nord-vim'
 " NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
-Plug 'ayu-theme/ayu-vim'
+Plug 'Luxed/ayu-vim'
 " As a light scheme
 Plug 'ericbn/vim-solarized'
 Plug 'nvim-lualine/lualine.nvim'  " This also can use nvim-web-devicons

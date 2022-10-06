@@ -40,6 +40,9 @@ local function apply_colorscheme(mode)
         -- Apply the ayu-mirage colorscheme
         vim.o.background = 'dark'
         vim.g.ayucolor = 'mirage'
+        vim.g.ayu_italic_comment = 0
+        vim.g.ayu_sign_contrast = 0
+        vim.g.ayu_extended_palette = 1
         vim.cmd [[ colorscheme ayu ]]
     elseif mode == 'light' then
         -- Apply the solarized light colorscheme
