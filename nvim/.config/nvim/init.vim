@@ -31,6 +31,7 @@ Plug 'jpalardy/vim-slime'
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'jose-elias-alvarez/null-ls.nvim'
 " Make LSP prettier
 Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 

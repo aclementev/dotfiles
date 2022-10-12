@@ -1,6 +1,9 @@
 local status, lspconfig = pcall(require, 'lspconfig')
 if (not status) then return end
 
+-- NOTE: There's also some configuration at `after/plugin/null_ls.rc.lua` for
+-- `null-ls` overrides
+
 -- NOTE: The pacakges are installed at `vim.fn.stdpath("data") / "mason"` which
 -- points to: `$HOME/.local/share/nvim/mason`
 require('mason').setup {
@@ -16,10 +19,20 @@ require('mason').setup {
 require('mason-lspconfig').setup()
 vim.lsp.set_log_level('warn')
 
+-- Check if value is in table
+local function contains(table, value)
+    for _, v in pairs(table) do
+        if v == value then
+            return true
+        end
+    end
+    return false
+end
+
 -- Setup lspsaga
 local lspsaga_status, lspsaga = pcall(require, 'lspsaga')
 if lspsaga_status then
-    require('lspsaga').init_lsp_saga {
+    lspsaga.init_lsp_saga {
         code_action_lightbulb = {
             enable = false,
         }
@@ -68,20 +81,25 @@ local on_attach_general = function(client)
     vim.keymap.set('n', 'gs', ':vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
     vim.keymap.set('n', 'gx', ':sp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz', opts)
 
+    -- List of servers for which we don't want the built in formatting
+    -- FIXME(alvaro): Ideally we would want to know if we have a null-ls
+    -- alternative, and ONLY THEN disable this... but for now this should
+    -- work
+    SERVER_SKIP_FORMATTING = { "volar" }
+
     -- Formatting (Conditional to Capabilities)
-    if client.server_capabilities.documentFormattingProvider then
-        vim.keymap.set('n', '<LocalLeader>f', function()
-            vim.lsp.buf.format { async = true }
-        end, opts)
-        -- TODO(alvaro): Is this necessary anymore?
-        vim.keymap.set('x', '<LocalLeader>f', function()
-            vim.lsp.buf.format { async = true }
-        end, opts)
-    elseif client.server_capabilities.documentRangeFormattingProvider then
-        vim.keymap.set('n', '<LocalLeader>f', vim.lsp.buf.range_formatting, opts)
-    else
-        print("No formatting capabilities reported")
-    end
+    vim.keymap.set('n', '<LocalLeader>f', function()
+        vim.lsp.buf.format {
+            async = true,
+            filter = function(c)
+                return not contains(SERVER_SKIP_FORMATTING, c.name)
+            end
+        }
+    end, opts)
+    -- TODO(alvaro): Is this necessary anymore?
+    vim.keymap.set('x', '<LocalLeader>f', function()
+        vim.lsp.buf.format { async = true }
+    end, opts)
 end
 
 -- Update the capabilities as suggested by `cmp-nvim-lsp`
@@ -197,35 +215,35 @@ lspconfig.vimls.setup {
 
 -- TODO(alvaro): vuels (vetur) works for vue 2, for Vue 3 use `volar`
 -- vuels
-lspconfig.vuels.setup {
-    on_attach = on_attach_general,
-    settings = {
-        javascript = {
-            format = {
-                enable = true,
-            }
-        },
-        vetur = {
-            ignoreProjectWarning = true,
-            format = {
-                enable = true,
-                defaultFormatter = {
-                    js = "prettier",
-                    html = "prettier",
-                    css = "prettier",
-                }
-            }
-        }
-    },
-    capabilities = capabilities,
-}
-
--- lspconfig.volar.setup {
--- TODO(alvaro): See if this is what we want? This is for "Take Over Mode"
--- filetypes = {"typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json"}
--- on_attach = on_attach_general,
--- capabilities=capabilities,
+-- lspconfig.vuels.setup {
+--     on_attach = on_attach_general,
+--     settings = {
+--         javascript = {
+--             format = {
+--                 enable = true,
+--             }
+--         },
+--         vetur = {
+--             ignoreProjectWarning = true,
+--             format = {
+--                 enable = true,
+--                 defaultFormatter = {
+--                     js = "prettier",
+--                     html = "prettier",
+--                     css = "prettier",
+--                 }
+--             }
+--         }
+--     },
+--     capabilities = capabilities,
 -- }
+
+lspconfig.volar.setup {
+    -- TODO(alvaro): See if this is what we want? This is for "Take Over Mode"
+    on_attach = on_attach_general,
+    capabilities = capabilities,
+    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+}
 
 -- Rust
 local rust_status, rt = pcall(require, 'rust-tools')
