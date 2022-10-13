@@ -47,6 +47,7 @@ Plug 'onsails/lspkind-nvim'
 " TODO(alvaro): Look into this
 " Plug 'romainl/vim-qf'
 
+
 " Eye candy
 Plug 'junegunn/vim-easy-align'
 Plug 'mhinz/vim-startify'
@@ -95,6 +96,9 @@ Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'L3MON4D3/LuaSnip', {'tag': 'v1.*'}
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'rafamadriz/friendly-snippets'
+
+" Misc
+Plug 'gpanders/editorconfig.nvim'
 
 call plug#end()
 
