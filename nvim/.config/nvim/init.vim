@@ -99,6 +99,7 @@ Plug 'rafamadriz/friendly-snippets'
 
 " Misc
 Plug 'gpanders/editorconfig.nvim'
+Plug 'akinsho/toggleterm.nvim', {'tag': 'v2.*'}
 
 call plug#end()
 
