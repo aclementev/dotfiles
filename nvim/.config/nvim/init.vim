@@ -100,8 +100,13 @@ Plug 'rafamadriz/friendly-snippets'
 " Misc
 Plug 'gpanders/editorconfig.nvim'
 Plug 'akinsho/toggleterm.nvim', {'tag': 'v2.*'}
+Plug 'nvim-tree/nvim-tree.lua'
 
 call plug#end()
+
+" Disable netrw for nvim-tree
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 
 " Merge the signcolumn and number column
 set signcolumn=yes:1
