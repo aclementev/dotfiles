@@ -75,9 +75,10 @@ telescope.setup({
 
 -- This requires an external installation to work properly:
 -- https://github.com/nvim-telescope/telescope-fzy-native.nvim
-telescope.load_extension("fzy_native")
-telescope.load_extension("ui-select")
-telescope.load_extension("file_browser")
+pcall(telescope.load_extension, "fzy_native")
+pcall(telescope.load_extension, "ui-select")
+pcall(telescope.load_extension, "file_browser")
+pcall(telescope.load_extension, "dap")
 
 local opts = { silent = true }
 
