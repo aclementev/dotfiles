@@ -3,20 +3,25 @@ if not setup then
 	return
 end
 
-nvim_tree.setup {
-    sort_by = "case_sensitive",
-    view = {
-        adaptive_size = true,
-        mappings = {
-            list = {
-                { key = "-", action = "dir_up" },
-            },
-        },
-    },
-    renderer = {
-        group_empty = true,
-    },
-    filters = {
-        dotfiles = false,
-    },
-}
+nvim_tree.setup({
+	sort_by = "case_sensitive",
+	view = {
+		adaptive_size = true,
+		mappings = {
+			list = {
+				{ key = "-", action = "dir_up" },
+			},
+		},
+	},
+	renderer = {
+		group_empty = true,
+	},
+	filters = {
+		dotfiles = false,
+	},
+})
+
+-- Mappings for NvimTree
+vim.keymap.set("n", "<Leader>b", function()
+	vim.cmd("NvimTreeToggle")
+end)
