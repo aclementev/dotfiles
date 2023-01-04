@@ -30,7 +30,7 @@ set smartindent
 set smartcase
 
 set number
-" set relativenumber
+set relativenumber
 set wrap
 set linebreak
 set nolist
