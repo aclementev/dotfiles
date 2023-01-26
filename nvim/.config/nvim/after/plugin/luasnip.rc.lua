@@ -43,6 +43,9 @@ end
 
 vim.api.nvim_create_user_command("ReloadSnippets", ReloadSnippets, { nargs = 0 })
 
+-- Preload the local snippets that use `SnipMate` syntax (from `snippets/` directory in conf)
+require("luasnip.loaders.from_snipmate").lazy_load()
+
 -- Preload the VSCode like snippets from plugins (i.e: rafamadriz/friendly-snippets)
 require("luasnip.loaders.from_vscode").lazy_load()
 ls.filetype_extend("python", { "django" })
