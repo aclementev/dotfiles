@@ -106,6 +106,7 @@ Plug 'rafamadriz/friendly-snippets'
 Plug 'gpanders/editorconfig.nvim'
 Plug 'akinsho/toggleterm.nvim', {'tag': 'v2.*'}
 Plug 'nvim-tree/nvim-tree.lua'
+Plug 'folke/which-key.nvim'
 
 call plug#end()
 
