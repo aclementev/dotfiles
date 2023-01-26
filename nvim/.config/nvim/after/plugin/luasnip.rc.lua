@@ -33,16 +33,6 @@ vim.keymap.set({ "i", "s" }, "<C-J>", function()
 	end
 end, { silent = true })
 
--- Save the local config filename for later
-local config_filename = vim.fn.expand("%")
-
--- User command for reloading snippets
-function ReloadSnippets()
-	vim.cmd("source " .. config_filename)
-end
-
-vim.api.nvim_create_user_command("ReloadSnippets", ReloadSnippets, { nargs = 0 })
-
 -- Preload the local snippets that use `SnipMate` syntax (from `snippets/` directory in conf)
 require("luasnip.loaders.from_snipmate").lazy_load()
 
@@ -50,22 +40,3 @@ require("luasnip.loaders.from_snipmate").lazy_load()
 require("luasnip.loaders.from_vscode").lazy_load()
 ls.filetype_extend("python", { "django" })
 -- ls.filetype_extend("javascript", {"vue"})
-
--- Snippets
--- An example of how to add snippets
--- ls.add_snippets("all", {
---     ls.parser.parse_snippet(
---         "lspsyn",
---         "Wow! This ${1:Stuff} really ${2:works. ${3:Well, a bit.}}"
---     ),
--- })
-
--- An example snippet from TJ's video
-local s = ls.s
-local i = ls.insert_node
-local fmt = require("luasnip.extras.fmt").fmt
-local rep = require("luasnip.extras").rep
-
-ls.add_snippets("lua", {
-	s("req", fmt("local {} = require('{}')", { i(1, "default"), rep(1) })),
-})

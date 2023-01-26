@@ -1,3 +1,9 @@
 snippet test
 	local $1 = this.is.a.test($2, $1)
 	print($1, $0)
+
+snippet preq protected require
+	local status, $1 = pcall(require, "$1")
+	if not status then
+		return
+	end
