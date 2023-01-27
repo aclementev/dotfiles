@@ -34,8 +34,8 @@ end
 -- Setup lspsaga
 local lspsaga_status, lspsaga = pcall(require, "lspsaga")
 if lspsaga_status then
-	lspsaga.init_lsp_saga({
-		code_action_lightbulb = {
+	lspsaga.setup({
+		lightbulb = {
 			enable = false,
 		},
 	})
@@ -74,6 +74,7 @@ local on_attach_general = function(client)
 			require("lspsaga.action").smart_scroll_with_saga(-4)
 		end, opts)
 		vim.keymap.set("n", "<LocalLeader>rn", "<cmd>Lspsaga rename<CR>", opts)
+		vim.keymap.set("n", "<LocalLeader>rN", "<cmd>Lspsaga rename ++project<CR>", opts)
 		vim.keymap.set("n", "gp", "<cmd>Lspsaga preview_definition<CR>", opts)
 	end
 

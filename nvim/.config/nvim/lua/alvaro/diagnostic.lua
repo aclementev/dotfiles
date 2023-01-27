@@ -13,18 +13,20 @@ vim.diagnostic.config({
 
 -- Setup the Mappings
 local map_opts = { noremap = true, silent = true }
-local saga_diag = require("lspsaga.diagnostic")
 
 vim.keymap.set("n", "<LocalLeader>dq", vim.diagnostic.setqflist, map_opts)
 vim.keymap.set("n", "<LocalLeader>dl", vim.diagnostic.setloclist, map_opts)
 
 -- Some LSP Saga related diagnostics
-vim.keymap.set("n", "<LocalLeader>dd", saga_diag.show_line_diagnostics, map_opts)
-vim.keymap.set("n", "<LocalLeader>dn", saga_diag.goto_next, map_opts)
-vim.keymap.set("n", "<LocalLeader>dp", saga_diag.goto_prev, map_opts)
-vim.keymap.set("n", "<LocalLeader>en", function()
-	saga_diag.goto_next({ severity = vim.diagnostic.severity.ERROR })
-end, map_opts)
-vim.keymap.set("n", "<LocalLeader>ep", function()
-	saga_diag.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-end, map_opts)
+local status, saga_diag = pcall(require, "lspsaga.diagnostic")
+if status then
+	vim.keymap.set("n", "<LocalLeader>dd", "<cmd>Lspsaga show_line_diagnostics<CR>", map_opts)
+	vim.keymap.set("n", "<LocalLeader>dn", "<cmd>Lspsaga diagnostic_jump_next<CR>", map_opts)
+	vim.keymap.set("n", "<LocalLeader>dp", "<cmd>Lspsaga diagnostic_jump_prev<CR>", map_opts)
+	vim.keymap.set("n", "<LocalLeader>en", function()
+		saga_diag:goto_next({ severity = vim.diagnostic.severity.ERROR })
+	end, map_opts)
+	vim.keymap.set("n", "<LocalLeader>ep", function()
+		saga_diag:goto_prev({ severity = vim.diagnostic.severity.ERROR })
+	end, map_opts)
+end
