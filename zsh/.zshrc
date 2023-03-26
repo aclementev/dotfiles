@@ -71,7 +71,6 @@ DISABLE_MAGIC_FUNCTIONS=true
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
-    poetry
     zsh-autosuggestions
     zsh-syntax-highlighting # This one MUST be last
 )
@@ -85,7 +84,6 @@ source $ZSH/oh-my-zsh.sh
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-export EDITOR='vim'
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
@@ -104,25 +102,17 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# FIXME(alvaro): Deprecate this in favor of `environment/.system-env.sh`
 # NOTE(alvaro): This needs to run first to add necessary configuration variables
 # Load shell global variables such as PATH
-[ -f ~/.shell_globals ] && source ~/.shell_globals
-
-# Source system specific configuration
-[ -f ~/.bash_system_specific ] && source ~/.bash_system_specific
+[ -f ~/.shell_globals ] && . ~/.shell_globals
 
 # Source custom functions
-[ -f $ZSH_DIR/functions.sh ] && source $ZSH_DIR/functions.sh
+[ -f $ZSH_DIR/functions.sh ] && . $ZSH_DIR/functions.sh
 
 # Source default aliases
-[ -f ~/.bash_aliases ] && source ~/.bash_aliases
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
-# FZF config
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Z config
-[ -f /usr/local/etc/profile.d/z.sh ] && source /usr/local/etc/profile.d/z.sh
-
-# BigML Auth
-[ -f ~/.bigml_credentials ] && source ~/.bigml_credentials
+# Source the system settings
+[ -e "$HOME/.system-env.sh" ] && . "$HOME/.system-env.sh"
 

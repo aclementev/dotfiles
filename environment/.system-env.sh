@@ -3,6 +3,9 @@
 # To override some configuration, use `.system-env-specific.sh`
 echo "Hello from .system-env.sh"
 
+# ----------- System Settings ------------
+export EDITOR="nvim"
+
 # ------------- System Tools ------------- 
 # FZF
 [ -e "$HOME/.fzf.bash" ] && . "$HOME/.fzf.bash"
@@ -25,6 +28,9 @@ export NVM_DIR="$HOME/.nvm"
 
 # ---------------- Haskell ---------------
 [ -e "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
+
+# ---------------- BigML -----------------
+[ -f "$HOME/.bigml_credentials" ] && . "$HOME/.bigml_credentials"
 
 # Load any system specific overrides
 if [ -e "$HOME/.system-env-specific.sh" ]; then
