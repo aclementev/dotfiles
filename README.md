@@ -30,6 +30,18 @@ stow <app>
 
 ## Application Specific Instructions
 
+### Environment
+This contains some general settings for the environment that I want shared across systems.
+Note that this assumes that the system is *NIX (i.e: Linux, macOS or WSL).
+
+This contains a `.system-env.sh` file with some environment variables that are
+used to configure some of the basic tools that are assumed to be installed as part 
+of the base installation (meaning, tools that I always want to be there, some of them
+may not be in some systems by default and require some installation).
+
+The environment loaders should also be configured to automatically load a `.system-env-specific.sh` file which contains system specific configurations, which could also
+contain overrides to shared configurations.
+
 
 ### zsh
 Setting up the `zsh` shell depends on the platform.
