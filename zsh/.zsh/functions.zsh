@@ -79,6 +79,11 @@ psql-to-csv() {
 }
 
 
+load-shared-token() {
+    pbcopy < ~/.gh_token_shared_servers
+}
+
+
 # Docker related
 # Purge all the containers running and stopped
 docker-purge() {
