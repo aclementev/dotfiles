@@ -9,7 +9,8 @@ export ZSH_DIR="${0:A:h}/.zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# NOTE(alvaro): We use starship to manage the prompts and themes
+ZSH_THEME=""
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -69,11 +70,20 @@ DISABLE_MAGIC_FUNCTIONS=true
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
+# Lazy load NVM when it's used
+# NOTE(alvaro): If you notice that node things start (e.g: vim/nvim plugins 
+# that require `node` but that session hasn't triggered a load) take a look at 
+# export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim' 'nvim')
+export NVM_LAZY_LOAD=true
+
 plugins=(
     git
+    zsh-nvm  # For lazy loading NVM
     zsh-autosuggestions
     zsh-syntax-highlighting # This one MUST be last
 )
+ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd completion)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -82,6 +92,9 @@ source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
+#
+# Make everything colorfoul
+export CLICOLOR=1
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -105,14 +118,21 @@ export LANG=en_US.UTF-8
 # FIXME(alvaro): Deprecate this in favor of `environment/.system-env.sh`
 # NOTE(alvaro): This needs to run first to add necessary configuration variables
 # Load shell global variables such as PATH
-[ -f ~/.shell_globals ] && . ~/.shell_globals
 
-# Source custom functions
-[ -f $ZSH_DIR/functions.sh ] && . $ZSH_DIR/functions.sh
+# Load the different files
+try-source() {
+    [ -e "$1" ] && . $1
+}
 
-# Source default aliases
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+# Load default bash aliases (i.e: system provided)
+try-source "$HOME/.bash_aliases"
 
-# Source the system settings
-[ -e "$HOME/.system-env.sh" ] && . "$HOME/.system-env.sh"
+# Load custom aliases
+try-source "$HOME/.aliases"
+try-source "$HOME/.shell_globals"
 
+# Load custom functions
+try-source "$ZSH_DIR/functions.zsh"
+
+# Load the standard system environment
+try-source "$HOME/.system-env.sh" 

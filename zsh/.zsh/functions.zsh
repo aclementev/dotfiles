@@ -82,7 +82,7 @@ psql-to-csv() {
 # Docker related
 # Purge all the containers running and stopped
 docker-purge() {
-    docker ps -a | awk '{print $1}' | tail -n+2 | xargs docker rm -f
+    docker ps -aq | xargs docker rm -f
 }
 
 
