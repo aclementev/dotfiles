@@ -26,9 +26,6 @@ symbol = " "
 [elm]
 symbol = " "
 
-[fossil_branch]
-symbol = " "
-
 [gcloud]
 disabled = true
 
@@ -114,9 +111,6 @@ Windows = " "
 
 [package]
 symbol = " "
-
-[pijul_channel]
-symbol = "🪺 "
 
 [python]
 symbol = " "
