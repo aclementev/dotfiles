@@ -56,6 +56,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'rcarriga/nvim-notify'
 
 " Colorschemes
 Plug 'chriskempson/base16-vim'

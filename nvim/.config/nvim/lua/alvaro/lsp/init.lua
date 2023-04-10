@@ -108,7 +108,7 @@ end
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 -- sumneko_lua
-lspconfig.sumneko_lua.setup({
+lspconfig.lua_ls.setup({
 	-- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
 	on_attach = on_attach_general,
 	settings = {
@@ -131,6 +131,7 @@ lspconfig.sumneko_lua.setup({
 					-- FIXME(alvaro): Make sure we only diagnose the right files
 					vim.fn.stdpath("config") .. "/plugged",
 				},
+				checkThirdParty = false,
 			},
 			telemetry = {
 				enable = false,
@@ -296,6 +297,19 @@ if rust_status then
 		capabilities = capabilities,
 	})
 end
+
+-- Go
+lspconfig.gopls.setup({
+	on_attach = on_attach_general,
+	capabilities = capabilities,
+})
+
+-- Elixir
+lspconfig.elixirls.setup({
+	on_attach = on_attach_general,
+	capabilities = capabilities,
+})
+
 
 -- Setup notifications
 local status, notify = pcall(require, "notify")
