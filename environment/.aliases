@@ -1,0 +1,9 @@
+# Aliases
+alias scheme='rlwrap scheme'
+alias l='exa'
+alias ll='exa -l'
+alias la='exa -la'
+alias lld='exa -l --sort=date'
+alias dbl='psql -c "\l"'
+
+# vim: set ft=sh :
