@@ -3,6 +3,8 @@ if not setup then
 	return
 end
 
+compare = require("cmp.config.compare")
+
 -- TODO(alvaro): Make this not 100% required for this to work, give
 -- alternate setup
 local setup2, lspkind = pcall(require, "lspkind")
@@ -13,6 +15,37 @@ end
 -- TODO(alvaro): Check if `nerd-fonts` is present, and if not default
 -- to `codicons` (which requires `vscode-codicons` font setup as a default)
 -- And pass it a `preset`
+
+-- Custom `CompletionItemKind` sorting
+local kind_mapper = require("cmp.types").lsp.CompletionItemKind
+-- TODO(alvaro): Review these, maybe in some languages we want a different sorting?
+local kind_score = {
+	Variable = 1,
+	Class = 2,
+	Method = 3,
+	Keyword = 4,
+	Module = 5,
+}
+
+-- Context aware entry filter (see https://www.youtube.com/watch?v=yTk3C3JMKzQ)
+local context_entry_filter = function(entry, context)
+	local kind = entry:get_kind()
+
+	local line = context.cursor_line
+	local col = context.cursor.col
+	local char_before_cursor = string.sub(line, col - 1, col - 1)
+
+	if char_before_cursor == "." then
+		-- Only Field or Method
+		print("Found a ., filtering item with kind=" .. kind)
+		return kind == 2 or kind == 5 or kind == 10 or kind == 20
+	elseif string.match(line, "^%s*%w*$") then
+		-- Text in a new line
+		print("Found a newline, filtering item with kind=" .. kind)
+		return kind == 3 or kind == 4 or kind == 6 or kind == 9 or kind == 14
+	end
+	return true
+end
 
 -- Limit the size of the PUM
 vim.o.pumheight = 20
@@ -71,7 +104,7 @@ cmp.setup({
 	},
 	sources = {
 		-- The order inside this table represents the order of the results
-		{ name = "nvim_lsp" },
+		{ name = "nvim_lsp", entry_filter = context_entry_filter },
 		{ name = "luasnip" },
 		{
 			name = "buffer",
@@ -84,11 +117,38 @@ cmp.setup({
 		},
 		{ name = "path" },
 	},
+	-- Better sorting
+	sorting = {
+		comparators = {
+			compare.exact,
+			compare.score,
+			-- Custom LSP Kind comparator based on LSP's `CompletionItemKind`
+			-- (see https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#completionItemKind)
+			function(entry1, entry2)
+				local kind1 = kind_score[kind_mapper[entry1:get_kind()]] or 100
+				local kind2 = kind_score[kind_mapper[entry2:get_kind()]] or 100
+				if kind1 < kind2 then
+					return true
+				end
+			end,
+			compare.recently_used,
+			compare.length,
+		},
+	},
+	-- Eye Candy
 	formatting = {
+		-- fields = { "kind", "abbr", "menu" },
 		format = lspkind.cmp_format({
 			mode = "symbol_text",
 			preset = "default",
 			maxwidth = 50,
+			-- Display the source of the completions
+			menu = {
+				buffer = "[Buf]",
+				nvim_lsp = "[LSP]",
+				luasnip = "[Snip]",
+				path = "[Path]",
+			},
 		}),
 	},
 })
