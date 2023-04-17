@@ -78,7 +78,8 @@ set foldmethod=indent
 vnoremap <Leader>y "*y
 nnoremap Y y$
 " Copy the whole buffer into the system clipboard
-nnoremap <Leader>ya :%y*<CR>
+nnoremap <Leader>yy :%y*<CR>
+nnoremap <Leader>yap vap"*y
 
 " Command (Ex) mode niceties
 cnoremap <C-a> <C-b>
@@ -200,7 +201,7 @@ let g:slime_dont_ask_default=1
 let g:slime_python_ipython=1
 
 " Vim/Vimscript development
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+map <LocalLeader>hh :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
