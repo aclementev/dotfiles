@@ -3,4 +3,5 @@ if not status then
 	return
 end
 
-whichkey.setup({})
+-- Until we know how to start and stop it on demand, we disable it
+-- whichkey.setup({})
