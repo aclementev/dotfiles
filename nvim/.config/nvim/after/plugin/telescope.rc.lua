@@ -104,7 +104,7 @@ vim.keymap.set("n", "<Leader>fz", builtin.current_buffer_fuzzy_find, opts)
 vim.keymap.set("n", "<Leader>fc", function()
 	return find_in_dir("~/.config/nvim")
 end, opts)
-vim.keymap.set("n", "<Leader>fD", function()
+vim.keymap.set("n", "<Leader>fH", function()
 	return find_in_dir("~/dotfiles")
 end, opts)
 -- Telescope + LSP
