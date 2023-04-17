@@ -88,14 +88,17 @@ end
 
 --- Open in github the file and line (or range of lines if visual) under
 --- the cursor
-local function GithubOpen(startl, endl)
+local function GithubOpen(startl, endl, use_current_branch)
 	-- TODO(alvaro): Get the visually selected line
 	--      Maybe we could pass it as the arguments using the command instead
 	-- TODO(alvaro): Check that the file exists in the version in github
 	-- Get the current file path from the git base
 	local normalized_path = GitFilePath()
 	-- Get the current branch
-	local branch = GitBranch()
+	local branch = "main"
+	if use_current_branch then
+		branch = GitBranch()
+	end
 	-- Get the current remote URL and transform it to a usable
 	local raw_url = GitRemoteUrl()
 	local github_url = BuildGithubURL(raw_url, branch, normalized_path, { startl, endl }, TransformRemoteGithub)

@@ -15,5 +15,6 @@ function! RunGithubOpen(start, end)
     echom "The end line is " . a:end
 endfunction
 
-command -nargs=0 -range GithubOpen lua require('github').GithubOpen(<line1>, <line2>)
+command! -nargs=0 -range GithubOpen lua require('github').GithubOpen(<line1>, <line2>)
+command! -nargs=0 -range GithubOpenCurrent lua require('github').GithubOpen(<line1>, <line2>, true)
 " command -nargs=0 -range GithubOpen call RunGithubOpen(<line1>, <line2>)
