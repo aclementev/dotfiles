@@ -109,30 +109,22 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 -- sumneko_lua
 lspconfig.lua_ls.setup({
-	-- Lua LSP configuration (inspired by the one in tjdevries/nlua.nvim
 	on_attach = on_attach_general,
 	settings = {
 		Lua = {
 			runtime = {
+				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
 				version = "LuaJIT",
-				-- TODO(alvaro): Review this
-				path = vim.split(package.path, ";"),
 			},
 			diagnostics = {
+				-- Get the language server to recognize the `vim` global
 				globals = { "vim" },
 			},
 			workspace = {
-				-- Make the server aware of Neovim runtime files
-				library = {
-					vim.fn.expand("$VIMRUNTIME/lua"),
-					vim.fn.expand("$VIMRUNTIME/lua/lsp"),
-				},
-				ignoreDir = {
-					-- FIXME(alvaro): Make sure we only diagnose the right files
-					vim.fn.stdpath("config") .. "/plugged",
-				},
+				library = vim.api.nvim_get_runtime_file("", true),
 				checkThirdParty = false,
 			},
+			-- Do not send telemetry data containing a randomized but unique identifier
 			telemetry = {
 				enable = false,
 			},
