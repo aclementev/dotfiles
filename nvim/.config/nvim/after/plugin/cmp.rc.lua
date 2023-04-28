@@ -129,6 +129,8 @@ cmp.setup({
 				local kind2 = kind_score[kind_mapper[entry2:get_kind()]] or 100
 				if kind1 < kind2 then
 					return true
+                elseif kind1 > kind2 then
+                    return false
 				end
 			end,
 			compare.recently_used,
