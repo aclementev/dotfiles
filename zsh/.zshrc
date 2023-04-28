@@ -74,7 +74,7 @@ DISABLE_MAGIC_FUNCTIONS=true
 # Lazy load NVM when it's used
 # NOTE(alvaro): If you notice that node things start (e.g: vim/nvim plugins 
 # that require `node` but that session hasn't triggered a load) take a look at 
-# export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim' 'nvim')
+export NVM_LAZY_LOAD_EXTRA_COMMANDS=('nvim')
 export NVM_LAZY_LOAD=true
 
 plugins=(
