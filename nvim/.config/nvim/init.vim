@@ -51,9 +51,9 @@ Plug 'onsails/lspkind-nvim'
 " Eye candy
 Plug 'junegunn/vim-easy-align'
 Plug 'mhinz/vim-startify'
-Plug 'j-hui/fidget.nvim'
+Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 Plug 'nvim-tree/nvim-web-devicons'
-Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v4.*' }
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'rcarriga/nvim-notify'

@@ -162,12 +162,11 @@ lspconfig.pylsp.setup({
 				flake8 = {
 					enabled = true,
 				},
-				-- Temporarily disable these globally (should be per-project)
-				-- TODO(alvaro): Make this work so we can remove the awful
-				-- `pylsp-mypy.cfg` file
-				pyls_mypy = {
-					enabled = false,
-					live_mode = true,
+				pylsp_mypy = {
+					enabled = true,
+					live_mode = false,
+                    dmypy = false,
+                    report_progress = true,
 				},
 				-- Disable these plugins explicitly
 				pycodestyle = {
