@@ -17,3 +17,7 @@
 	ss = status -s
 [pull]
 	rebase = false
+[init]
+	defaultBranch = main
+[rerere]
+	enabled = true
