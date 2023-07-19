@@ -3,7 +3,7 @@ if not setup then
 	return
 end
 
-compare = require("cmp.config.compare")
+local compare = require("cmp.config.compare")
 
 -- TODO(alvaro): Make this not 100% required for this to work, give
 -- alternate setup
@@ -29,6 +29,9 @@ local kind_score = {
 
 -- Context aware entry filter (see https://www.youtube.com/watch?v=yTk3C3JMKzQ)
 local context_entry_filter = function(entry, context)
+	-- NOTE(alvaro): For debugging you can see the text to be competed from
+	-- the `entry.completion_item.label`
+	-- (see https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#completionItem)
 	local kind = entry:get_kind()
 
 	local line = context.cursor_line
@@ -36,13 +39,28 @@ local context_entry_filter = function(entry, context)
 	local char_before_cursor = string.sub(line, col - 1, col - 1)
 
 	if char_before_cursor == "." then
-		-- Only Field or Method
-		print("Found a ., filtering item with kind=" .. kind)
-		return kind == 2 or kind == 5 or kind == 10 or kind == 20
+		-- Some kind of '.' accessing
+		return (
+			kind == kind_mapper.Field
+			or kind == kind_mapper.Method
+			or kind == kind_mapper.Module
+			or kind == kind_mapper.Property
+			or kind == kind_mapper.Constructor
+			or kind == kind_mapper.EnumMember
+			-- NOTE(alvaro): pylsp reports properties and methods as Variable and Function
+			or kind == kind_mapper.Variable
+			or kind == kind_mapper.Function
+		)
 	elseif string.match(line, "^%s*%w*$") then
 		-- Text in a new line
-		print("Found a newline, filtering item with kind=" .. kind)
-		return kind == 3 or kind == 4 or kind == 6 or kind == 9 or kind == 14
+		return (
+			kind ~= kind_mapper.Field
+			and kind ~= kind_mapper.Method
+			and kind ~= kind_mapper.Module
+			and kind ~= kind_mapper.Property
+			and kind ~= kind_mapper.Constructor
+			and kind ~= kind_mapper.EnumMember
+		)
 	end
 	return true
 end
@@ -53,10 +71,28 @@ vim.o.shortmess = vim.o.shortmess .. "c"
 
 -- TODO(alvaro): Add lsp document symbols as well hrsh7th/cmp-nvim-lsp-document-symbol
 cmp.setup({
+	sources = {
+		-- The order inside this table represents the order of the results
+		{ name = "nvim_lsp", entry_filter = context_entry_filter },
+		{ name = "luasnip" },
+		{
+			name = "buffer",
+			option = {
+				-- To add other-buffer autocompletion
+				get_bufnrs = function()
+					return vim.api.nvim_list_bufs()
+				end,
+				keyword_length = 3,
+			},
+			max_item_count = 5,
+		},
+		{ name = "path" },
+	},
 	snippet = {
 		expand = function(args)
 			-- Use LuaSnip for snippets
-			require("luasnip").lsp_expand(args.body)
+			return
+			-- require("luasnip").lsp_expand(args.body)
 		end,
 	},
 	completion = {
@@ -102,21 +138,6 @@ cmp.setup({
 			end
 		end,
 	},
-	sources = {
-		-- The order inside this table represents the order of the results
-		{ name = "nvim_lsp", entry_filter = context_entry_filter },
-		{ name = "luasnip" },
-		{
-			name = "buffer",
-			option = {
-				-- To add other-buffer autocompletion
-				get_bufnrs = function()
-					return vim.api.nvim_list_bufs()
-				end,
-			},
-		},
-		{ name = "path" },
-	},
 	-- Better sorting
 	sorting = {
 		comparators = {
@@ -129,8 +150,8 @@ cmp.setup({
 				local kind2 = kind_score[kind_mapper[entry2:get_kind()]] or 100
 				if kind1 < kind2 then
 					return true
-                elseif kind1 > kind2 then
-                    return false
+				elseif kind1 > kind2 then
+					return false
 				end
 			end,
 			compare.recently_used,
