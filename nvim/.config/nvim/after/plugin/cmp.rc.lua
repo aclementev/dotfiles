@@ -164,7 +164,6 @@ cmp.setup({
 		-- fields = { "kind", "abbr", "menu" },
 		format = lspkind.cmp_format({
 			mode = "symbol_text",
-			preset = "default",
 			maxwidth = 50,
 			-- Display the source of the completions
 			menu = {

@@ -171,6 +171,7 @@ let g:python3_host_prog = '~/.virtualenv/neovim/bin/python'
 
 
 " Load the Lua basic configuration
+lua require'before'
 lua require'alvaro'
 
 " Highligh on yank
@@ -262,3 +263,5 @@ command! JSONFormat :%! jq .
 command! JSONCompact :%! jq -c .
 
 " }}}
+
+
