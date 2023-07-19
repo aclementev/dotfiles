@@ -236,10 +236,12 @@ endfunction
 autocmd FileType c,cpp,java,javascript,typescript,python,lua,vim autocmd BufWritePre <buffer> call TrimWhitespace()
 
 " Custom mapping for the GithubOpen
-nnoremap <silent> <LocalLeader>g :<C-U>GithubOpen<CR>
+nnoremap <silent> <LocalLeader>gg :<C-U>GithubOpen<CR>
+nnoremap <silent> <LocalLeader>gG :<C-U>GithubOpenCurrent<CR>
 " TODO(alvaro): Review this one, we may want to pass the '<,'> range to the
 " command call
-xnoremap <silent> <LocalLeader>g :GithubOpen<CR>
+xnoremap <silent> <LocalLeader>gg :GithubOpen<CR>
+xnoremap <silent> <LocalLeader>gG :GithubOpenCurrent<CR>
 
 " Some settings from different languages by vim-polyglot
 let g:python_highlight_space_errors = 0
