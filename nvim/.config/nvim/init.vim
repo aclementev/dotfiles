@@ -39,7 +39,7 @@ Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
-" TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lua
+Plug 'hrsh7th/cmp-nvim-lua'
 " TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lsp-document-symbol
 Plug 'hrsh7th/nvim-cmp'
 Plug 'onsails/lspkind-nvim'

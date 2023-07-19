@@ -75,6 +75,7 @@ cmp.setup({
 		-- The order inside this table represents the order of the results
 		{ name = "nvim_lsp", entry_filter = context_entry_filter },
 		{ name = "luasnip" },
+		{ name = "nvim_lua" },
 		{
 			name = "buffer",
 			option = {
@@ -170,6 +171,7 @@ cmp.setup({
 				buffer = "[Buf]",
 				nvim_lsp = "[LSP]",
 				luasnip = "[Snip]",
+				nvim_lua = "[Lua]",
 				path = "[Path]",
 			},
 		}),
