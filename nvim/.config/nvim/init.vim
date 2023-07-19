@@ -40,6 +40,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'PaterJason/cmp-conjure'
 " TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lsp-document-symbol
 Plug 'hrsh7th/nvim-cmp'
 Plug 'onsails/lspkind-nvim'
@@ -83,7 +84,7 @@ Plug 'mfussenegger/nvim-dap-python'
 Plug 'simrat39/rust-tools.nvim'
 
 " Clojure
-Plug 'Olical/conjure', { 'tag': 'v4.25.0' }
+Plug 'Olical/conjure', { 'tag': 'v4.*' }
 Plug 'tpope/vim-dispatch'
 Plug 'clojure-vim/vim-jack-in'
 Plug 'radenling/vim-dispatch-neovim'

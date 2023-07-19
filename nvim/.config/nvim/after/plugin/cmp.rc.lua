@@ -75,6 +75,7 @@ cmp.setup({
 		-- The order inside this table represents the order of the results
 		{ name = "nvim_lsp", entry_filter = context_entry_filter },
 		{ name = "luasnip" },
+		{ name = "conjure" },  -- This will only work on Conjure-compatible filetypes
 		{ name = "nvim_lua" },
 		{
 			name = "buffer",
