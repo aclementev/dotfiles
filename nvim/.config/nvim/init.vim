@@ -22,11 +22,6 @@ Plug 'justinmk/vim-dirvish'
 " Testing
 Plug 'vim-test/vim-test'
 
-" Lisps
-Plug 'guns/vim-sexp'
-Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'jpalardy/vim-slime'
-
 " LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
@@ -47,7 +42,6 @@ Plug 'onsails/lspkind-nvim'
 
 " TODO(alvaro): Look into this
 " Plug 'romainl/vim-qf'
-
 
 " Eye candy
 Plug 'junegunn/vim-easy-align'
@@ -83,6 +77,11 @@ Plug 'mfussenegger/nvim-dap-python'
 " Other languages
 Plug 'simrat39/rust-tools.nvim'
 
+" Lisps
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+Plug 'jpalardy/vim-slime'
+
 " Clojure
 Plug 'Olical/conjure', { 'tag': 'v4.*' }
 Plug 'tpope/vim-dispatch'
@@ -110,6 +109,7 @@ Plug 'gpanders/editorconfig.nvim'
 Plug 'akinsho/toggleterm.nvim', {'tag': 'v2.*'}
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'folke/which-key.nvim'
+Plug 'ThePrimeagen/harpoon'
 
 call plug#end()
 
