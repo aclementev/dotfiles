@@ -23,8 +23,18 @@ local function fd_with_excludes(excludes)
 		follow = true,
 		hidden = true,
 	}
-	return function()
-		return builtin.find_files(find_options)
+
+	-- Returns a function that maybe takes some directories to search
+	return function(dirs)
+		local opts = vim.deepcopy(find_options)
+
+		if dirs then
+			opts.search_dirs = dirs
+		end
+
+		return function()
+			return builtin.find_files(opts)
+		end
 	end
 end
 
@@ -87,7 +97,7 @@ vim.keymap.set("n", "<Leader>ff", function()
 	return builtin.git_files({ show_untracked = false })
 end, opts)
 -- TODO(alvaro): Make this mapping default to `find` if `fd` is not installed
-vim.keymap.set("n", "<Leader>fa", fd_all_with_excludes, opts)
+vim.keymap.set("n", "<Leader>fa", fd_all_with_excludes(), opts)
 vim.keymap.set("n", "<Leader>fA", function()
 	return builtin.find_files({
 		find_command = { "fd", "--type", "f", "--exclude", ".git" },
@@ -101,12 +111,8 @@ vim.keymap.set("n", "<Leader>fh", builtin.help_tags, opts)
 vim.keymap.set("n", "<Leader>fo", builtin.oldfiles, opts)
 vim.keymap.set("n", "<Leader>fC", builtin.commands, opts)
 vim.keymap.set("n", "<Leader>fz", builtin.current_buffer_fuzzy_find, opts)
-vim.keymap.set("n", "<Leader>fc", function()
-	return find_in_dir("~/.config/nvim")
-end, opts)
-vim.keymap.set("n", "<Leader>fH", function()
-	return find_in_dir("~/dotfiles")
-end, opts)
+vim.keymap.set("n", "<Leader>fn", fd_all_with_excludes({ "~/.config/nvim" }), opts)
+vim.keymap.set("n", "<Leader>fc", fd_all_with_excludes({ "~/dotfiles" }), opts)
 -- Telescope + LSP
 vim.keymap.set("n", "<Leader>fs", builtin.lsp_document_symbols, opts)
 vim.keymap.set("n", "<Leader>fS", builtin.lsp_workspace_symbols, opts)
