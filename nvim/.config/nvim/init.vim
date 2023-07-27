@@ -243,11 +243,6 @@ nnoremap <silent> <LocalLeader>gG :<C-U>GithubOpenCurrent<CR>
 xnoremap <silent> <LocalLeader>gg :GithubOpen<CR>
 xnoremap <silent> <LocalLeader>gG :GithubOpenCurrent<CR>
 
-" Some settings from different languages by vim-polyglot
-let g:python_highlight_space_errors = 0
-let g:python_highlight_all = 1
-
-
 " Colorscheme / Highlight related stuff
 function! SynGroup()
     let l:s = synID(line('.'), col('.'), 1)
@@ -257,6 +252,16 @@ endfun
 command! SynGroup :call SynGroup()
 nnoremap <silent> <LocalLeader>sg :<C-U>SynGroup<CR>
 
+
+" Conjure configuration
+"clojure", "fennel", "janet", "hy", "julia", "racket",
+"scheme", "lua", "lisp", "python", "rust", "sql"
+let g:conjure#filetypes = ["clojure", "fennel", "janet", "hy", "racket", "scheme", "lisp"]
+let g:conjure#filetype#julia = v:false
+let g:conjure#filetype#lua = v:false
+let g:conjure#filetype#python = v:false
+let g:conjure#filetype#rust = v:false
+let g:conjure#filetype#sql = v:false
 
 " Other mappings {{{
 
