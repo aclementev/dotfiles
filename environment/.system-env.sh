@@ -8,7 +8,7 @@ export EDITOR="nvim"
 
 # ------------- System Tools -------------
 # FZF
-if [[ "$SHELL" = "/bin/zsh" ]]; then
+if [[ $(basename "$SHELL") = "zsh" ]]; then
     [ -e "$HOME/.fzf.zsh" ] && . "$HOME/.fzf.zsh"
 else
     [ -e "$HOME/.fzf.bash" ] && . "$HOME/.fzf.bash"
@@ -18,7 +18,7 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden'
 
 # direnv
 if [[ -x "$(command -v direnv)" ]]; then
-    if [[ "$SHELL" = "/bin/zsh" ]]; then
+    if [[ $(basename "$SHELL") = "zsh" ]]; then
         eval "$(direnv hook zsh)"
     else
         eval "$(direnv hook bash)"
@@ -46,6 +46,7 @@ fi
 # ---------------- Python ----------------
 # TODO: Migrate over to pyenv everywhere (?)
 export WORKON_HOME=~/.virtualenv
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 # ---------------- Haskell ---------------
 [ -e "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
