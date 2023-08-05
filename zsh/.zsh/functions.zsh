@@ -120,4 +120,8 @@ cheatbash() {
     cheat bash $@
 }
 
+pip-dev() {
+    python -m pip install mypy flake8 isort black rope jedi python-lsp-server pylsp-mypy pyls-isort python-lsp-black pyls-memestra pylsp-rope 
+}
+
 # vim: set filetype=zsh :
