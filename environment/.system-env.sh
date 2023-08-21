@@ -6,6 +6,9 @@
 # ----------- System Settings ------------
 export EDITOR="nvim"
 
+# Starship for zsh
+source <(/usr/local/bin/starship init "$(basename $SHELL)" --print-full-init)
+
 # ------------- System Tools -------------
 # FZF
 if [[ $(basename "$SHELL") = "zsh" ]]; then
@@ -24,6 +27,8 @@ if [[ -x "$(command -v direnv)" ]]; then
         eval "$(direnv hook bash)"
     fi
 fi
+
+
 
 # Custom tools
 if [ -d "$HOME/code/tools/bin/" ]; then
