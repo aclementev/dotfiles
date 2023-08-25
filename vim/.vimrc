@@ -75,11 +75,11 @@ set foldmethod=indent
 
 " TODO(alvaro): Make this work on WSL2
 " Yanking to System Clipboard
-vnoremap <Leader>y "*y
+vnoremap <Leader>y "+y
 nnoremap Y y$
 " Copy the whole buffer into the system clipboard
-nnoremap <Leader>yy :%y*<CR>
-nnoremap <Leader>yap vap"*y
+nnoremap <Leader>yy :%y+<CR>
+nnoremap <Leader>yap vap"+y
 
 " Command (Ex) mode niceties
 cnoremap <C-a> <C-b>
