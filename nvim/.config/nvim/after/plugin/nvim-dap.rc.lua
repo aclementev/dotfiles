@@ -25,8 +25,11 @@ nmap("<Leader>dr", dap.repl.toggle)
 nmap("<Leader>dl", dap.run_last)
 nmap("<Leader>dL", dap.launch)
 nmap("<Leader>dq", function()
-	dap.terminate()
+	dap.disconnect()
 	dap.close()
+    -- For some reason the listener below does not trigger when we call this
+    -- so we do it here manually
+    require('dapui').close()
 end)
 
 -- DapUI
@@ -35,12 +38,19 @@ if setup_ui then
 	dap_ui.setup({})
 
 	-- Automatically trigger the UI
-	dap.listeners.after.event_initialized["dapui_config"] = dap_ui.open
-	dap.listeners.before.event_terminated["dapui_config"] = dap_ui.close
-	dap.listeners.before.event_exited["dapui_config"] = dap_ui.close
+	dap.listeners.after.event_initialized["dapui_config"] = function()
+        dap_ui.open()
+    end
+	dap.listeners.before.event_terminated["dapui_config"] = function()
+        dap_ui.close()
+    end
+	dap.listeners.before.event_exited["dapui_config"] = function()
+        dap_ui.close()
+    end
 
 	-- Mappings
 	nmap("<Leader>de", dap_ui.eval)
+	nmap("<Leader>du", dap_ui.toggle)
 	vim.keymap.set("v", "<Leader>de", dap_ui.eval, { silent = true, buffer = true })
 end
 

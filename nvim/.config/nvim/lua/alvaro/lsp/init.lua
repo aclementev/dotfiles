@@ -165,8 +165,8 @@ lspconfig.pylsp.setup({
 				pylsp_mypy = {
 					enabled = true,
 					live_mode = false,
-                    dmypy = false,
-                    report_progress = true,
+					dmypy = false,
+					report_progress = true,
 				},
 				-- Disable these plugins explicitly
 				pycodestyle = {
@@ -239,7 +239,25 @@ lspconfig.volar.setup({
 
 -- Rust
 local rust_status, rt = pcall(require, "rust-tools")
+
 if rust_status then
+	-- NOTE(alvaro): This uses the `CodeLLDB` VSCode extension for a better
+	-- debugging experience, which we manage through `Mason`
+	local mason_registry = require("mason-registry")
+	local codelldb = mason_registry.get_package("codelldb")
+	local extension_path = codelldb:get_install_path() .. "/extension/"
+	local codelldb_path = extension_path .. "adapter/codelldb"
+	local liblldb_path = extension_path .. "lldb/lib/liblldb"
+
+	local this_os = vim.loop.os_uname().sysname
+	if this_os:find("Windows") then
+		codelldb_path = extension_path .. "adapter\\codelldb.exe"
+		liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
+	else
+		-- The liblldb extension is '.so' for Linux and '.dylib' for macOS
+		liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
+	end
+
 	rt.setup({
 		tools = {
 			executor = require("rust-tools/executors").termopen,
@@ -254,6 +272,9 @@ if rust_status then
 				max_len_align = true,
 				max_len_align_padding = 1,
 				highlight = "Comment",
+			},
+			hover_actions = {
+				auto_focus = true,
 			},
 			-- FIXME(alvaro): This is throwing a deprecated error
 			-- hover_with_actions = true,
@@ -279,11 +300,7 @@ if rust_status then
 		-- debugging stuff
 		-- FIXME(alvaro): Unused and untested for now
 		dap = {
-			adapter = {
-				type = "executable",
-				command = "lldb-vscode",
-				name = "rt_lldb",
-			},
+			adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
 		},
 		capabilities = capabilities,
 	})
@@ -300,7 +317,6 @@ lspconfig.elixirls.setup({
 	on_attach = on_attach_general,
 	capabilities = capabilities,
 })
-
 
 -- Setup notifications
 local status, notify = pcall(require, "notify")
