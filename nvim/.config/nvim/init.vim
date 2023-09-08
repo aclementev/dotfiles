@@ -111,13 +111,12 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'github/copilot.vim'
 
 " Misc
-" FIXME(alvaro): This is built into neovim now
-Plug 'gpanders/editorconfig.nvim'
 Plug 'akinsho/toggleterm.nvim', {'tag': 'v2.*'}
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'justinmk/vim-dirvish'
 Plug 'folke/which-key.nvim'
 Plug 'ThePrimeagen/harpoon'
+Plug 'chomosuke/term-edit.nvim', {'tag': 'v1.*'}
 
 call plug#end()
 
