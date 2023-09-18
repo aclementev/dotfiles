@@ -7,7 +7,7 @@
 export EDITOR="nvim"
 
 # Starship for zsh
-source <(/usr/local/bin/starship init "$(basename $SHELL)" --print-full-init)
+eval "$(starship init $(basename $SHELL))"
 
 # ------------- System Tools -------------
 # FZF
