@@ -1,7 +1,7 @@
 [core]
 	editor = nvim
 [user]
-	email = clemente@bigml.com
+	email = clemente.varo@gmail.com
 	name = Alvaro Clemente
 [alias]
 	lol = log --graph --oneline --abbrev-commit --all
