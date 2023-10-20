@@ -5,6 +5,9 @@
 " Maybe move the common configuration to a `vimrc-no-plugins` file
 source ~/.vimrc
 
+" Enable vim.loader if it exists for faster startup
+lua if vim.loader then vim.loader.enable() end
+
 " Load the package manager (for now we have duplicated config for this
 call plug#begin(stdpath('config') . '/plugged')
 " Fuzzy finder
@@ -171,7 +174,6 @@ nnoremap <A-l> <C-W>l
 " Nvim necessary config
 let g:python3_host_prog = '~/.virtualenv/neovim/bin/python'
 
-
 " Load the Lua basic configuration
 lua require'before'
 lua require'alvaro'
@@ -252,7 +254,6 @@ endfun
 
 command! SynGroup :call SynGroup()
 nnoremap <silent> <LocalLeader>sg :<C-U>SynGroup<CR>
-
 
 " Conjure configuration
 "clojure", "fennel", "janet", "hy", "julia", "racket",
