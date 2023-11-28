@@ -56,8 +56,12 @@ Plug 'nvim-tree/nvim-web-devicons'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v4.*' }
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'rcarriga/nvim-notify'
 Plug 'folke/trouble.nvim'
+Plug 'rcarriga/nvim-notify'
+" FIXME(alvaro): There's an issue fixed in this PR https://github.com/mrded/nvim-lsp-notify/pull/12
+" that hasn't been merged upstream yet, for now we disable the official repo until that's merged
+" Plug 'mrded/nvim-lsp-notify'
+Plug 'sigma-code/nvim-lsp-notify'
 
 " Colorschemes
 Plug 'chriskempson/base16-vim'
