@@ -82,26 +82,6 @@ local on_attach_general = function(client)
 	-- TODO(alvaro): Do this all in a custom command in lua, now is a bit flickery
 	vim.keymap.set("n", "gs", ":vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz", opts)
 	vim.keymap.set("n", "gx", ":sp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz", opts)
-
-	-- List of servers for which we don't want the built in formatting
-	-- FIXME(alvaro): Ideally we would want to know if we have a null-ls
-	-- alternative, and ONLY THEN disable this... but for now this should
-	-- work
-	SERVER_SKIP_FORMATTING = { "volar" }
-
-	-- Formatting (Conditional to Capabilities)
-	vim.keymap.set("n", "<LocalLeader>f", function()
-		vim.lsp.buf.format({
-			async = true,
-			filter = function(c)
-				return not contains(SERVER_SKIP_FORMATTING, c.name)
-			end,
-		})
-	end, opts)
-	-- TODO(alvaro): Is this necessary anymore?
-	vim.keymap.set("x", "<LocalLeader>f", function()
-		vim.lsp.buf.format({ async = true })
-	end, opts)
 end
 
 -- Update the capabilities as suggested by `cmp-nvim-lsp`

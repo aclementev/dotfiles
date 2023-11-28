@@ -29,7 +29,6 @@ Plug 'vim-test/vim-test'
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
-Plug 'jose-elias-alvarez/null-ls.nvim'
 " Make LSP prettier
 Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
 
@@ -42,6 +41,9 @@ Plug 'PaterJason/cmp-conjure'
 " TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lsp-document-symbol
 Plug 'hrsh7th/nvim-cmp'
 Plug 'onsails/lspkind-nvim'
+
+" Formatting
+Plug 'stevearc/conform.nvim', { 'tag': 'v4.*' }
 
 " TODO(alvaro): Look into this
 " Plug 'romainl/vim-qf'
@@ -109,6 +111,7 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'rafamadriz/friendly-snippets'
 
 " Misc
+" FIXME(alvaro): This is built into neovim now
 Plug 'gpanders/editorconfig.nvim'
 Plug 'akinsho/toggleterm.nvim', {'tag': 'v2.*'}
 Plug 'nvim-tree/nvim-tree.lua'
