@@ -112,7 +112,9 @@ Plug 'nvim-telescope/telescope-file-browser.nvim'
 " Snippets
 Plug 'L3MON4D3/LuaSnip', {'tag': 'v1.*'}
 Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'rafamadriz/friendly-snippets'
+
+" Copilot
+Plug 'github/copilot.vim'
 
 " Misc
 " FIXME(alvaro): This is built into neovim now
