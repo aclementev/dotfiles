@@ -7,9 +7,154 @@ vim.cmd [[ source "~/.vimrc" ]]
 vim.opt.signcolumn = "yes:1" -- Merge the signcolumn and number column
 vim.opt.mouse = "a" -- Setup the mouse
 vim.opt.scrolloff = 10 -- Space when scrolling UP and DOWN
+vim.opt.termguicolors = true
 
 -- FIXME(alvaro): This is not the location where we want them to be anymore
 vim.g.python3_host_prog = '~/.virtualenv/neovim/bin/python'
+
+
+-- Lazy.nvim setup
+-- Install Lazy (if necessary)
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- FIXME(alvaro): Review the colorscheme setup now that we have Lazy with priority and whatnot
+-- Setup the plugins
+-- FIXME(alvaro): Review which of these are used directly and which can be declared as dependency
+require("lazy").setup({
+	-- All hail the almighty tpope
+	"tpope/vim-surround",
+	"tpope/vim-commentary",
+	"tpope/vim-repeat",
+	"tpope/vim-fugitive",
+	"tpope/vim-scriptease",
+
+	-- FIXME(alvaro): I don't think I am using these one
+	"justinmk/vim-dirvish",
+
+	-- FIXME(alvaro): Figure out the dependencies on these, since we don't require all directly
+	-- LSP
+	"neovim/nvim-lspconfig",
+	'williamboman/mason.nvim',
+	'williamboman/mason-lspconfig.nvim',
+	{
+		'nvimdev/lspsaga.nvim',
+		event = "LspAttach",
+		dependencies = {
+			'nvim-treesitter/nvim-treesitter',
+			'nvim-tree/nvim-web-devicons',
+		}
+	},
+
+	-- FIXME(alvaro): Figure out the dependencies on these
+	-- Completion
+	'hrsh7th/cmp-nvim-lsp',
+	'hrsh7th/cmp-buffer',
+	'hrsh7th/cmp-path',
+	'hrsh7th/cmp-nvim-lua',
+	'PaterJason/cmp-conjure',
+	'hrsh7th/nvim-cmp',
+	'onsails/lspkind-nvim',
+	-- TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lsp-document-symbol
+
+	-- Formatting
+	-- TODO(alvaro): See this recipe https://github.com/stevearc/conform.nvim/blob/master/doc/recipes.md#lazy-loading-with-lazynvim
+	"stevearc/conform.nvim",
+	
+	-- TODO(alvaro): Look into this
+	-- 'romainl/vim-qf'
+
+	-- Eye candy
+	'junegunn/vim-easy-align',
+	'mhinz/vim-startify',
+	'j-hui/fidget.nvim',
+	'nvim-tree/nvim-web-devicons',
+	'akinsho/bufferline.nvim',
+	'norcalli/nvim-colorizer.lua',
+	'lewis6991/gitsigns.nvim',
+	'folke/trouble.nvim',
+	'rcarriga/nvim-notify',
+
+	-- Colorschemes
+	'chriskempson/base16-vim',
+	'arcticicestudio/nord-vim',
+	-- NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
+	'Luxed/ayu-vim',
+	'ericbn/vim-solarized',  -- We use this as the light colorscheme
+	'nvim-lualine/lualine.nvim',  -- This also can use nvim-web-devicons
+
+	-- TreeSitter
+	{
+		'nvim-treesitter/nvim-treesitter',
+		build = ":TSUpdate",
+	},
+	'nvim-treesitter/playground',
+	'nvim-treesitter/nvim-treesitter-context',
+	'nvim-treesitter/nvim-treesitter-textobjects',
+	
+	-- Debugging
+	'mfussenegger/nvim-dap',
+	'rcarriga/nvim-dap-ui',
+	'mfussenegger/nvim-dap-python',
+	'theHamsta/nvim-dap-virtual-text',
+	
+	-- Language specific
+	'simrat39/rust-tools.nvim',
+	'guns/vim-sexp',
+	'tpope/vim-sexp-mappings-for-regular-people',
+	'jpalardy/vim-slime',
+	'Olical/conjure',
+	'tpope/vim-dispatch',
+	'clojure-vim/vim-jack-in',
+	'radenling/vim-dispatch-neovim',
+
+	-- Lua Neovim development
+	-- FIXME(alvaro): This is deprecated, use https://github.com/folke/neodev.nvim instead
+	'tjdevries/nlua.nvim',
+
+	-- Telescope
+	{ 
+		'nvim-telescope/telescope.nvim',
+		dependencies = { 'nvim-lua/plenary.nvim' }
+	},
+	'nvim-telescope/telescope-fzy-native.nvim',
+	'nvim-telescope/telescope-ui-select.nvim',
+	'nvim-telescope/telescope-file-browser.nvim',
+
+	-- Snippets
+	'L3MON4D3/LuaSnip',
+	'saadparwaiz1/cmp_luasnip',
+
+	-- AI Assistant
+	'github/copilot.vim',
+	
+		
+	-- Testing
+	"vim-test/vim-test",
+
+	-- Misc
+	'akinsho/toggleterm.nvim',
+	'nvim-tree/nvim-tree.lua',
+	'justinmk/vim-dirvish',
+	'folke/which-key.nvim',
+	'ThePrimeagen/harpoon',
+	'chomosuke/term-edit.nvim',
+	}, 
+	{
+		defaults = {
+			version = "*",  -- Install the latest stable version (following Semver rules)
+		}
+})
 
 -- Fix the colorscheme so that the SignColumn does not have a different
 -- background
@@ -25,7 +170,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 -- Set the colorscheme
 -- XXX(alvaro): Enable back this
--- require('alvaro.colorscheme')
+require('alvaro.colorscheme')
 
 -- FIXME(alvaro): Review if we are using these, since we are now using `term-edit`
 -- Terminal Settings
