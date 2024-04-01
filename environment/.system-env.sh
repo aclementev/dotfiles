@@ -5,6 +5,7 @@
 
 # ----------- System Settings ------------
 export EDITOR="nvim"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Starship for zsh
 eval "$(starship init $(basename $SHELL))"
