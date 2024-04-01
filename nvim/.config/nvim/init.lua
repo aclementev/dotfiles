@@ -1,7 +1,4 @@
-print("Hello from init.lua")
-
--- FIXME(alvaro): This should be handled automatically (?)
-vim.cmd [[ source "~/.vimrc" ]]
+vim.cmd.source("~/.vimrc")
 
 -- General Options
 vim.opt.signcolumn = "yes:1" -- Merge the signcolumn and number column
@@ -169,7 +166,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 -- Set the colorscheme
--- XXX(alvaro): Enable back this
 require('alvaro.colorscheme')
 
 -- FIXME(alvaro): Review if we are using these, since we are now using `term-edit`
@@ -206,12 +202,11 @@ vim.api.nvim_create_user_command("SynGroup", syn_group, { desc = "Print the synt
 vim.keymap.set("n", "<LocalLeader>sg", ":<C-U>SynGroup<CR>", { silent = true })
 
 
--- XXX(alvaro): Enable back these
 -- Load the basic configuration
--- require('before')
--- require('alvaro')
--- require('alvaro.lsp')
--- require('alvaro.diagnostic')
+require('before')
+require('alvaro')
+require('alvaro.lsp')
+require('alvaro.diagnostic')
 
 -- FIXME(alvaro): Move this to its own file
 -- Vim Test
