@@ -79,6 +79,7 @@ export NVM_LAZY_LOAD=true
 
 plugins=(
     git
+    docker
     zsh-nvm  # For lazy loading NVM
     zsh-autosuggestions
     zsh-syntax-highlighting # This one MUST be last
