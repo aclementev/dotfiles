@@ -67,13 +67,21 @@ require("lazy").setup({
 	-- Formatting
 	-- TODO(alvaro): See this recipe https://github.com/stevearc/conform.nvim/blob/master/doc/recipes.md#lazy-loading-with-lazynvim
 	"stevearc/conform.nvim",
-	
+
 	-- TODO(alvaro): Look into this
 	-- 'romainl/vim-qf'
 
 	-- Eye candy
 	'junegunn/vim-easy-align',
-	'mhinz/vim-startify',
+    -- TODO(alvaro): Here's a faster and more configurable alternative: https://github.com/goolord/alpha-nvim
+    {
+        "mhinz/vim-startify",
+        config = function()
+            vim.g.startify_change_to_dir = 0
+            vim.g.startify_fortune_use_unicode = 1
+            vim.g.startify_relative_path = 1
+        end
+    },
 	'j-hui/fidget.nvim',
 	'nvim-tree/nvim-web-devicons',
 	'akinsho/bufferline.nvim',
@@ -98,13 +106,13 @@ require("lazy").setup({
 	'nvim-treesitter/playground',
 	'nvim-treesitter/nvim-treesitter-context',
 	'nvim-treesitter/nvim-treesitter-textobjects',
-	
+
 	-- Debugging
 	'mfussenegger/nvim-dap',
 	'rcarriga/nvim-dap-ui',
 	'mfussenegger/nvim-dap-python',
 	'theHamsta/nvim-dap-virtual-text',
-	
+
 	-- Language specific
 	'simrat39/rust-tools.nvim',
 	'guns/vim-sexp',
@@ -120,7 +128,7 @@ require("lazy").setup({
 	'tjdevries/nlua.nvim',
 
 	-- Telescope
-	{ 
+	{
 		'nvim-telescope/telescope.nvim',
 		dependencies = { 'nvim-lua/plenary.nvim' }
 	},
@@ -134,8 +142,7 @@ require("lazy").setup({
 
 	-- AI Assistant
 	'github/copilot.vim',
-	
-		
+
 	-- Testing
 	"vim-test/vim-test",
 
@@ -146,7 +153,7 @@ require("lazy").setup({
 	'folke/which-key.nvim',
 	'ThePrimeagen/harpoon',
 	'chomosuke/term-edit.nvim',
-	}, 
+	},
 	{
 		defaults = {
 			version = "*",  -- Install the latest stable version (following Semver rules)
@@ -184,19 +191,19 @@ local highlight_augroup = vim.api.nvim_create_augroup("highlight_yank", { clear 
 vim.api.nvim_create_autocmd("TextYankPost", {
     pattern = "*",
     group = highlight_augroup,
-    callback = function(e)
+    callback = function()
         vim.highlight.on_yank {higroup="IncSearch", timeout=300}
     end
 })
 
 
 -- Print the syntax group of the element under the cursor
-function syn_group(opts)
+local function syn_group()
     local pos = vim.fn.getpos('.')
     local line = pos[2]
     local col = pos[3]
     local syn_id = vim.fn.synID(line, col, 1)
-    print(vim.fn.synIDattr(syn_id, "name"), "->", synIDattr(vim.fn.synIDtrans(syn_id), "name"))
+    print(vim.fn.synIDattr(syn_id, "name"), "->", vim.fn.synIDattr(vim.fn.synIDtrans(syn_id), "name"))
 end
 vim.api.nvim_create_user_command("SynGroup", syn_group, { desc = "Print the syntax group of the element under the cursor"})
 vim.keymap.set("n", "<LocalLeader>sg", ":<C-U>SynGroup<CR>", { silent = true })
@@ -219,7 +226,8 @@ vim.keymap.set("n", "<Leader>tg", ":TestVisit<CR>", { silent = true })
 
 
 -- FIXME(alvaro): Move this to utilities or formatting file
-function trim_whitespace()
+---@diagnostic disable-next-line: unused-local, unused-function
+local function trim_whitespace()
     -- Store the current position of the cursor
     local pos = vim.fn.getpos('.')
     -- Trim the trailing whitespace from the whole document
@@ -259,6 +267,3 @@ vim.api.nvim_create_user_command("JSONCompact", ":%! jq -c .", { desc = "Compact
 -- Disable NetRW for Nvim-tree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-vim.g.startify_change_to_dir = 0
-vim.g.startify_fortune_use_unicode = 1
-vim.g.startify_relative_path = 1
