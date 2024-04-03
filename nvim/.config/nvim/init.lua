@@ -9,7 +9,6 @@ vim.opt.termguicolors = true
 -- FIXME(alvaro): This is not the location where we want them to be anymore
 vim.g.python3_host_prog = '~/.virtualenv/neovim/bin/python'
 
-
 -- Lazy.nvim setup
 -- Install Lazy (if necessary)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -39,20 +38,6 @@ require("lazy").setup({
 	-- FIXME(alvaro): I don't think I am using these one
 	"justinmk/vim-dirvish",
 
-	-- FIXME(alvaro): Figure out the dependencies on these, since we don't require all directly
-	-- LSP
-	"neovim/nvim-lspconfig",
-	'williamboman/mason.nvim',
-	'williamboman/mason-lspconfig.nvim',
-	{
-		'nvimdev/lspsaga.nvim',
-		event = "LspAttach",
-		dependencies = {
-			'nvim-treesitter/nvim-treesitter',
-			'nvim-tree/nvim-web-devicons',
-		}
-	},
-
 	-- FIXME(alvaro): Figure out the dependencies on these
 	-- Completion
 	'hrsh7th/cmp-nvim-lsp',
@@ -76,7 +61,8 @@ require("lazy").setup({
     -- TODO(alvaro): Here's a faster and more configurable alternative: https://github.com/goolord/alpha-nvim
     {
         "mhinz/vim-startify",
-        config = function()
+        init = function()
+            -- Setup VimScript variables that configure how it works
             vim.g.startify_change_to_dir = 0
             vim.g.startify_fortune_use_unicode = 1
             vim.g.startify_relative_path = 1
@@ -153,11 +139,12 @@ require("lazy").setup({
 	'folke/which-key.nvim',
 	'ThePrimeagen/harpoon',
 	'chomosuke/term-edit.nvim',
-	},
-	{
-		defaults = {
-			version = "*",  -- Install the latest stable version (following Semver rules)
-		}
+    { import = "user.plugins" },
+},
+{
+    defaults = {
+        version = "*",  -- Install the latest stable version (following Semver rules)
+    }
 })
 
 -- Fix the colorscheme so that the SignColumn does not have a different
@@ -212,7 +199,6 @@ vim.keymap.set("n", "<LocalLeader>sg", ":<C-U>SynGroup<CR>", { silent = true })
 -- Load the basic configuration
 require('before')
 require('alvaro')
-require('alvaro.lsp')
 require('alvaro.diagnostic')
 
 -- FIXME(alvaro): Move this to its own file
