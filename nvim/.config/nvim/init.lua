@@ -29,6 +29,9 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup the plugins
 -- FIXME(alvaro): Review which of these are used directly and which can be declared as dependency
 require("lazy").setup({
+    -- The base depenencies
+    "nvim-lua/plenary.nvim",
+
 	-- All hail the almighty tpope
 	"tpope/vim-surround",
 	"tpope/vim-commentary",
@@ -47,7 +50,6 @@ require("lazy").setup({
 	'hrsh7th/cmp-nvim-lua',
 	'PaterJason/cmp-conjure',
 	'hrsh7th/nvim-cmp',
-	'onsails/lspkind-nvim',
 	-- TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lsp-document-symbol
 
 	-- Formatting
@@ -105,7 +107,17 @@ require("lazy").setup({
 	'guns/vim-sexp',
 	'tpope/vim-sexp-mappings-for-regular-people',
 	'jpalardy/vim-slime',
-	'Olical/conjure',
+	{
+        'Olical/conjure',
+        init = function()
+            vim.g["conjure#filetypes"] = { "clojure", "fennel", "janet", "hy", "racket", "scheme", "lisp" }
+            vim.g["conjure#filetype#julia"] = false
+            vim.g["conjure#filetype#lua"] = false
+            vim.g["conjure#filetype#python"] = false
+            vim.g["conjure#filetype#rust"] = false
+            vim.g["conjure#filetype#sql"] = false
+        end
+    },
 	'tpope/vim-dispatch',
 	'clojure-vim/vim-jack-in',
 	'radenling/vim-dispatch-neovim',
