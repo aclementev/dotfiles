@@ -1,4 +1,5 @@
-vim.cmd.source("~/.vimrc")
+-- Load the common configuration
+pcall(vim.cmd.source, "~/.vimrc")
 
 -- General Options
 vim.opt.signcolumn = "yes:1" -- Merge the signcolumn and number column
