@@ -39,9 +39,6 @@ require("lazy").setup({
   "tpope/vim-fugitive",
   "tpope/vim-scriptease",
 
-  -- FIXME(alvaro): I don't think I am using these one
-  "justinmk/vim-dirvish",
-
   -- TODO(alvaro): Look into this
   -- 'romainl/vim-qf'
 
@@ -58,21 +55,21 @@ require("lazy").setup({
       vim.g.startify_relative_path = true
     end,
   },
-  "j-hui/fidget.nvim",
+
   "nvim-tree/nvim-web-devicons",
   "akinsho/bufferline.nvim",
+  "nvim-lualine/lualine.nvim", -- This also can use nvim-web-devicons
   "norcalli/nvim-colorizer.lua",
+
   "lewis6991/gitsigns.nvim",
+
   "folke/trouble.nvim",
   "rcarriga/nvim-notify",
 
   -- Colorschemes
-  "chriskempson/base16-vim",
-  "arcticicestudio/nord-vim",
   -- NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
   "Luxed/ayu-vim",
   "ericbn/vim-solarized", -- We use this as the light colorscheme
-  "nvim-lualine/lualine.nvim", -- This also can use nvim-web-devicons
 
   -- TreeSitter
   {
