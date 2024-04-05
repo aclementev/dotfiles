@@ -1,7 +1,8 @@
 -- TODO(alvaro): Check if `nerd-fonts` is present, and if not default
 -- to `codicons` (which requires `vscode-codicons` font setup as a default)
 -- And pass it a `preset`
-
+-- TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lsp-document-symbol
+-- TODO(alvaro): Add git commit specific completion from  petertriho/cmp-git
 return {
     {
         "hrsh7th/nvim-cmp",
@@ -181,7 +182,6 @@ return {
                 sources = cmp.config.sources({}),
             })
 
-            -- TODO(alvaro): Add git commit specific completion from  petertriho/cmp-git
         end
     },
     "onsails/lspkind-nvim",
