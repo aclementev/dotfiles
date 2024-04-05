@@ -1,8 +1,11 @@
-local function on_attach()
+local function on_lsp_attach(ev)
     local bufmap = function(mode, lhs, rhs)
-        local opts = { buffer = true, silent = true }
+        local opts = { buffer = ev.buf, silent = true }
         vim.keymap.set(mode, lhs, rhs, opts)
     end
+
+    -- Enable omnifunc completion (triggered by <C-X><C-O>)
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
 	bufmap("n", "gd", vim.lsp.buf.definition)
 	bufmap("n", "gD", vim.lsp.buf.declaration)
@@ -14,7 +17,13 @@ local function on_attach()
 	bufmap("n", "g0", vim.lsp.buf.document_symbol)
 	bufmap("n", "gW", vim.lsp.buf.workspace_symbol)
 	bufmap("i", "<C-H>", vim.lsp.buf.signature_help)
-	bufmap("n", "gh", vim.lsp.buf.signature_help)
+    bufmap("n", "<Leader>wa", vim.lsp.buf.add_workspace_folder)
+    bufmap("n", "<Leader>wr", vim.lsp.buf.remove_workspace_folder)
+    bufmap("n", "<Leader>wl", function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+
+    end)
+    -- NOTE(alvaro): Formatting is configured in its own file
 
     -- LspSaga related commands
     bufmap("n", "<LocalLeader>ca", "<cmd>Lspsaga code_action<CR>")
@@ -78,7 +87,78 @@ return {
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = group,
                 desc = "Running LSP related actions",
-                callback = on_attach,
+                callback = on_lsp_attach,
+            })
+
+            -- NOTE(alvaro): `pylsp` is weird and it prefers to be installed
+            -- locally on every virtualenv that uses it
+            -- Therefore we don't manage it through mason
+            -- To install the python lsp server and all the required
+            -- plugins, you can use the following command
+            -- `pip install flake8 black isort mypy python-lsp-server[all] python-lsp-black python-lsp-isort pylsp-mypy`
+            lspconfig.pylsp.setup({
+                capabilities = lsp_capabilities,
+                flags = {
+                    debounce_text_changes = 150,
+                },
+                settings = {
+                    pylsp = {
+                        configurationSources = { "flake8" },
+                        plugins = {
+                            flake8 = {
+                                enabled = true,
+                            },
+                            -- pip install python-lsp-black
+                            black = {
+                                enabled = true,
+                            },
+                            -- pip install python-lsp-isort
+                            isort = {
+                                enabled = true,
+                            },
+                            -- pip install pylsp-mypy
+                            pylsp_mypy = {
+                                enabled = true,
+                                live_mode = false, -- This does not work with dmypy enabled currently
+                                -- TODO(alvaro): Try this again
+                                dmypy = true,
+                                report_progress = true,
+                            },
+                            -- TODO(alvaro): Try these
+                            rope_autoimport = {
+                                enabled = false,
+                                completions = {
+                                    enabled = true,
+                                },
+                                code_actions = {
+                                    enabled = true,
+                                }
+                            },
+                            -- Disable these plugins explicitly
+                            yapf = {
+                                enabled = false,
+                            },
+                            pycodestyle = {
+                                enabled = false,
+                            },
+                            pylint = {
+                                enabled = false,
+                            },
+                            mccabe = {
+                                enabled = false,
+                            },
+                            autopep8 = {
+                                enabled = false,
+                            },
+                            pydocstyle = {
+                                enabled = false,
+                            },
+                            pyflakes = {
+                                enabled = false,
+                            },
+                        },
+                    },
+                }
             })
 
             require("mason-lspconfig").setup({
@@ -92,67 +172,6 @@ return {
                         })
                     end,
                     -- Server specific overrides
-                    ["pylsp"] = function()
-                        lspconfig.pylsp.setup({
-                            flags = {
-                                debounce_text_changes = 150,
-                            },
-                            settings = {
-                                pylsp = {
-                                    configurationSources = { "flake8" },
-                                    plugins = {
-                                        jedi = {
-                                            extra_paths = {
-                                                "./src",
-                                                "./src/daimler/mltoolbox",
-                                            },
-                                        },
-                                        jedi_completion = {
-                                            enabled = true,
-                                            fuzzy = false,
-                                        },
-                                        jedi_definition = {
-                                            enabled = true,
-                                        },
-                                        black = {
-                                            enabled = true,
-                                        },
-                                        isort = {
-                                            enabled = true,
-                                        },
-                                        flake8 = {
-                                            enabled = true,
-                                        },
-                                        pylsp_mypy = {
-                                            enabled = true,
-                                            live_mode = false,
-                                            dmypy = false,
-                                            report_progress = true,
-                                        },
-                                        -- Disable these plugins explicitly
-                                        pycodestyle = {
-                                            enabled = false,
-                                        },
-                                        pylint = {
-                                            enabled = false,
-                                        },
-                                        mccabe = {
-                                            enabled = false,
-                                        },
-                                        autopep8 = {
-                                            enabled = false,
-                                        },
-                                        pydocstyle = {
-                                            enabled = false,
-                                        },
-                                        pyflakes = {
-                                            enabled = false,
-                                        },
-                                    },
-                                },
-                            }
-                        })
-                    end,
                     ["vimls"] = function()
                         lspconfig.vimls.setup({
                             capabilities = lsp_capabilities,
@@ -189,6 +208,12 @@ return {
                                 },
                             },
                         })
+                    end,
+                    ["pylsp"] = function()
+                        -- NOTE(alvaro): `pylsp` is weird and it prefers to be installed
+                        -- locally on every virtualenv that uses it
+                        -- Therefore we don't manage it through mason
+                        -- This does nothing on purpose
                     end,
                     ["rust_analyzer"] = function()
                         -- We are using the plugin https://github.com/mrcjkb/rustaceanvim
