@@ -63,7 +63,6 @@ require("lazy").setup({
 
   "lewis6991/gitsigns.nvim",
 
-  "folke/trouble.nvim",
   "rcarriga/nvim-notify",
 
   -- Colorschemes
@@ -111,6 +110,7 @@ require("lazy").setup({
   "tjdevries/nlua.nvim",
 
   -- Telescope
+  -- TODO(alvaro): Take a look at the trouble target https://github.com/folke/trouble.nvim?tab=readme-ov-file#telescope
   {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -197,7 +197,6 @@ vim.keymap.set("n", "<LocalLeader>sg", ":<C-U>SynGroup<CR>", { silent = true })
 -- Load the basic configuration
 require "before"
 require "alvaro"
-require "alvaro.diagnostic"
 
 -- FIXME(alvaro): Move this to its own file
 -- Vim Test
