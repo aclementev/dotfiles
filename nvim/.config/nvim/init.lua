@@ -63,7 +63,24 @@ require("lazy").setup({
 
   "lewis6991/gitsigns.nvim",
 
-  "rcarriga/nvim-notify",
+  {
+    "rcarriga/nvim-notify",
+    lazy = false,
+    -- Start before the rest of the plugins
+    priority = 100,
+    config = function()
+      local notify = require("notify")
+      notify.setup {
+        -- See render styles in documentation
+        render = "compact",
+        stages = "fade_in_slide_out",
+        timeout = 5000,
+        top_down = true,
+      }
+      -- Set notify as the default notification handler for vim
+      vim.notify = notify
+    end,
+  },
 
   -- Colorschemes
   -- NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
