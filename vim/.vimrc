@@ -106,20 +106,6 @@ nnoremap <silent> <Down> :resize -2<CR>
 " Spell Checking
 nnoremap <silent> <F3> :setlocal spell! spelllang=es,en_us<CR>
 
-"TODO: Revise these ones
-"Way to open files from current directory
-nnoremap <Leader>ew :e <C-R>=fnameescape(expand('%:h')).'/'<cr>
-nnoremap <Leader>es :sp <C-R>=fnameescape(expand('%:h')).'/'<cr>
-nnoremap <Leader>ev :vsp <C-R>=fnameescape(expand('%:h')).'/'<cr>
-nnoremap <Leader>et :tabe <C-R>=fnameescape(expand('%:h')).'/'<cr>
-" Other nice editingmappings
-nnoremap <Leader>ec :vsplit $MYVIMRC<CR>
-nnoremap <Leader>sc :source $MYVIMRC<CR>
-nnoremap <Leader>ee :vsplit ~/.vimrc<CR>
-nnoremap <Leader>ep :vsplit ~/.vim/vim-specific.vim<CR>
-nnoremap <Leader>sf :source %<CR>
-" Open previous buffer on vsplit
-nnoremap <Leader>ep :execute "rightbelow vsplit " . bufname("#")<cr>
 " Manage Trailing Whitespaces
 nnoremap <silent> <Leader>td mz:%s/\s\+$//<CR>`z
 nnoremap <silent> <Leader>tw :match Error /\s\+$/<CR>
@@ -187,23 +173,6 @@ cmap w!! w !sudo tee > /dev/null %
 " Automatically fix last bad word with the first suggestion
 inoremap <C-l> <C-g>u<Esc>[s1z=`]a<C-g>u
 
-" vim-SLIME
-let g:slime_no_mappings=1
-" Customize the mappings
-xmap <LocalLeader><LocalLeader> <Plug>SlimeRegionSend
-nmap <LocalLeader><LocalLeader> <Plug>SlimeParagraphSend
-
-let g:slime_target='tmux'
-let g:slime_paste_file=tempname()
-let g:slime_default_config={"socket_name": "default", "target_pane": "{right-of}"}
-let g:slime_dont_ask_default=1
-" Use IPython's %cpaste magic function to send snippets to IPython easily
-let g:slime_python_ipython=1
-
-" Vim/Vimscript development
-map <LocalLeader>hh :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-            \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " FileType specific settings {{{
 augroup filetype_make

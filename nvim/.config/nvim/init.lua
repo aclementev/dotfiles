@@ -133,12 +133,11 @@ require("lazy").setup({
   "vim-test/vim-test",
 
   -- Misc
-  "akinsho/toggleterm.nvim",
   "nvim-tree/nvim-tree.lua",
   "justinmk/vim-dirvish",
   "folke/which-key.nvim",
   "ThePrimeagen/harpoon",
-  "chomosuke/term-edit.nvim",
+
   { import = "user.plugins" },
 }, {
   defaults = {
