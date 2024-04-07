@@ -39,11 +39,10 @@ require("lazy").setup({
   -- We use this as the light colorscheme
   { "ericbn/vim-solarized", lazy = false, priority = 1000 },
 
-  -- All hail the almighty tpope
+  -- Some of tpope's must have plugins (all hail the almighty tpope)
   "tpope/vim-surround",
   "tpope/vim-commentary",
   "tpope/vim-repeat",
-  "tpope/vim-fugitive",
   "tpope/vim-scriptease",
 
   -- TODO(alvaro): Look into this
@@ -53,7 +52,6 @@ require("lazy").setup({
   "junegunn/vim-easy-align",
   { "nvim-tree/nvim-web-devicons", lazy = false, priority = 2000, opts = { default = true } },
   "norcalli/nvim-colorizer.lua",
-  "lewis6991/gitsigns.nvim",
 
   -- TODO(alvaro): Here's a faster and more configurable alternative: https://github.com/goolord/alpha-nvim
   {
@@ -86,26 +84,6 @@ require("lazy").setup({
     end,
   },
 
-  -- Language specific
-  "simrat39/rust-tools.nvim",
-  "guns/vim-sexp",
-  "tpope/vim-sexp-mappings-for-regular-people",
-  -- "jpalardy/vim-slime",
-  {
-    "Olical/conjure",
-    init = function()
-      vim.g["conjure#filetypes"] = { "clojure", "fennel", "janet", "hy", "racket", "scheme", "lisp" }
-      vim.g["conjure#filetype#julia"] = false
-      vim.g["conjure#filetype#lua"] = false
-      vim.g["conjure#filetype#python"] = false
-      vim.g["conjure#filetype#rust"] = false
-      vim.g["conjure#filetype#sql"] = false
-    end,
-  },
-  "clojure-vim/vim-jack-in",
-  "tpope/vim-dispatch",
-  "radenling/vim-dispatch-neovim",
-
   -- Lua Neovim development
   {
     "folke/neodev.nvim",
@@ -127,7 +105,26 @@ require("lazy").setup({
   -- Testing
   "vim-test/vim-test",
 
-  -- Misc
+  -- Language specific
+  "simrat39/rust-tools.nvim", -- These have been deprecated
+  "guns/vim-sexp",
+  "tpope/vim-sexp-mappings-for-regular-people",
+  -- "jpalardy/vim-slime",
+  {
+    "Olical/conjure",
+    init = function()
+      vim.g["conjure#filetypes"] = { "clojure", "fennel", "janet", "hy", "racket", "scheme", "lisp" }
+      vim.g["conjure#filetype#julia"] = false
+      vim.g["conjure#filetype#lua"] = false
+      vim.g["conjure#filetype#python"] = false
+      vim.g["conjure#filetype#rust"] = false
+      vim.g["conjure#filetype#sql"] = false
+    end,
+  },
+  "clojure-vim/vim-jack-in",
+  "tpope/vim-dispatch",
+  "radenling/vim-dispatch-neovim",
+
   { import = "user.plugins" },
 }, {
   defaults = {
