@@ -102,9 +102,6 @@ require("lazy").setup({
   -- AI Assistant
   "github/copilot.vim",
 
-  -- Testing
-  "vim-test/vim-test",
-
   -- Language specific
   "simrat39/rust-tools.nvim", -- These have been deprecated
   "guns/vim-sexp",
