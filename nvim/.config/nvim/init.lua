@@ -2,10 +2,10 @@
 pcall(vim.cmd.source, "~/.vimrc")
 
 -- General Options
+vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes:1" -- Merge the signcolumn and number column
 vim.opt.mouse = "a" -- Setup the mouse
 vim.opt.scrolloff = 10 -- Space when scrolling UP and DOWN
-vim.opt.termguicolors = true
 vim.opt.mousemoveevent = true
 
 -- FIXME(alvaro): This is not the location where we want them to be anymore
@@ -51,6 +51,9 @@ require("lazy").setup({
 
   -- Eye candy
   "junegunn/vim-easy-align",
+  { "nvim-tree/nvim-web-devicons", lazy = false, priority = 2000, opts = { default = true } },
+  "norcalli/nvim-colorizer.lua",
+  "lewis6991/gitsigns.nvim",
 
   -- TODO(alvaro): Here's a faster and more configurable alternative: https://github.com/goolord/alpha-nvim
   {
@@ -62,10 +65,6 @@ require("lazy").setup({
       vim.g.startify_relative_path = true
     end,
   },
-
-  "nvim-tree/nvim-web-devicons",
-  "norcalli/nvim-colorizer.lua",
-  "lewis6991/gitsigns.nvim",
 
   {
     "rcarriga/nvim-notify",
@@ -91,7 +90,7 @@ require("lazy").setup({
   "simrat39/rust-tools.nvim",
   "guns/vim-sexp",
   "tpope/vim-sexp-mappings-for-regular-people",
-  "jpalardy/vim-slime",
+  -- "jpalardy/vim-slime",
   {
     "Olical/conjure",
     init = function()
@@ -103,8 +102,8 @@ require("lazy").setup({
       vim.g["conjure#filetype#sql"] = false
     end,
   },
-  "tpope/vim-dispatch",
   "clojure-vim/vim-jack-in",
+  "tpope/vim-dispatch",
   "radenling/vim-dispatch-neovim",
 
   -- Lua Neovim development
@@ -133,7 +132,28 @@ require("lazy").setup({
   "vim-test/vim-test",
 
   -- Misc
-  "nvim-tree/nvim-tree.lua",
+  {
+    "nvim-tree/nvim-tree.lua",
+    init = function()
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+    end,
+    opts = {
+      sort_by = "case_sensitive",
+      view = {
+        adaptive_size = true,
+      },
+      renderer = {
+        group_empty = true,
+      },
+      filters = {
+        dotfiles = false,
+      },
+    },
+    keys = {
+      { "<Leader>b", ":NvimTreeFindFileToggle<CR>", desc = "Open NvimTree on the current file" },
+    },
+  },
   "justinmk/vim-dirvish",
   "folke/which-key.nvim",
   "ThePrimeagen/harpoon",
@@ -233,19 +253,3 @@ vim.keymap.set("n", "<LocalLeader>gG", ":GithubOpenCurrent<CR>", { silent = true
 
 vim.api.nvim_create_user_command("JSONFormat", ":%! jq .", { desc = "Prettify JSON using jq" })
 vim.api.nvim_create_user_command("JSONCompact", ":%! jq -c .", { desc = "Compact JSON using jq" })
-
--- TODO(alvaro): Configure conjure again
--- " Conjure configuration
--- "clojure", "fennel", "janet", "hy", "julia", "racket",
--- "scheme", "lua", "lisp", "python", "rust", "sql"
--- let g:conjure#filetypes = ["clojure", "fennel", "janet", "hy", "racket", "scheme", "lisp"]
--- let g:conjure#filetype#julia = v:false
--- let g:conjure#filetype#lua = v:false
--- let g:conjure#filetype#python = v:false
--- let g:conjure#filetype#rust = v:false
--- let g:conjure#filetype#sql = v:false
-
--- OTHER OPTIONS
--- Disable NetRW for Nvim-tree
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
