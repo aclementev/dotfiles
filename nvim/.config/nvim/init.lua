@@ -32,6 +32,12 @@ require("lazy").setup({
   -- The base depenencies
   "nvim-lua/plenary.nvim",
 
+  -- Colorschemes
+  -- NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
+  { "Luxed/ayu-vim", lazy = false, priority = 1000 },
+  -- We use this as the light colorscheme
+  { "ericbn/vim-solarized", lazy = false, priority = 1000 },
+
   -- All hail the almighty tpope
   "tpope/vim-surround",
   "tpope/vim-commentary",
@@ -69,7 +75,7 @@ require("lazy").setup({
     -- Start before the rest of the plugins
     priority = 100,
     config = function()
-      local notify = require("notify")
+      local notify = require "notify"
       notify.setup {
         -- See render styles in documentation
         render = "compact",
@@ -82,19 +88,6 @@ require("lazy").setup({
     end,
   },
 
-  -- Colorschemes
-  -- NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
-  "Luxed/ayu-vim",
-  "ericbn/vim-solarized", -- We use this as the light colorscheme
-
-  -- TreeSitter
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-  },
-  "nvim-treesitter/playground",
-  "nvim-treesitter/nvim-treesitter-context",
-  "nvim-treesitter/nvim-treesitter-textobjects",
 
   -- Debugging
   "mfussenegger/nvim-dap",
