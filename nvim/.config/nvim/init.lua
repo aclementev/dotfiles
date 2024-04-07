@@ -119,16 +119,6 @@ require("lazy").setup({
   -- FIXME(alvaro): This is deprecated, use https://github.com/folke/neodev.nvim instead
   "tjdevries/nlua.nvim",
 
-  -- Telescope
-  -- TODO(alvaro): Take a look at the trouble target https://github.com/folke/trouble.nvim?tab=readme-ov-file#telescope
-  {
-    "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-  },
-  "nvim-telescope/telescope-fzy-native.nvim",
-  "nvim-telescope/telescope-ui-select.nvim",
-  "nvim-telescope/telescope-file-browser.nvim",
-
   -- Snippets
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
