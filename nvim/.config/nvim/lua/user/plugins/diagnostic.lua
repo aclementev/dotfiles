@@ -10,13 +10,10 @@ vim.diagnostic.config {
   severity_sort = true,
 }
 
-local bufmap = function(mode, lhs, rhs)
-  local opts = { buffer = true, silent = true }
-  vim.keymap.set(mode, lhs, rhs, opts)
-end
+local opts = { silent = true }
 
-bufmap("n", "<LocalLeader>dq", vim.diagnostic.setqflist)
-bufmap("n", "<LocalLeader>dl", vim.diagnostic.setloclist)
+vim.keymap.set("n", "<LocalLeader>dq", vim.diagnostic.setqflist, opts)
+vim.keymap.set("n", "<LocalLeader>dl", vim.diagnostic.setloclist, opts)
 
 return {
   {
@@ -28,21 +25,21 @@ return {
       -- Setup Lsp Saga configuration
       local saga_diag = require "lspsaga.diagnostic"
 
-      bufmap("n", "<LocalLeader>dd", "<cmd>Lspsaga show_line_diagnostics<CR>")
-      bufmap("n", "<LocalLeader>dn", "<cmd>Lspsaga diagnostic_jump_next<CR>")
-      bufmap("n", "<LocalLeader>dp", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
-      bufmap("n", "<LocalLeader>ne", function()
+      vim.keymap.set("n", "<LocalLeader>dd", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
+      vim.keymap.set("n", "<LocalLeader>dn", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
+      vim.keymap.set("n", "<LocalLeader>dp", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
+      vim.keymap.set("n", "<LocalLeader>ne", function()
         saga_diag:goto_next { severity = vim.diagnostic.severity.ERROR }
-      end)
-      bufmap("n", "<LocalLeader>pe", function()
+      end, opts)
+      vim.keymap.set("n", "<LocalLeader>pe", function()
         saga_diag:goto_prev { severity = vim.diagnostic.severity.ERROR }
-      end)
-      bufmap("n", "<LocalLeader>nw", function()
+      end, opts)
+      vim.keymap.set("n", "<LocalLeader>nw", function()
         saga_diag:goto_next { severity = vim.diagnostic.severity.WARN }
-      end)
-      bufmap("n", "<LocalLeader>nw", function()
+      end, opts)
+      vim.keymap.set("n", "<LocalLeader>nw", function()
         saga_diag:goto_prev { severity = vim.diagnostic.severity.WARN }
-      end)
+      end, opts)
     end,
     keys = {
       { "<Leader>xx", "<cmd>TroubleToggle<CR>", desc = "Toggle Trouble" },
