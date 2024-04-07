@@ -6,6 +6,7 @@ vim.opt.signcolumn = "yes:1" -- Merge the signcolumn and number column
 vim.opt.mouse = "a" -- Setup the mouse
 vim.opt.scrolloff = 10 -- Space when scrolling UP and DOWN
 vim.opt.termguicolors = true
+vim.opt.mousemoveevent = true
 
 -- FIXME(alvaro): This is not the location where we want them to be anymore
 vim.g.python3_host_prog = "~/.virtualenv/neovim/bin/python"
@@ -63,10 +64,7 @@ require("lazy").setup({
   },
 
   "nvim-tree/nvim-web-devicons",
-  "akinsho/bufferline.nvim",
-  "nvim-lualine/lualine.nvim", -- This also can use nvim-web-devicons
   "norcalli/nvim-colorizer.lua",
-
   "lewis6991/gitsigns.nvim",
 
   {
