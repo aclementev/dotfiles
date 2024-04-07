@@ -76,6 +76,7 @@ require("lazy").setup({
     priority = 100,
     config = function()
       local notify = require "notify"
+      ---@diagnostic disable-next-line: missing-fields
       notify.setup {
         -- See render styles in documentation
         render = "compact",
@@ -109,8 +110,19 @@ require("lazy").setup({
   "radenling/vim-dispatch-neovim",
 
   -- Lua Neovim development
-  -- FIXME(alvaro): This is deprecated, use https://github.com/folke/neodev.nvim instead
-  "tjdevries/nlua.nvim",
+  {
+    "folke/neodev.nvim",
+    opts = {
+      override = function(root_dir, library)
+        -- TODO(alvaro): We should make this more portable... but for now this
+        -- works
+        if string.find(root_dir, "dotfiles/nvim/.config/nvim") then
+          library.enabled = true
+          library.plugins = true
+        end
+      end,
+    },
+  },
 
   -- Snippets
   "L3MON4D3/LuaSnip",
