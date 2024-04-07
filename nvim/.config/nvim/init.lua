@@ -88,13 +88,6 @@ require("lazy").setup({
     end,
   },
 
-
-  -- Debugging
-  "mfussenegger/nvim-dap",
-  "rcarriga/nvim-dap-ui",
-  "mfussenegger/nvim-dap-python",
-  "theHamsta/nvim-dap-virtual-text",
-
   -- Language specific
   "simrat39/rust-tools.nvim",
   "guns/vim-sexp",
