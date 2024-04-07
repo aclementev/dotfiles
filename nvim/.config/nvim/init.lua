@@ -132,32 +132,6 @@ require("lazy").setup({
   "vim-test/vim-test",
 
   -- Misc
-  {
-    "nvim-tree/nvim-tree.lua",
-    init = function()
-      vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
-    end,
-    opts = {
-      sort_by = "case_sensitive",
-      view = {
-        adaptive_size = true,
-      },
-      renderer = {
-        group_empty = true,
-      },
-      filters = {
-        dotfiles = false,
-      },
-    },
-    keys = {
-      { "<Leader>b", ":NvimTreeFindFileToggle<CR>", desc = "Open NvimTree on the current file" },
-    },
-  },
-  "justinmk/vim-dirvish",
-  "folke/which-key.nvim",
-  "ThePrimeagen/harpoon",
-
   { import = "user.plugins" },
 }, {
   defaults = {
@@ -217,7 +191,6 @@ vim.api.nvim_create_user_command(
 vim.keymap.set("n", "<LocalLeader>sg", ":<C-U>SynGroup<CR>", { silent = true })
 
 -- Load the basic configuration
-require "before"
 require "alvaro"
 
 -- FIXME(alvaro): Move this to its own file
