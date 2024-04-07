@@ -4,9 +4,10 @@
 -- TODO(alvaro): Checkout https://github.com/hrsh7th/cmp-nvim-lsp-document-symbol
 -- TODO(alvaro): Add git commit specific completion from  petertriho/cmp-git
 return {
+  "onsails/lspkind-nvim",
   {
     "hrsh7th/nvim-cmp",
-    dependencies = { "onsails/lspkind-nvim" },
+    dependencies = { "onsails/lspkind-nvim", "L3MON4D3/LuaSnip" },
     init = function()
       -- Limit the size of the Pop Up Menu
       vim.opt.pumheight = 20
@@ -182,11 +183,10 @@ return {
       })
     end,
   },
-  "onsails/lspkind-nvim",
   "hrsh7th/cmp-nvim-lsp",
   "hrsh7th/cmp-buffer",
   "hrsh7th/cmp-path",
   "hrsh7th/cmp-nvim-lua",
-  { "saadparwaiz1/cmp_luasnip", dependencies = { "L3MON4D3/LuaSnip" } },
+  "saadparwaiz1/cmp_luasnip",
   "PaterJason/cmp-conjure",
 }

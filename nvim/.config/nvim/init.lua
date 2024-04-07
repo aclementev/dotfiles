@@ -121,10 +121,6 @@ require("lazy").setup({
     },
   },
 
-  -- Snippets
-  "L3MON4D3/LuaSnip",
-  "saadparwaiz1/cmp_luasnip",
-
   -- AI Assistant
   "github/copilot.vim",
 
