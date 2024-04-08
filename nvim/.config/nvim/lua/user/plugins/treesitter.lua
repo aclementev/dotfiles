@@ -29,6 +29,7 @@ local install_languages = {
 return {
   "nvim-treesitter/playground",
   "nvim-treesitter/nvim-treesitter-textobjects",
+  "IndianBoy42/tree-sitter-just",
   {
     "nvim-treesitter/nvim-treesitter-context",
     opts = {
@@ -118,6 +119,19 @@ return {
           },
         },
       }
+
+      -- Add Just parser as a new language to treesitter until is merged
+      require("nvim-treesitter.parsers").get_parser_configs().just = {
+          install_info = {
+              url = "https://github.com/IndianBoy42/tree-sitter-just", -- local path or git repo
+              files = { "src/parser.c", "src/scanner.cc" },
+              branch = "main",
+              -- use_makefile = true -- this may be necessary on MacOS (try if you see compiler errors)
+          },
+          maintainers = { "@IndianBoy42" },
+      }
+      -- Required by `tree-sitter-just` on macOS
+      require("nvim-treesitter.install").compilers = {"gcc-11"}
     end,
   },
 }
