@@ -206,15 +206,6 @@ vim.keymap.set("n", "<LocalLeader>sg", ":<C-U>SynGroup<CR>", { silent = true })
 -- Load the basic configuration
 require "alvaro"
 
--- FIXME(alvaro): Move this to its own file
--- Vim Test
-vim.g["test#strategy"] = "neovim" -- TODO(alvaro): Review this
-vim.keymap.set("n", "<Leader>tt", ":TestNearest<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>tf", ":TestFile<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>ta", ":TestSuite<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>tl", ":TestLast<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>tg", ":TestVisit<CR>", { silent = true })
-
 -- FIXME(alvaro): Move this to utilities or formatting file
 ---@diagnostic disable-next-line: unused-local, unused-function
 local function trim_whitespace()
