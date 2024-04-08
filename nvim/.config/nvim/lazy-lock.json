@@ -63,6 +63,7 @@
   "vim-scriptease": { "branch": "master", "commit": "18511d389675d773994215ddb572ccdc2b72f52b" },
   "vim-sexp": { "branch": "master", "commit": "14464d4580af43424ed8f2614d94e62bfa40bb4d" },
   "vim-sexp-mappings-for-regular-people": { "branch": "master", "commit": "cc5923e357373ea6ef0c13eae82f44e6b9b1d374" },
+  "vim-sleuth": { "branch": "master", "commit": "1d25e8e5dc4062e38cab1a461934ee5e9d59e5a8" },
   "vim-solarized": { "branch": "master", "commit": "034333b1c8b42886e79dd30de458f16172d324ba" },
   "vim-startify": { "branch": "master", "commit": "b81dfa54b979aac27179fe0583c2b92f04c8ddad" },
   "vim-surround": { "branch": "master", "commit": "aeb933272e72617f7c4d35e1f003be16836b948d" },

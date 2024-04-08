@@ -3,6 +3,7 @@ return {
   {
     "stevearc/conform.nvim",
     opts = {
+      timeout_ms = 1000,
       formatters_by_ft = {
         go = { "goimports", "gofmt" },
         html = { { "prettierd", "prettier" } },

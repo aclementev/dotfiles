@@ -7,12 +7,13 @@ return {
   "onsails/lspkind-nvim",
   {
     "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
     dependencies = { "onsails/lspkind-nvim", "L3MON4D3/LuaSnip" },
     init = function()
       -- Limit the size of the Pop Up Menu
       vim.opt.pumheight = 20
       vim.opt.shortmess:append "c"
-      vim.opt.completeopt = { "menu", "menuone", "noselect" }
+      vim.opt.completeopt = { "menu", "menuone", "preview", "noselect" }
     end,
     config = function()
       local cmp = require "cmp"

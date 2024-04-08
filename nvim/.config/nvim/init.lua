@@ -41,10 +41,11 @@ require("lazy").setup({
   { "ericbn/vim-solarized", lazy = false, priority = 1000 },
 
   -- Some of tpope's must have plugins (all hail the almighty tpope)
-  "tpope/vim-surround",
-  "tpope/vim-commentary",
-  "tpope/vim-repeat",
-  "tpope/vim-scriptease",
+  "tpope/vim-surround",  -- Text objects for surrounding
+  "tpope/vim-commentary",  -- Simple mapping for commenting
+  "tpope/vim-repeat",  -- Allow for repeating (some) plugin commands
+  "tpope/vim-sleuth",  -- Detect shiftwidth, tabstop from the current file
+  "tpope/vim-scriptease",  -- Tools for debugging vim plugins
 
   -- TODO(alvaro): Look into this
   -- 'romainl/vim-qf'
@@ -53,7 +54,7 @@ require("lazy").setup({
   "junegunn/vim-easy-align",
   { "nvim-tree/nvim-web-devicons", lazy = false, priority = 2000, opts = { default = true } },
   "norcalli/nvim-colorizer.lua",
-  "stevearc/dressing.nvim",
+  { "stevearc/dressing.nvim", event = "VeryLazy" },
 
   -- TODO(alvaro): Here's a faster and more configurable alternative: https://github.com/goolord/alpha-nvim
   {

@@ -26,18 +26,18 @@ return {
       local saga_diag = require "lspsaga.diagnostic"
 
       vim.keymap.set("n", "<LocalLeader>dd", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
-      vim.keymap.set("n", "<LocalLeader>dn", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
-      vim.keymap.set("n", "<LocalLeader>dp", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
-      vim.keymap.set("n", "<LocalLeader>ne", function()
+      vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
+      vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
+      vim.keymap.set("n", "]e", function()
         saga_diag:goto_next { severity = vim.diagnostic.severity.ERROR }
       end, opts)
-      vim.keymap.set("n", "<LocalLeader>pe", function()
+      vim.keymap.set("n", "[e", function()
         saga_diag:goto_prev { severity = vim.diagnostic.severity.ERROR }
       end, opts)
-      vim.keymap.set("n", "<LocalLeader>nw", function()
+      vim.keymap.set("n", "]w", function()
         saga_diag:goto_next { severity = vim.diagnostic.severity.WARN }
       end, opts)
-      vim.keymap.set("n", "<LocalLeader>nw", function()
+      vim.keymap.set("n", "[w", function()
         saga_diag:goto_prev { severity = vim.diagnostic.severity.WARN }
       end, opts)
     end,
