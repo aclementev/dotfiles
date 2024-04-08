@@ -30,11 +30,11 @@ return {
         desc = "Git: Stage visual selection",
       },
       {
-        "v",
         "<LocalLeader>gr",
         function()
           require("gitsigns").reset_hunk { vim.fn.line ".", vim.fn.line "v" }
         end,
+        mode = "v",
         desc = "Git: Restore visual selection",
       },
       {
