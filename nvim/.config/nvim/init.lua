@@ -106,7 +106,7 @@ require("lazy").setup({
     lazy = false,
     init = function()
       -- Make sure that <Tab> is not mapped automatically
-      vim.g.copilot_no_tab_map = true
+      -- vim.g.copilot_no_tab_map = true
     end,
     keys = {
       { "<C-L>", 'copilot#Accept("")', mode = "i", silent = true, expr = true, replace_keycodes = false },
