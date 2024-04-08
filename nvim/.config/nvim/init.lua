@@ -53,6 +53,7 @@ require("lazy").setup({
   "junegunn/vim-easy-align",
   { "nvim-tree/nvim-web-devicons", lazy = false, priority = 2000, opts = { default = true } },
   "norcalli/nvim-colorizer.lua",
+  "stevearc/dressing.nvim",
 
   -- TODO(alvaro): Here's a faster and more configurable alternative: https://github.com/goolord/alpha-nvim
   {
