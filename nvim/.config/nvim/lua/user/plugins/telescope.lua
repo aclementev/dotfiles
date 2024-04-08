@@ -32,7 +32,7 @@ return {
           table.insert(exclude_tbl, dir)
         end
         local find_options = {
-          find_command = vim.list_extend({ "fd", "--type", "f" }, exclude_tbl),
+          find_command = vim.list_extend({ "fd", "--type", "f", "--color", "never" }, exclude_tbl),
           follow = true,
           hidden = true,
         }
@@ -46,7 +46,10 @@ return {
           end
 
           return function()
-            return builtin.find_files(opts)
+            -- NOTE(alvaro): Telescope will add stuff to this table which can
+            -- mess with the next calls, so we want to make sure to give it a
+            -- new copy every time
+            return builtin.find_files(vim.deepcopy(opts))
           end
         end
       end
@@ -102,11 +105,16 @@ return {
       vim.keymap.set("n", "<Leader>fa", fd_all_with_excludes(), opts)
       vim.keymap.set("n", "<Leader>fA", function()
         return builtin.find_files {
-          find_command = { "fd", "--type", "f", "--exclude", ".git" },
+          find_command = { "fd", "--type", "f", "--color", "never", "--exclude", ".git" },
           follow = true,
           hidden = true,
           no_ignore = true,
         }
+      end, opts)
+      vim.keymap.set("n", "<Leader>fF", function()
+        vim.ui.input({ prompt = "Directory: ", default = "~" }, function(dir)
+          return builtin.find_files { cwd = dir }
+        end)
       end, opts)
       vim.keymap.set("n", "<Leader>fb", builtin.buffers, opts)
       vim.keymap.set("n", "<Leader>fh", builtin.help_tags, opts)
