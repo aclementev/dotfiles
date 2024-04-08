@@ -101,18 +101,27 @@ require("lazy").setup({
   },
 
   -- AI Assistant
-{ "github/copilot.vim", lazy = false, init = function()
-        -- Make sure that <Tab> is not mapped automatically
-        vim.g.copilot_no_tab_map = true
-    end, keys = {
-            {"<C-L>", 'copilot#Accept("")', mode = "i", silent = true, expr = true, replace_keycodes = false}
-        }
+  {
+    "github/copilot.vim",
+    lazy = false,
+    init = function()
+      -- Make sure that <Tab> is not mapped automatically
+      vim.g.copilot_no_tab_map = true
+    end,
+    keys = {
+      { "<C-L>", 'copilot#Accept("")', mode = "i", silent = true, expr = true, replace_keycodes = false },
     },
+  },
 
   -- DB Access
-  "tope/vim-dadbod",
-  { "kristijanhusak/vim-dadbod-ui", init = function() vim.g.db_ui_use_nerd_fonts = 1 end },
-  "kristijanhusak/vim-dadbod-completion",  -- TODO(alvaro): Setup with nvim-cmp
+  "tpope/vim-dadbod",
+  {
+    "kristijanhusak/vim-dadbod-ui",
+    init = function()
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
+  },
+  "kristijanhusak/vim-dadbod-completion", -- TODO(alvaro): Setup with nvim-cmp
 
   -- Language specific
   "simrat39/rust-tools.nvim", -- These have been deprecated
@@ -229,10 +238,5 @@ vim.keymap.set("n", "<LocalLeader>gG", ":GithubOpenCurrent<CR>", { silent = true
 vim.api.nvim_create_user_command("JSONFormat", ":%! jq .", { desc = "Prettify JSON using jq" })
 vim.api.nvim_create_user_command("JSONCompact", ":%! jq -c .", { desc = "Compact JSON using jq" })
 
-
 -- Add custom filetype mappings
-vim.filtetype.add({
-    extension = {
-        "tf" = "terraform",
-    }
-})
+vim.filetype.add { extension = { tf = "terraform" } }
