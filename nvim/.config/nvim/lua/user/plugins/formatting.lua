@@ -7,6 +7,7 @@ return {
       formatters_by_ft = {
         go = { "goimports", "gofmt" },
         html = { { "prettierd", "prettier" } },
+        htmldjango = { { "prettierd", "prettier" } },
         javascript = { { "prettierd", "prettier" } },
         justfile = { "just" },
         lua = { "stylua" },
