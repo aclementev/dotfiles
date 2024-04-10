@@ -41,11 +41,11 @@ require("lazy").setup({
   { "ericbn/vim-solarized", lazy = false, priority = 1000 },
 
   -- Some of tpope's must have plugins (all hail the almighty tpope)
-  "tpope/vim-surround",  -- Text objects for surrounding
-  "tpope/vim-commentary",  -- Simple mapping for commenting
-  "tpope/vim-repeat",  -- Allow for repeating (some) plugin commands
-  "tpope/vim-sleuth",  -- Detect shiftwidth, tabstop from the current file
-  "tpope/vim-scriptease",  -- Tools for debugging vim plugins
+  "tpope/vim-surround", -- Text objects for surrounding
+  "tpope/vim-commentary", -- Simple mapping for commenting
+  "tpope/vim-repeat", -- Allow for repeating (some) plugin commands
+  "tpope/vim-sleuth", -- Detect shiftwidth, tabstop from the current file
+  "tpope/vim-scriptease", -- Tools for debugging vim plugins
 
   -- TODO(alvaro): Look into this
   -- 'romainl/vim-qf'
@@ -55,18 +55,17 @@ require("lazy").setup({
   { "nvim-tree/nvim-web-devicons", lazy = false, priority = 2000, opts = { default = true } },
   "norcalli/nvim-colorizer.lua",
   { "stevearc/dressing.nvim", event = "VeryLazy" },
-
-  -- TODO(alvaro): Here's a faster and more configurable alternative: https://github.com/goolord/alpha-nvim
   {
-    "mhinz/vim-startify",
-    init = function()
-      -- Setup VimScript variables that configure how it works
-      vim.g.startify_change_to_dir = false
-      vim.g.startify_fortune_use_unicode = true
-      vim.g.startify_relative_path = true
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("alpha").setup(require("alpha.themes.theta").config)
     end,
   },
-
   {
     "rcarriga/nvim-notify",
     lazy = false,
