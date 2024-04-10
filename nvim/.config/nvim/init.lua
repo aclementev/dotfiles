@@ -125,7 +125,7 @@ require("lazy").setup({
   "kristijanhusak/vim-dadbod-completion", -- TODO(alvaro): Setup with nvim-cmp
 
   -- Language specific
-  "simrat39/rust-tools.nvim", -- These have been deprecated
+  { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   "guns/vim-sexp",
   "tpope/vim-sexp-mappings-for-regular-people",
   -- "jpalardy/vim-slime",
