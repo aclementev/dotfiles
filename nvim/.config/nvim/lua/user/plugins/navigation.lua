@@ -9,6 +9,7 @@ return {
     opts = {
       sort_by = "case_sensitive",
       view = {
+        side = "right",
         adaptive_size = true,
       },
       renderer = {
