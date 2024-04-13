@@ -121,7 +121,9 @@ cheatbash() {
 }
 
 pip-dev() {
-    python -m pip install mypy flake8 isort black rope jedi python-lsp-server pylsp-mypy pyls-isort python-lsp-black pyls-memestra pylsp-rope 
+    # Check if `uv` is installed
+    if [[ -x "$(command -v uv)" ]]; then
+        uv pip install flake8 black isort mypy 'python-lsp-server[all]' python-lsp-black python-lsp-isort pylsp-mypy
+    fi
+    pip install flake8 black isort mypy 'python-lsp-server[all]' python-lsp-black python-lsp-isort pylsp-mypy
 }
-
-# vim: set filetype=zsh :
