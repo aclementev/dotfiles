@@ -1,0 +1,8 @@
+## enable or disable automatic sync
+auto_sync = false
+## enable or disable automatic update checks
+update_check = false
+# use ctrl instead of alt as the shortcut modifier key for numerical UI shortcuts
+# alt-0 .. alt-9. This is useful for macOS users, as alt is used for special characters
+# and may not work in many terminal emulators.
+ctrl_n_shortcuts = true
