@@ -127,3 +127,16 @@ pip-dev() {
     fi
     pip install flake8 black isort mypy 'python-lsp-server[all]' python-lsp-black python-lsp-isort pylsp-mypy
 }
+
+
+# Working with AWS
+function ecr-latest-tag() {
+  ECR_REPO="$1"
+
+  if [[ -z "$ECR_REPO" ]]; then
+    echo "Usage: $0 <ecr-repo>"
+    return 1
+  fi
+
+  AWS_PAGER= aws ecr describe-images --repository-name "$ECR_REPO" --filter 'tagStatus=TAGGED' --query 'sort_by(imageDetails, & imagePushedAt)[-1].imageTags[0]' --output text
+}
