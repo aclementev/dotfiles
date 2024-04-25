@@ -93,7 +93,7 @@ return {
       -- Therefore we don't manage it through mason
       -- To install the python lsp server and all the required
       -- plugins, you can use the following command
-      -- `pip install flake8 black isort mypy python-lsp-server[all] python-lsp-black python-lsp-isort pylsp-mypy`
+      -- `pip install flake8 black isort mypy 'python-lsp-server[all]' python-lsp-black python-lsp-isort pylsp-mypy`
       lspconfig.pylsp.setup {
         capabilities = lsp_capabilities,
         flags = {

@@ -84,6 +84,14 @@ require("lazy").setup({
       -- Set notify as the default notification handler for vim
       vim.notify = notify
     end,
+    keys = {
+      {
+        "<Leader>dd",
+        function()
+          require("notify").dismiss()
+        end,
+      },
+    },
   },
 
   -- Lua Neovim development
