@@ -39,6 +39,9 @@ if [ -d "$HOME/code/tools/bin/" ]; then
     export PATH="$HOME/code/tools/bin:$PATH"
 fi
 
+# Rust
+CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
+
 # Load any system specific overrides
 if [ -e "$HOME/.system-env-specific.sh" ]; then
     . "$HOME/.system-env-specific.sh"
