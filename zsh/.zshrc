@@ -137,3 +137,7 @@ try-source "$ZSH_DIR/functions.zsh"
 
 # Load the standard system environment
 try-source "$HOME/.system-env.sh" 
+
+# Setup ZOxide
+# NOTE(alvaro): This must be called at the end, since it must run after `compinit` is called
+[[ -x "$(command -v zoxide 2>/dev/null)" ]] && eval "$(zoxide init --hook pwd zsh)"

@@ -9,56 +9,10 @@ dark_mode() {
     echo 'dark' > $HOME/.alvaro_screen_mode
 }
 
-vpn_ip() {
-    # TODO(alvaro): Fix this to work more generally by looking for utunX and
-    # and IPv4 address
-    # ifconfig | awk 'f == "utun2:" {print $2} {f=$1}'
-    # With Tunnelblick, we end up with multiple utun devices with IPv6
-    # addresses, but only 1 with the IPv4 that we want
-    ifconfig | awk '(f == "utun") && ($1 == "inet") {print $2} {f=substr($1, 1, 4)}'
-}
-
 # Copy the pwd to the clipboard
 # TODO(alvaro): Make this platform independent/Support other platforms
 wd() {
     pwd | tr -d '\n' | pbcopy
-}
-
-
-vpn_default() {
-    # Return the default VPN
-    # TODO(alvaro): Detect this as the first of the list of available VPNs
-    DEFAULT_VPN="VPN Corvallis"
-    echo $DEFAULT_VPN
-}
-
-vpn_list() {
-    # Show connected VPN
-    echo "TODO(alvaro): Show a list of the available VPN connections"
-}
-
-vpn_connect() {
-    # TODO(alvaro): This only works on MAC and with the VPN configured
-    VPN_NAME=${1:-$(vpn_default)}
-    echo "Connecting to $VPN_NAME"
-    networksetup -connectpppoeservice $VPN_NAME
-}
-
-# Simple command to manage the connection to the VPN
-vpn() {
-    case $1 in
-        connect )
-            # Connect to the command
-            # TODO(alvaro): Accept an index as well?
-            VPN_NAME=${2:-$(vpn_default)}
-            echo "Requested connection to $VPN_NAME"
-            vpn_connect $VPN_NAME;;
-        "" )
-            # List the comand
-            vpn_list ;;
-        * )
-            echo "Unknown command $1";;
-    esac
 }
 
 # Quickly format as JSON the contents of the clipboard
@@ -78,18 +32,11 @@ psql-to-csv() {
     sed -E '/(^-+)|(\([[:digit:]]+ rows?\))/d; s/\|/,/g; s/(^[[:space:]]+)|([[:space:]]+$)//g; s/[[:space:]]+,/,/g; s/,[[:space:]]+/,/g' $1
 }
 
-
-load-shared-token() {
-    pbcopy < ~/.gh_token_shared_servers
-}
-
-
 # Docker related
 # Purge all the containers running and stopped
 docker-purge() {
     docker ps -aq | xargs docker rm -f
 }
-
 
 # cht.sh
 # A great API for quick questions about many programming languages
@@ -130,7 +77,7 @@ pip-dev() {
 
 
 # Working with AWS
-function ecr-latest-tag() {
+ecr-latest-tag() {
   ECR_REPO="$1"
 
   if [[ -z "$ECR_REPO" ]]; then
