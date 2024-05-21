@@ -42,7 +42,7 @@ require("lazy").setup({
 
   -- Some of tpope's must have plugins (all hail the almighty tpope)
   "tpope/vim-surround", -- Text objects for surrounding
-  "tpope/vim-commentary", -- Simple mapping for commenting
+  -- "tpope/vim-commentary", -- Simple mapping for commenting
   "tpope/vim-repeat", -- Allow for repeating (some) plugin commands
   "tpope/vim-sleuth", -- Detect shiftwidth, tabstop from the current file
   "tpope/vim-scriptease", -- Tools for debugging vim plugins
