@@ -7,8 +7,21 @@ return {
   "onsails/lspkind-nvim",
   {
     "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-    dependencies = { "onsails/lspkind-nvim", "L3MON4D3/LuaSnip" },
+    lazy = false,
+    priority = 100,
+    -- TODO(alvaro): Check if we can afford to make this lazy
+    -- event = "InsertEnter",
+    dependencies = {
+      "onsails/lspkind-nvim",
+      "L3MON4D3/LuaSnip",
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-nvim-lua",
+      "saadparwaiz1/cmp_luasnip",
+      "PaterJason/cmp-conjure",
+      "kristijanhusak/vim-dadbod-completion",
+    },
     init = function()
       -- Limit the size of the Pop Up Menu
       vim.opt.pumheight = 20
@@ -72,8 +85,8 @@ return {
           -- The order inside this table represents the order of the results
           { name = "nvim_lua" },
           { name = "nvim_lsp", entry_filter = context_entry_filter },
-          { name = "luasnip" },
-          { name = "conjure" }, -- This will only work on Conjure-compatible filetypes
+          -- TODO(alvaro): Configure this for the languages that are supported
+          -- { name = "conjure" }, -- This will only work on Conjure-compatible filetypes
           {
             name = "buffer",
             option = {
@@ -182,12 +195,14 @@ return {
       cmp.setup.filetype("TelescopePrompt", {
         sources = cmp.config.sources {},
       })
+
+      -- Setup vim-dadbod
+      cmp.setup.filetype({ "sql" }, {
+        sources = {
+          { name = "vim-dadbod-completion" },
+          { name = "buffer" },
+        },
+      })
     end,
   },
-  "hrsh7th/cmp-nvim-lsp",
-  "hrsh7th/cmp-buffer",
-  "hrsh7th/cmp-path",
-  "hrsh7th/cmp-nvim-lua",
-  "saadparwaiz1/cmp_luasnip",
-  "PaterJason/cmp-conjure",
 }

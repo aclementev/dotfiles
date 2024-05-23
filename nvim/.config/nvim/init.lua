@@ -8,9 +8,6 @@ vim.opt.mouse = "a" -- Setup the mouse
 vim.opt.scrolloff = 10 -- Space when scrolling UP and DOWN
 vim.opt.mousemoveevent = true
 
--- FIXME(alvaro): This is not the location where we want them to be anymore
-vim.g.python3_host_prog = "~/.virtualenv/neovim/bin/python"
-
 -- Lazy.nvim setup
 -- Install Lazy (if necessary)
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
@@ -131,8 +128,6 @@ require("lazy").setup({
       vim.g.db_ui_use_nerd_fonts = 1
     end,
   },
-  "kristijanhusak/vim-dadbod-completion", -- TODO(alvaro): Setup with nvim-cmp
-
   -- Language specific
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   "guns/vim-sexp",
