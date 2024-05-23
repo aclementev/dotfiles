@@ -35,6 +35,7 @@ require("lazy").setup({
   "nvim-lua/popup.nvim",
 
   -- Colorschemes
+  { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
   -- NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
   { "Luxed/ayu-vim", lazy = false, priority = 1000 },
   -- We use this as the light colorscheme
