@@ -2,33 +2,35 @@
 return {
   {
     "stevearc/conform.nvim",
-    opts = {
-      timeout_ms = 1000,
-      formatters_by_ft = {
-        go = { "goimports", "gofmt" },
-        html = { { "prettierd", "prettier" } },
-        htmldjango = { { "prettierd", "prettier" } },
-        javascript = { { "prettierd", "prettier" } },
-        justfile = { "just" },
-        lua = { "stylua" },
-        ocaml = { "ocamlformat" },
-        -- TODO(alvaro): enable ruff if it's available and configured
-        -- python = function(bufnr)
-        --     if conform.get_formatter_info("ruff_format", bufnr).available then
-        --         return { "ruff_format" }
-        --     else
-        --         return { "isort", "black" }
-        --     end
-        -- end,
-        python = { "isort", "black" },
-        rust = { "rustfmt" },
-        sql = { "sqlfluff" },
-        terraform = { "terraform_fmt" },
-        typescript = { { "prettierd", "prettier" } },
-        vue = { { "prettierd", "prettier" } },
-      },
-      notify_on_error = true,
-    },
+    config = function()
+      local conform = require "conform"
+      conform.setup {
+        timeout_ms = 1000,
+        formatters_by_ft = {
+          go = { "goimports", "gofmt" },
+          html = { { "prettierd", "prettier" } },
+          htmldjango = { { "prettierd", "prettier" } },
+          javascript = { { "prettierd", "prettier" } },
+          justfile = { "just" },
+          lua = { "stylua" },
+          ocaml = { "ocamlformat" },
+          -- TODO(alvaro): enable ruff if it's available and configured
+          python = function(bufnr)
+            if conform.get_formatter_info("ruff_format", bufnr).available then
+              return { "ruff_format" }
+            else
+              return { "isort", "black" }
+            end
+          end,
+          rust = { "rustfmt" },
+          sql = { "sqlfluff" },
+          terraform = { "terraform_fmt" },
+          typescript = { { "prettierd", "prettier" } },
+          vue = { { "prettierd", "prettier" } },
+        },
+        notify_on_error = true,
+      }
+    end,
     keys = {
       {
         "<LocalLeader>f",
