@@ -15,6 +15,10 @@ local function on_lsp_attach(ev)
   bufmap("n", "gk", vim.lsp.buf.signature_help)
   bufmap("n", "gr", vim.lsp.buf.references)
   bufmap("n", "g0", vim.lsp.buf.document_symbol)
+  bufmap("n", "gw", function()
+    local cword = vim.fn.expand("<cword>")
+    vim.lsp.buf.workspace_symbol(cword)
+  end)
   bufmap("n", "gW", vim.lsp.buf.workspace_symbol)
   bufmap("n", "gh", function()
     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -49,19 +53,9 @@ local function on_lsp_attach(ev)
 end
 
 return {
-  { "neovim/nvim-lspconfig", dependencies = { "folke/neodev.nvim" } },
   {
-    "nvimdev/lspsaga.nvim",
-    event = "LspAttach",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
-    opts = {
-      lightbulb = {
-        enable = false,
-      },
-    },
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "neovim/nvim-lspconfig", },
   },
   {
     "williamboman/mason.nvim",
@@ -77,11 +71,104 @@ return {
     },
   },
   {
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = { "neovim/nvim-lspconfig", "nvimdev/lspsaga.nvim", "hrsh7th/cmp-nvim-lsp" },
-    config = function()
-      local lspconfig = require "lspconfig"
-      local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+    "neovim/nvim-lspconfig",
+    dependencies = { "folke/neodev.nvim", "williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "nvimdev/lspsaga.nvim", "hrsh7th/cmp-nvim-lsp" },
+    config = function() 
+      local capabilities = nil
+      if pcall("cmp_nvim_lsp") then
+        capabilities = require("cmp_nvim_lsp").default_capabilities()
+      
+      end
+
+      local lspconfig = require("lspconfig")
+      
+      local common_settings = {
+        capabilities = capabilities,
+        flags = {
+          debounce_text_changes = 150, -- We want some debouncing
+        }
+      }
+
+      -- There are some servers that we want to manage using Mason, which handles
+      -- installing them and updating them and others that we want to manage 
+      -- using lspconfig direclty
+
+      local servers = {
+        pylsp = {
+          settings = {
+                flake8 = {
+                  enabled = true,
+                },
+                -- pip install python-lsp-black
+                black = {
+                  enabled = true,
+                },
+                -- pip install python-lsp-isort
+                isort = {
+                  enabled = true,
+                },
+                -- pip install pylsp-mypy
+                pylsp_mypy = {
+                  enabled = true,
+                  live_mode = false, -- This does not work with dmypy enabled currently
+                  -- TODO(alvaro): Try this again
+                  dmypy = true,
+                  report_progress = true,
+                },
+                -- TODO(alvaro): Try these
+                rope_autoimport = {
+                  enabled = false,
+                  completions = {
+                    enabled = true,
+                  },
+                  code_actions = {
+                    enabled = true,
+                  },
+                },
+                -- Disable these plugins explicitly
+                yapf = {
+                  enabled = false,
+                },
+                pycodestyle = {
+                  enabled = false,
+                },
+                pylint = {
+                  enabled = false,
+                },
+                mccabe = {
+                  enabled = false,
+                },
+                autopep8 = {
+                  enabled = false,
+                },
+                pydocstyle = {
+                  enabled = false,
+                },
+                pyflakes = {
+                  enabled = false,
+                },
+              },
+            },
+        lua_ls = true,
+        vimls = true,
+        gopls = true,
+        rust_analyzer = true,
+      }
+
+      require("mason-lspconfig").setup {
+        ensure_installed = { "lua_ls", "vimls" },
+      }
+
+      -- Setup all the configured servers
+      for name, config in pairs(servers) do
+        if config == true then
+          config = {}
+        end
+
+        config = vim.tbl_deep_extend("force", {}, common_settings, config)
+
+        lspconfig[name].setup(config)
+      end
 
       -- Prepare the callback for when a server is attached
       local group = vim.api.nvim_create_augroup("lsp_attach", { clear = true })
@@ -90,129 +177,20 @@ return {
         desc = "Running LSP related actions",
         callback = on_lsp_attach,
       })
-
-      -- NOTE(alvaro): `pylsp` is weird and it prefers to be installed
-      -- locally on every virtualenv that uses it
-      -- Therefore we don't manage it through mason
-      -- To install the python lsp server and all the required
-      -- plugins, you can use the following command
-      -- `pip install flake8 black isort mypy 'python-lsp-server[all]' python-lsp-black python-lsp-isort pylsp-mypy`
-      lspconfig.pylsp.setup {
-        capabilities = lsp_capabilities,
-        flags = {
-          debounce_text_changes = 150,
-        },
-        settings = {
-          pylsp = {
-            configurationSources = { "flake8" },
-            plugins = {
-              flake8 = {
-                enabled = true,
-              },
-              -- pip install python-lsp-black
-              black = {
-                enabled = true,
-              },
-              -- pip install python-lsp-isort
-              isort = {
-                enabled = true,
-              },
-              -- pip install pylsp-mypy
-              pylsp_mypy = {
-                enabled = true,
-                live_mode = false, -- This does not work with dmypy enabled currently
-                -- TODO(alvaro): Try this again
-                dmypy = true,
-                report_progress = true,
-              },
-              -- TODO(alvaro): Try these
-              rope_autoimport = {
-                enabled = false,
-                completions = {
-                  enabled = true,
-                },
-                code_actions = {
-                  enabled = true,
-                },
-              },
-              -- Disable these plugins explicitly
-              yapf = {
-                enabled = false,
-              },
-              pycodestyle = {
-                enabled = false,
-              },
-              pylint = {
-                enabled = false,
-              },
-              mccabe = {
-                enabled = false,
-              },
-              autopep8 = {
-                enabled = false,
-              },
-              pydocstyle = {
-                enabled = false,
-              },
-              pyflakes = {
-                enabled = false,
-              },
-            },
-          },
-        },
-      }
-
-      require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "vimls" },
-        handlers = {
-          -- Default handler for every server
-          function(server)
-            -- See :help lspconfig-setup
-            lspconfig[server].setup {
-              capabilities = lsp_capabilities,
-            }
-          end,
-          -- Server specific overrides
-          ["vimls"] = function()
-            lspconfig.vimls.setup {
-              capabilities = lsp_capabilities,
-              flags = {
-                debounce_text_changes = 150,
-              },
-            }
-          end,
-          ["lua_ls"] = function()
-            -- FIXME(alvaro): Review this configuration and take a look at the replacement for nvim development
-            lspconfig.lua_ls.setup {
-              capabilities = lsp_capabilities,
-              flags = {
-                debounce_text_changes = 150,
-              },
-              settings = {
-                Lua = {
-                  -- Do not send telemetry data containing a randomized but unique identifier
-                  telemetry = {
-                    enable = false,
-                  },
-                },
-              },
-            }
-          end,
-          ["pylsp"] = function()
-            -- NOTE(alvaro): `pylsp` is weird and it prefers to be installed
-            -- locally on every virtualenv that uses it
-            -- Therefore we don't manage it through mason
-            -- This does nothing on purpose
-          end,
-          ["rust_analyzer"] = function()
-            -- We are using the plugin https://github.com/mrcjkb/rustaceanvim
-            -- which takes care of configuring the LSP, so we don't
-            -- do it. This explicitly does not call lspconfig["rust-analyzer"].setup()
-            -- The rest is taken care of in the plugin configuration
-          end,
-        },
-      }
     end,
+  },
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      lightbulb = {
+        enable = false,
+      },
+    },
   },
   -- LSP Progress notifications
   "j-hui/fidget.nvim",
