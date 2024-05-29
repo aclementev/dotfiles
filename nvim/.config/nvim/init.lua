@@ -111,17 +111,17 @@ require("lazy").setup({
   },
 
   -- AI Assistant
-  {
-    "github/copilot.vim",
-    lazy = false,
-    init = function()
-      -- Make sure that <Tab> is not mapped automatically
-      -- vim.g.copilot_no_tab_map = true
-    end,
-    keys = {
-      { "<C-L>", 'copilot#Accept("")', mode = "i", silent = true, expr = true, replace_keycodes = false },
-    },
-  },
+  -- {
+  --   "github/copilot.vim",
+  --   lazy = false,
+  --   init = function()
+  --     -- Make sure that <Tab> is not mapped automatically
+  --     -- vim.g.copilot_no_tab_map = true
+  --   end,
+  --   keys = {
+  --     { "<C-L>", 'copilot#Accept("")', mode = "i", silent = true, expr = true, replace_keycodes = false },
+  --   },
+  -- },
 
   -- DB Access
   "tpope/vim-dadbod",
@@ -132,7 +132,6 @@ require("lazy").setup({
     end,
   },
   -- Language specific
-  { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   "guns/vim-sexp",
   "tpope/vim-sexp-mappings-for-regular-people",
   -- "jpalardy/vim-slime",
