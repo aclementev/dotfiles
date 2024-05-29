@@ -16,7 +16,7 @@ local function on_lsp_attach(ev)
   bufmap("n", "gr", vim.lsp.buf.references)
   bufmap("n", "g0", vim.lsp.buf.document_symbol)
   bufmap("n", "gw", function()
-    local cword = vim.fn.expand("<cword>")
+    local cword = vim.fn.expand "<cword>"
     vim.lsp.buf.workspace_symbol(cword)
   end)
   bufmap("n", "gW", vim.lsp.buf.workspace_symbol)
@@ -55,7 +55,7 @@ end
 return {
   {
     "williamboman/mason-lspconfig.nvim",
-    dependencies = { "neovim/nvim-lspconfig", },
+    dependencies = { "neovim/nvim-lspconfig" },
   },
   {
     "williamboman/mason.nvim",
@@ -72,83 +72,88 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "folke/neodev.nvim", "williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "nvimdev/lspsaga.nvim", "hrsh7th/cmp-nvim-lsp" },
-    config = function() 
+    dependencies = {
+      "folke/neodev.nvim",
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "nvimdev/lspsaga.nvim",
+      "hrsh7th/cmp-nvim-lsp",
+    },
+    config = function()
       local capabilities = nil
-      if pcall("cmp_nvim_lsp") then
+      if pcall "cmp_nvim_lsp" then
         capabilities = require("cmp_nvim_lsp").default_capabilities()
-      
       end
 
-      local lspconfig = require("lspconfig")
-      
+      local lspconfig = require "lspconfig"
+
       local common_settings = {
         capabilities = capabilities,
         flags = {
           debounce_text_changes = 150, -- We want some debouncing
-        }
+        },
       }
 
       -- There are some servers that we want to manage using Mason, which handles
-      -- installing them and updating them and others that we want to manage 
+      -- installing them and updating them and others that we want to manage
       -- using lspconfig direclty
 
       local servers = {
         pylsp = {
           settings = {
-                flake8 = {
-                  enabled = true,
-                },
-                -- pip install python-lsp-black
-                black = {
-                  enabled = true,
-                },
-                -- pip install python-lsp-isort
-                isort = {
-                  enabled = true,
-                },
-                -- pip install pylsp-mypy
-                pylsp_mypy = {
-                  enabled = true,
-                  live_mode = false, -- This does not work with dmypy enabled currently
-                  -- TODO(alvaro): Try this again
-                  dmypy = true,
-                  report_progress = true,
-                },
-                -- TODO(alvaro): Try these
-                rope_autoimport = {
-                  enabled = false,
-                  completions = {
-                    enabled = true,
-                  },
-                  code_actions = {
-                    enabled = true,
-                  },
-                },
-                -- Disable these plugins explicitly
-                yapf = {
-                  enabled = false,
-                },
-                pycodestyle = {
-                  enabled = false,
-                },
-                pylint = {
-                  enabled = false,
-                },
-                mccabe = {
-                  enabled = false,
-                },
-                autopep8 = {
-                  enabled = false,
-                },
-                pydocstyle = {
-                  enabled = false,
-                },
-                pyflakes = {
-                  enabled = false,
-                },
+            flake8 = {
+              enabled = true,
+            },
+            -- pip install python-lsp-black
+            black = {
+              enabled = true,
+            },
+            -- pip install python-lsp-isort
+            isort = {
+              enabled = true,
+            },
+            -- pip install pylsp-mypy
+            pylsp_mypy = {
+              enabled = true,
+              live_mode = false, -- This does not work with dmypy enabled currently
+              -- TODO(alvaro): Try this again
+              dmypy = true,
+              report_progress = true,
+            },
+            -- TODO(alvaro): Try these
+            rope_autoimport = {
+              enabled = false,
+              completions = {
+                enabled = true,
+              },
+              code_actions = {
+                enabled = true,
               },
             },
+            -- Disable these plugins explicitly
+            yapf = {
+              enabled = false,
+            },
+            pycodestyle = {
+              enabled = false,
+            },
+            pylint = {
+              enabled = false,
+            },
+            mccabe = {
+              enabled = false,
+            },
+            autopep8 = {
+              enabled = false,
+            },
+            pydocstyle = {
+              enabled = false,
+            },
+            pyflakes = {
+              enabled = false,
+            },
+          },
+        },
         lua_ls = true,
         vimls = true,
         gopls = true,
@@ -182,10 +187,7 @@ return {
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     opts = {
       lightbulb = {
         enable = false,

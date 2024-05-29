@@ -76,6 +76,7 @@ return {
         textobjects = {
           select = {
             enable = true,
+            disable = { "rust" },  -- Rust treesitter queries are very slow for this
             -- You can use capture groups defined in textobjects.scm
             keymaps = {
               ["if"] = "@function.inner",
@@ -88,6 +89,14 @@ return {
               ["ab"] = "@block.outer",
             },
             include_surrounding_whitespace = true,
+          },
+          lsp_interop = {
+            enable = true,
+            border = 'none',
+            peek_definition_code = {
+              ["<Leader>kf"] = "@function.outer",
+              ["<Leader>kc"] = "@class.outer",
+            },
           },
           swap = {
             enable = true,
