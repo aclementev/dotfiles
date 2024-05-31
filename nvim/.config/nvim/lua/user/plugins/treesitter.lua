@@ -28,7 +28,6 @@ local install_languages = {
 }
 
 return {
-  "nvim-treesitter/playground",
   "nvim-treesitter/nvim-treesitter-textobjects",
   {
     "nvim-treesitter/nvim-treesitter-context",
@@ -68,15 +67,16 @@ return {
             node_decremental = "grm",
           },
         },
-        -- nvim-treesiter/playground config
-        playground = {
-          enable = true,
-        },
         -- nvim-treesiter/nvim-treesitter-textobjects config
         textobjects = {
           select = {
             enable = true,
-            disable = { "rust" },  -- Rust treesitter queries are very slow for this
+            disable = {
+              -- Rust treesitter queries are very slow for this
+              "rust",
+              -- Typescript queries throw an error
+              "typescript",
+            },
             -- You can use capture groups defined in textobjects.scm
             keymaps = {
               ["if"] = "@function.inner",
@@ -92,7 +92,7 @@ return {
           },
           lsp_interop = {
             enable = true,
-            border = 'none',
+            border = "none",
             peek_definition_code = {
               ["<Leader>kf"] = "@function.outer",
               ["<Leader>kc"] = "@class.outer",

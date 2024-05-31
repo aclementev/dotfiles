@@ -18,7 +18,7 @@ vim.keymap.set("n", "<LocalLeader>dl", vim.diagnostic.setloclist, opts)
 return {
   {
     "folke/trouble.nvim",
-    version = "2.*",
+    version = "3.*",
     lazy = false,
     dependencies = { "nvimdev/lspsaga.nvim", "nvim-tree/nvim-web-devicons" },
     config = function()
@@ -40,14 +40,18 @@ return {
       vim.keymap.set("n", "[w", function()
         saga_diag:goto_prev { severity = vim.diagnostic.severity.WARN }
       end, opts)
+
+      -- Call setup
+      require("trouble").setup()
     end,
     keys = {
-      { "<Leader>xx", "<cmd>TroubleToggle<CR>", desc = "Toggle Trouble" },
-      { "<Leader>xw", "<cmd>TroubleToggle workspace_diagnostic<CR>", desc = "Toggle Trouble Workspace Diagnostics" },
-      { "<Leader>xd", "<cmd>TroubleToggle document_diagnostic<CR>", desc = "Toggle Trouble Document Diagnostics" },
-      { "<Leader>xq", "<cmd>TroubleToggle quickfix<CR>", desc = "Send Trouble to Quickfix List" },
-      { "<Leader>xl", "<cmd>TroubleToggle loclist<CR>", desc = "Send Trouble to Location List" },
-      { "<Leader>xr", "<cmd>TroubleToggle lsp_references<CR>", desc = "Open LSP References on Trouble" },
+      { "<Leader>xx", "<cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
+      { "<Leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<Leader>xQ", "<cmd>Trouble quickfix toggle<CR>", desc = "QuickFix List (Trouble)" },
+      { "<Leader>xL", "<cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
+      { "<Leader>xs", "<cmd>Trouble symbols toggle focus=false<CR>", desc = "LSP Symbols (Trouble)" },
+      { "<Leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<CR>", desc = "LSP Definitions / references / ... (Trouble)" },
+      { "<Leader>xr", "<cmd>Trouble lsp toggle<CR>", desc = "Open LSP References on Trouble" },
       {
         "<Leader>xn",
         function()
