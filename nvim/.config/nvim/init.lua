@@ -201,6 +201,7 @@ local function syn_group()
   local syn_id = vim.fn.synID(line, col, 1)
   print(vim.fn.synIDattr(syn_id, "name"), "->", vim.fn.synIDattr(vim.fn.synIDtrans(syn_id), "name"))
 end
+
 vim.api.nvim_create_user_command(
   "SynGroup",
   syn_group,

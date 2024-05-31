@@ -12,7 +12,7 @@ local install_languages = {
   "htmldjango",
   "javascript",
   "json",
-  -- "just",  -- For now this seems like it does not install, but it's technically supported
+  -- "just",  -- nor now this seems like it does not install, but it's technically supported
   "lua",
   "markdown",
   "markdown_inline",
@@ -28,14 +28,6 @@ local install_languages = {
 }
 
 return {
-  "nvim-treesitter/nvim-treesitter-textobjects",
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    opts = {
-      max_lines = 5,
-      min_window_height = 20,
-    },
-  },
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -129,6 +121,33 @@ return {
           },
         },
       }
+
+      -- Add overrides so that
+      -- FIXME(alvaro): It's weird that I need this... I am 99% sure that it
+      -- has something to do with my current setup, and that these should work
+      -- by default.
+      -- See: https://github.com/folke/tokyonight.nvim/issues/534
+
+      local missing_links = {
+        ["@include"] = "Include",
+        ["@conditional"] = "Conditional",
+        ["@repeat"] = "Repeat",
+        -- Not sure if this is general or just applies to Tokyonight
+        ["@parameter"] = "@variable.parameter",
+      }
+
+      for name, link in pairs(missing_links) do
+        vim.api.nvim_set_hl(0, name, { link = link })
+      end
     end,
+  },
+  { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesiter/nvim-treesitter" } },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    dependencies = { "nvim-treesiter/nvim-treesitter" },
+    opts = {
+      max_lines = 5,
+      min_window_height = 20,
+    },
   },
 }
