@@ -150,4 +150,17 @@ return {
       min_window_height = 20,
     },
   },
+  {
+    "windwp/nvim-ts-autotag",
+    dependencies = { "nvim-treesiter/nvim-treesitter" },
+    config = function()
+      require("nvim-ts-autotag").setup {
+        opts = {
+          enable_close = true,
+          enable_rename = true,
+          enable_close_on_slash = true,
+        },
+      }
+    end,
+  },
 }
