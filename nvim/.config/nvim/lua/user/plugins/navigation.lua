@@ -1,5 +1,5 @@
 return {
-  "justinmk/vim-dirvish",
+  "stevearc/oil.nvim",
   {
     "nvim-tree/nvim-tree.lua",
     init = function()
