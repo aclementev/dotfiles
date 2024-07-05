@@ -13,12 +13,16 @@ eval "$(starship init $(basename $SHELL))"
 # ------------- System Tools -------------
 # FZF
 if [[ $(basename "$SHELL") = "zsh" ]]; then
-    [ -e "$HOME/.fzf.zsh" ] && . "$HOME/.fzf.zsh"
+    source <(fzf --zsh)
 else
-    [ -e "$HOME/.fzf.bash" ] && . "$HOME/.fzf.bash"
+    eval "$(fzf --bash)"
 fi
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
+
+# ------------- Colorscheme --------------
+[ -e "$HOME/.alvaro_theme_name" ] || echo "tokyonight_storm" > $HOME/.alvaro_theme_name
+export BAT_THEME=$(head -n1 $HOME/.alvaro_theme_name)
 
 # direnv
 if [[ -x "$(command -v direnv)" ]]; then
@@ -45,3 +49,6 @@ CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 if [ -e "$HOME/.system-env-specific.sh" ]; then
     . "$HOME/.system-env-specific.sh"
 fi
+
+# Aliases
+alias k=kubectl
