@@ -154,7 +154,7 @@ return {
   },
   {
     "windwp/nvim-ts-autotag",
-    dependencies = { "nvim-treesiter/nvim-treesitter" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("nvim-ts-autotag").setup {
         opts = {
