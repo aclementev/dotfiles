@@ -132,8 +132,10 @@ return {
         ["@include"] = "Include",
         ["@conditional"] = "Conditional",
         ["@repeat"] = "Repeat",
+        ["@exception"] = "Exception",
         -- Not sure if this is general or just applies to Tokyonight
         ["@parameter"] = "@variable.parameter",
+        ["@field"] = "@variable.member",
       }
 
       for name, link in pairs(missing_links) do
