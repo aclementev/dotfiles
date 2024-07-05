@@ -2,11 +2,15 @@
 light_mode() {
     # TODO(alvaro): Change the iTerm2 profile (if applicable)
     echo 'light' > $HOME/.alvaro_screen_mode
+    export BAT_THEME="Solarized (light)"
+    echo $BAT_THEME > $HOME/.alvaro_theme_name
 }
 
 dark_mode() {
     # TODO(alvaro): Change the iTerm2 profile (if applicable)
     echo 'dark' > $HOME/.alvaro_screen_mode
+    export BAT_THEME=tokyonight_storm
+    echo $BAT_THEME > $HOME/.alvaro_theme_name
 }
 
 # Copy the pwd to the clipboard
@@ -70,9 +74,9 @@ cheatbash() {
 pip-dev() {
     # Check if `uv` is installed
     if [[ -x "$(command -v uv)" ]]; then
-        uv pip install flake8 black isort mypy 'python-lsp-server[all]' python-lsp-black python-lsp-isort pylsp-mypy
+        uv pip install flake8 black isort mypy 'python-lsp-server[all]' python-lsp-black python-lsp-isort pylsp-mypy python-lsp-ruff
     fi
-    pip install flake8 black isort mypy 'python-lsp-server[all]' python-lsp-black python-lsp-isort pylsp-mypy
+    pip install flake8 black isort mypy 'python-lsp-server[all]' python-lsp-black python-lsp-isort pylsp-mypy python-lsp-ruff
 }
 
 
@@ -86,4 +90,8 @@ ecr-latest-tag() {
   fi
 
   AWS_PAGER= aws ecr describe-images --repository-name "$ECR_REPO" --filter 'tagStatus=TAGGED' --query 'sort_by(imageDetails, & imagePushedAt)[-1].imageTags[0]' --output text
+}
+
+irun() {
+    arch -x86_64 /bin/bash -c "$*"
 }
