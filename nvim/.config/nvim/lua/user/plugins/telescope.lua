@@ -7,6 +7,13 @@ DIRS_TO_IGNORE = {
   "__pycache__",
 }
 
+local project_root = function()
+  local status, root = pcall(vim.fn.system, "git rev-parse --show-toplevel")
+  if status then
+    return root
+  end
+end
+
 -- TODO(alvaro): Take a look at the trouble target https://github.com/folke/trouble.nvim?tab=readme-ov-file#telescope
 return {
   "nvim-telescope/telescope-fzy-native.nvim",
@@ -132,8 +139,19 @@ return {
       end, opts)
       vim.keymap.set("n", "<Leader>fD", builtin.diagnostics, opts)
       -- Telescope + Grep
-      vim.keymap.set("n", "<Leader>g", builtin.grep_string, opts)
-      vim.keymap.set("n", "<Leader>r", builtin.live_grep, opts)
+      vim.keymap.set("n", "<Leader>rg", builtin.grep_string, opts)
+      vim.keymap.set("n", "<Leader>rr", builtin.live_grep, opts)
+      vim.keymap.set("n", "<Leader>ra", function()
+        -- Get the "root" of the project, whatever it may be
+        local root = project_root()
+        if not root then
+          return
+        end
+        builtin.live_grep({
+          cwd = root
+        })
+      end, opts)
+      vim.keymap.set("n", "<Leader>rw", builtin.live_grep, opts)
 
       -- Setup Telescope File Browser
       vim.keymap.set("n", "<Leader>ft", function()

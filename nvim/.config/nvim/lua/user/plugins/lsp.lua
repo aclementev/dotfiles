@@ -130,6 +130,11 @@ return {
                 enabled = true,
               },
             },
+            -- pip install python-lsp-ruff
+            ruff = {
+              enabled = true,
+              formatEnabled = true,
+            },
             -- Disable these plugins explicitly
             yapf = {
               enabled = false,

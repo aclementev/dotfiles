@@ -91,6 +91,7 @@ require("lazy").setup({
         function()
           require("notify").dismiss()
         end,
+        desc = "Dismissis notifications"
       },
     },
   },

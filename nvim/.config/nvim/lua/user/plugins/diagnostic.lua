@@ -62,7 +62,7 @@ return {
       {
         "<Leader>xp",
         function()
-          require("trouble").previous { skip_groups = true, jump = true }
+          require("trouble").prev { skip_groups = true, jump = true }
         end,
         desc = "Jump to previous element in Trouble",
       },
