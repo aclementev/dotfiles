@@ -10,8 +10,9 @@ return {
   },
   {
     "akinsho/toggleterm.nvim",
+    lazy = false,
     opts = {
-      open_mapping = "<Leader>to",
+      open_mapping = "<LocalLeader>to",
       hide_numbers = true,
       autochdir = true,
       start_in_insert = true,
@@ -28,10 +29,10 @@ return {
       },
     },
     keys = {
-      { "<Leader>tv", ":ToggleTerm direction=vertical<CR>", desc = "Open Toggleterm in a vertical split" },
-      { "<Leader>tx", ":ToggleTerm direction=horizontal<CR>", desc = "Open Toggleterm in a horizontal split" },
-      { "<Leader>tl", ":ToggleTermSendCurrentLine<CR>", desc = "Send current line to Toggleterm" },
-      { "<Leader>tl", ":ToggleTermSendCurrentVisualSelection<CR>", desc = "Send current line to Toggleterm", mode = "v" },
+      { "<LocalLeader>tv", ":ToggleTerm direction=vertical<CR>", desc = "Open Toggleterm in a vertical split" },
+      { "<LocalLeader>tx", ":ToggleTerm direction=horizontal<CR>", desc = "Open Toggleterm in a horizontal split" },
+      { "<LocalLeader>tl", ":ToggleTermSendCurrentLine<CR>", desc = "Send current line to Toggleterm" },
+      { "<LocalLeader>tl", ":ToggleTermSendCurrentVisualSelection<CR>", desc = "Send current line to Toggleterm", mode = "v" },
     },
   },
 }

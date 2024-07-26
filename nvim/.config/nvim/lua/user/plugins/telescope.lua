@@ -16,9 +16,13 @@ end
 
 -- TODO(alvaro): Take a look at the trouble target https://github.com/folke/trouble.nvim?tab=readme-ov-file#telescope
 return {
-  "nvim-telescope/telescope-fzy-native.nvim",
+  -- "nvim-telescope/telescope-fzy-native.nvim",
   "nvim-telescope/telescope-ui-select.nvim",
   "nvim-telescope/telescope-file-browser.nvim",
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release"
+  },
   "nvim-telescope/telescope-dap.nvim",
   {
     "nvim-telescope/telescope.nvim",
@@ -62,6 +66,8 @@ return {
       end
 
       local fd_all_with_excludes = fd_with_excludes(DIRS_TO_IGNORE)
+
+      -- Call the setup function
       telescope.setup {
         defaults = {
           path_display = {
@@ -94,11 +100,18 @@ return {
               },
             },
           },
+          fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "smart_case",
+          }
         },
       }
 
       -- Register the extension modules
-      telescope.load_extension "fzy_native"
+      telescope.load_extension "fzf"
+      -- telescope.load_extension "fzy_native"
       telescope.load_extension "ui-select"
       telescope.load_extension "file_browser"
       telescope.load_extension "dap"
@@ -151,7 +164,12 @@ return {
           cwd = root
         })
       end, opts)
-      vim.keymap.set("n", "<Leader>rw", builtin.live_grep, opts)
+      vim.keymap.set("n", "<Leader>rw", function()
+        local query = vim.fn.input("Grep > ")
+        return builtin.grep_string(
+          { search = query }
+        )
+      end, opts)
 
       -- Setup Telescope File Browser
       vim.keymap.set("n", "<Leader>ft", function()

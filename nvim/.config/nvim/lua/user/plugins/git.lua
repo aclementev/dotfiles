@@ -1,5 +1,43 @@
+-- Define a :Browse command so that fugitive knows how to open a url without Netrw
+vim.api.nvim_create_user_command(
+  "Browse",
+  function(opts)
+    local url = opts.args
+    vim.ui.open(url)
+  end,
+  { nargs = 1 }
+)
+
 return {
-  "tpope/vim-fugitive",
+  "tpope/vim-rhubarb",
+  {
+    lazy = false,
+    "tpope/vim-fugitive",
+    keys = {
+      {
+        "<LocalLeader>G",
+        "<cmd>Git<CR>",
+        desc = "Fugitive: Git status",
+      },
+      {
+        "<LocalLeader>gb",
+        "<cmd>Git blame<CR>",
+        desc = "Fugitive: Git blame",
+      },
+      {
+        "<LocalLeader>gg",
+        "<cmd>GBrowse<CR>",
+        desc = "Fugitive: Git blame",
+      },
+      {
+        "<LocalLeader>gg",
+        -- NOTE(alvaro): I could not figure out how to handle properly the visual range using <cmd>
+        ":<C-U>'<,'>GBrowse<CR>",
+        desc = "Fugitive: Git blame (visual range)",
+        mode = "v"
+      },
+    }
+  },
   {
     "lewis6991/gitsigns.nvim",
     lazy = false,
@@ -66,7 +104,7 @@ return {
         desc = "Git: Preview Hunk",
       },
       {
-        "<LocalLeader>gb",
+        "<LocalLeader>gl",
         function()
           require("gitsigns").blame_line { full = true }
         end,
