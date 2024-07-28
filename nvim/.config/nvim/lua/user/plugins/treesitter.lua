@@ -12,7 +12,7 @@ local install_languages = {
   "htmldjango",
   "javascript",
   "json",
-  -- "just",  -- nor now this seems like it does not install, but it's technically supported
+  "just",
   "lua",
   "markdown",
   "markdown_inline",
