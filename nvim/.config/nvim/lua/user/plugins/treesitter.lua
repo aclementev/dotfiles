@@ -30,6 +30,7 @@ local install_languages = {
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
     build = ":TSUpdate",
     config = function()
       ---@diagnostic disable-next-line: missing-fields
@@ -128,14 +129,16 @@ return {
       -- by default.
       -- See: https://github.com/folke/tokyonight.nvim/issues/534
 
+      -- NOTE(alvaro): You can use this to add missing links, but any issues most likely
+      -- mean that you are using an outdated version of the tree-sitter parser
       local missing_links = {
-        ["@include"] = "Include",
-        ["@conditional"] = "Conditional",
-        ["@repeat"] = "Repeat",
-        ["@exception"] = "Exception",
-        -- Not sure if this is general or just applies to Tokyonight
-        ["@parameter"] = "@variable.parameter",
-        ["@field"] = "@variable.member",
+        --   ["@include"] = "Include",
+        --   ["@conditional"] = "Conditional",
+        --   ["@repeat"] = "Repeat",
+        --   ["@exception"] = "Exception",
+        --   -- Not sure if this is general or just applies to Tokyonight
+        --   ["@parameter"] = "@variable.parameter",
+        --   ["@field"] = "@variable.member",
       }
 
       for name, link in pairs(missing_links) do

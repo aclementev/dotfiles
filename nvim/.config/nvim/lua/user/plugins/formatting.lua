@@ -1,3 +1,6 @@
+-- List of languages for which we want format on save
+local LANGUAGES_ON_SAVE = { "go" }
+
 -- TODO(alvaro): See this recipe https://github.com/stevearc/conform.nvim/blob/master/doc/recipes.md#lazy-loading-with-lazynvim
 return {
   {
@@ -6,6 +9,15 @@ return {
       local conform = require "conform"
       conform.setup {
         timeout_ms = 1000,
+        format_on_save = function(bufnr)
+          -- Get the filetype of the language 
+          if vim.tbl_contains(LANGUAGES_ON_SAVE, vim.bo[bufnr].filetype) then
+            return {
+              timeout_ms = 500,
+              lsp_fallback = true,
+            }
+          end
+        end,
         formatters_by_ft = {
           go = { "goimports", "gofmt" },
           html = { { "prettierd", "prettier" } },
