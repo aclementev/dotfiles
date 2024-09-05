@@ -31,3 +31,6 @@
 	required = true
 [branch]
 	sort = -committerdate
+
+[includeIf "gitdir:~/code/work/**"]
+        path = ~/code/work/.gitconfig
