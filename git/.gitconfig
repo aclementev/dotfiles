@@ -20,8 +20,13 @@
 	pff = pull --ff-only
 [pull]
 	rebase = false
+[fetch]
+	prune = true
+	prunetags = true
 [init]
 	defaultBranch = main
+[push]
+	autoSetupRemote = true
 [rerere]
 	enabled = true
 [filter "lfs"]
@@ -31,6 +36,13 @@
 	required = true
 [branch]
 	sort = -committerdate
+[tag]
+	sort = taggerdate
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	algorithm = histogram
+	colorMoved = default
 
 [includeIf "gitdir:~/code/work/**"]
         path = ~/code/work/.gitconfig
