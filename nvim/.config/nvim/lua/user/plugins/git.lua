@@ -8,6 +8,8 @@ vim.api.nvim_create_user_command(
   { nargs = 1 }
 )
 
+local main_branch_name = os.getenv("GIT_BASE_BRANCH") or "main"
+
 return {
   "tpope/vim-rhubarb",
   {
@@ -27,13 +29,24 @@ return {
       {
         "<LocalLeader>gg",
         "<cmd>GBrowse<CR>",
-        desc = "Fugitive: Git blame",
+        desc = "Fugitive: Git browse",
+      },
+      {
+        "<LocalLeader>gm",
+        string.format("<cmd>GBrowse %s:%%<CR>", main_branch_name),
+        desc = "Fugitive: Git browse main",
       },
       {
         "<LocalLeader>gg",
         -- NOTE(alvaro): I could not figure out how to handle properly the visual range using <cmd>
         ":<C-U>'<,'>GBrowse<CR>",
-        desc = "Fugitive: Git blame (visual range)",
+        desc = "Fugitive: Git browse (visual range)",
+        mode = "v"
+      },
+      {
+        "<LocalLeader>gm",
+        desc = "Fugitive: Git browse (visual range)",
+        string.format(":<C-U>'<,'>GBrowse %s:%%<CR>", main_branch_name),
         mode = "v"
       },
     }
