@@ -131,8 +131,13 @@ return {
           no_ignore = true,
         }
       end, opts)
-      vim.keymap.set("n", "<Leader>fF", function()
-        vim.ui.input({ prompt = "Directory: ", default = "~" }, function(dir)
+      vim.keymap.set("n", "<Leader>fd", function()
+        vim.ui.input({ prompt = "Directory: ", default = vim.loop.cwd(), completion = "dir" }, function(dir)
+          return builtin.find_files { cwd = dir }
+        end)
+      end, opts)
+      vim.keymap.set("n", "<Leader>fD", function()
+        vim.ui.input({ prompt = "Directory: ", default = vim.fn.expand("~"), completion = "dir" }, function(dir)
           return builtin.find_files { cwd = dir }
         end)
       end, opts)
@@ -147,10 +152,10 @@ return {
       vim.keymap.set("n", "<Leader>fs", builtin.lsp_document_symbols, opts)
       vim.keymap.set("n", "<Leader>fS", builtin.lsp_workspace_symbols, opts)
       vim.keymap.set("n", "<Leader>fr", builtin.lsp_references, opts)
-      vim.keymap.set("n", "<Leader>fd", function()
+      vim.keymap.set("n", "<Leader>fe", function()
         return builtin.diagnostics { bufnr = 0 }
       end, opts)
-      vim.keymap.set("n", "<Leader>fD", builtin.diagnostics, opts)
+      vim.keymap.set("n", "<Leader>fE", builtin.diagnostics, opts)
       -- Telescope + Grep
       vim.keymap.set("n", "<Leader>rg", builtin.grep_string, opts)
       vim.keymap.set("n", "<Leader>rr", builtin.live_grep, opts)

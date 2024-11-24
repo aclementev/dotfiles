@@ -4,8 +4,8 @@ pcall(vim.cmd.source, "~/.vimrc")
 -- General Options
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes:1" -- Merge the signcolumn and number column
-vim.opt.mouse = "a" -- Setup the mouse
-vim.opt.scrolloff = 10 -- Space when scrolling UP and DOWN
+vim.opt.mouse = "a"          -- Setup the mouse
+vim.opt.scrolloff = 10       -- Space when scrolling UP and DOWN
 vim.opt.mousemoveevent = true
 
 -- Add an explicit python3 provider to avoid slow
@@ -44,15 +44,15 @@ require("lazy").setup({
     },
   },
   -- NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
-  { "Luxed/ayu-vim", lazy = false, priority = 1000 },
+  { "Luxed/ayu-vim",        lazy = false, priority = 1000 },
   -- We use this as the light colorscheme
   { "ericbn/vim-solarized", lazy = false, priority = 1000 },
 
   -- Some of tpope's must have plugins (all hail the almighty tpope)
-  "tpope/vim-surround", -- Text objects for surrounding
+  "tpope/vim-surround",   -- Text objects for surrounding
   -- "tpope/vim-commentary", -- Simple mapping for commenting
-  "tpope/vim-repeat", -- Allow for repeating (some) plugin commands
-  "tpope/vim-sleuth", -- Detect shiftwidth, tabstop from the current file
+  "tpope/vim-repeat",     -- Allow for repeating (some) plugin commands
+  "tpope/vim-sleuth",     -- Detect shiftwidth, tabstop from the current file
   "tpope/vim-scriptease", -- Tools for debugging vim plugins
 
   -- TODO(alvaro): Look into this
@@ -60,9 +60,9 @@ require("lazy").setup({
 
   -- Eye candy
   "junegunn/vim-easy-align",
-  { "nvim-tree/nvim-web-devicons", lazy = false, priority = 2000, opts = { default = true } },
+  { "nvim-tree/nvim-web-devicons", lazy = false,      priority = 2000, opts = { default = true } },
   "norcalli/nvim-colorizer.lua",
-  { "stevearc/dressing.nvim", event = "VeryLazy" },
+  { "stevearc/dressing.nvim",      event = "VeryLazy" },
   {
     "goolord/alpha-nvim",
     event = "VimEnter",
@@ -96,29 +96,36 @@ require("lazy").setup({
       {
         "<Leader>dd",
         function()
-          require("notify").dismiss()
+          require("notify").dismiss({
+            pending = true,
+            silent = true,
+          })
         end,
         desc = "Dismiss notifications",
       },
+      {
+        "<Leader>dt",
+        "<cmd>Telescope notify<CR>",
+        desc = "Navigate notification history",
+      },
     },
   },
-
   -- Lua Neovim development
   {
-    "folke/neodev.nvim",
+    "folke/lazydev.nvim",
+    ft = "lua",
     opts = {
-      override = function(root_dir, library)
-        -- TODO(alvaro): We should make this more portable... but for now this
-        -- works
-        if string.find(root_dir, "dotfiles/nvim/.config/nvim") then
-          library.enabled = true
-          library.plugins = true
-        end
-      end,
+      library = {
+        -- Also enable the neovim APIs inside any installed plugins
+        "~/.local/share/nvim/lazy",
+        -- Load the luvit types if we find a reference to `vim.uv`
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
     },
   },
-
+  { "Bilal2453/luvit-meta", lazy = true },
   -- AI Assistant
+  -- TODO(alvaro): Checkout avante.nvim
   -- {
   --   "github/copilot.vim",
   --   lazy = false,

@@ -20,16 +20,16 @@ return {
         end,
         formatters_by_ft = {
           go = { "goimports", "gofmt" },
-          html = { { "prettierd", "prettier" } },
-          htmldjango = { { "prettierd", "prettier" } },
-          javascript = { { "prettierd", "prettier" } },
+          html = { "prettierd", "prettier", stop_after_first = true },
+          htmldjango = { "prettierd", "prettier", stop_after_first = true },
+          javascript = { "prettierd", "prettier", stop_after_first = true },
           justfile = { "just" },
           lua = { "stylua" },
           ocaml = { "ocamlformat" },
           -- TODO(alvaro): enable ruff if it's available and configured
           python = function(bufnr)
             if conform.get_formatter_info("ruff_format", bufnr).available then
-              return { "ruff_format" }
+              return { "ruff_organize_imports", "ruff_format" }
             else
               return { "isort", "black" }
             end
@@ -37,8 +37,8 @@ return {
           rust = { "rustfmt" },
           sql = { "sqlfluff" },
           terraform = { "terraform_fmt" },
-          typescript = { { "prettierd", "prettier" } },
-          vue = { { "prettierd", "prettier" } },
+          typescript = { "prettierd", "prettier", stop_after_first = true },
+          vue = { "prettierd", "prettier", stop_after_first = true },
         },
         notify_on_error = true,
       }

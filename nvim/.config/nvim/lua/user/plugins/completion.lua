@@ -1,3 +1,4 @@
+-- TODO(alvaro): Checkout saghen/blink.cmp
 -- TODO(alvaro): Check if `nerd-fonts` is present, and if not default
 -- to `codicons` (which requires `vscode-codicons` font setup as a default)
 -- And pass it a `preset`
@@ -83,6 +84,7 @@ return {
       cmp.setup {
         sources = {
           -- The order inside this table represents the order of the results
+          { name = "lazydev", group_index = 0 },
           { name = "nvim_lua" },
           { name = "nvim_lsp", entry_filter = context_entry_filter },
           -- TODO(alvaro): Configure this for the languages that are supported
