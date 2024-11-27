@@ -132,13 +132,21 @@ return {
         }
       end, opts)
       vim.keymap.set("n", "<Leader>fd", function()
-        vim.ui.input({ prompt = "Directory: ", default = vim.loop.cwd(), completion = "dir" }, function(dir)
-          return builtin.find_files { cwd = dir }
+        local current_dir = vim.fn.expand("%:p:h")
+        if current_dir == "" then
+          current_dir = vim.loop.cwd() or vim.fn.expand("~")
+        end
+        vim.ui.input({ prompt = "Directory: ", default = current_dir, completion = "dir" }, function(dir)
+          if dir then
+            return builtin.find_files { cwd = dir }
+          end
         end)
       end, opts)
       vim.keymap.set("n", "<Leader>fD", function()
         vim.ui.input({ prompt = "Directory: ", default = vim.fn.expand("~"), completion = "dir" }, function(dir)
-          return builtin.find_files { cwd = dir }
+          if dir then
+            return builtin.find_files { cwd = dir }
+          end
         end)
       end, opts)
       vim.keymap.set("n", "<Leader>fb", builtin.buffers, opts)
