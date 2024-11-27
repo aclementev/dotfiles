@@ -5,8 +5,9 @@
 	email = clemente.varo@gmail.com
 	name = Alvaro Clemente
 [alias]
-	lol = log --graph --oneline --abbrev-commit --all
-	lr = log --graph --oneline --abbrev-commit --all -10
+	l = "!. ~/.config/git/githelpers && pretty_git_log"
+	lol = "!git l --all"
+	lr = "!git l --all -30"
 	co = checkout
 	ci = commit
 	st = status
