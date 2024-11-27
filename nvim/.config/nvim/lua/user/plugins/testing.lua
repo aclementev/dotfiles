@@ -93,6 +93,22 @@ return {
         desc = "Test: Stop tests",
         silent = true,
       },
+      {
+        "<Leader>td",
+        function()
+          require("neotest").run.run({ strategy = "dap" })
+        end,
+        desc = "Test: Run with debugger enabled",
+        silent = true,
+      },
+      {
+        "<Leader>ta",
+        function()
+          require("neotest").run.attach()
+        end,
+        desc = "Test: Attach to the nearest test",
+        silent = true,
+      },
     },
   },
 }
