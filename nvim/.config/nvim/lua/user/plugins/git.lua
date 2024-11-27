@@ -73,6 +73,30 @@ return {
         desc = "Git: Restore Hunk",
       },
       {
+        "]c",
+        function()
+          if vim.wo.diff then
+            vim.cmd.normal({ "]c", bang = true })
+          else
+            require("gitsigns").nav_hunk("next")
+          end
+        end,
+        desc = "Git: Navigate to next hunk",
+
+      },
+      {
+        "]c",
+        function()
+          if vim.wo.diff then
+            vim.cmd.normal({ "[c", bang = true })
+          else
+            require("gitsigns").nav_hunk("prev")
+          end
+        end,
+        desc = "Git: Navigate to prev hunk",
+
+      },
+      {
         "<LocalLeader>gs",
         function()
           require("gitsigns").stage_hunk { vim.fn.line ".", vim.fn.line "v" }
