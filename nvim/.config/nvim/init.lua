@@ -8,8 +8,12 @@ vim.opt.mouse = "a"          -- Setup the mouse
 vim.opt.scrolloff = 10       -- Space when scrolling UP and DOWN
 vim.opt.mousemoveevent = true
 
+-- FIXME(alvaro): This does not work, and hasn't for a long time
 -- Add an explicit python3 provider to avoid slow
 vim.g.python3_host_prog = vim.fn.expand "~/.pyenv/versions/3.12.3/bin/python"
+
+-- Install global helpers
+require("alvaro.globals")
 
 -- Lazy.nvim setup
 -- Install Lazy (if necessary)
