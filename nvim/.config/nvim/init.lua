@@ -176,6 +176,11 @@ require("lazy").setup({
   },
 })
 
+-- Lua keymaps
+vim.keymap.set("n", "<LocalLeader>xf", "<cmd>source %<CR>", { desc = "Lua: Run File" })
+vim.keymap.set("n", "<LocalLeader>xx", ":.lua<CR>", { desc = "Lua: Run Current Line" })
+vim.keymap.set("v", "<LocalLeader>xx", ":lua<CR>", { desc = "Lua: Run Visual Selection" })
+
 -- Fix the colorscheme so that the SignColumn does not have a different
 -- background
 -- Make sure it is applied everytime we change the colorscheme
