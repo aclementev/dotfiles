@@ -21,7 +21,7 @@ return {
   "nvim-telescope/telescope-file-browser.nvim",
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release"
+    build = "make"
   },
   "nvim-telescope/telescope-dap.nvim",
   {
@@ -69,19 +69,22 @@ return {
 
       -- Call the setup function
       telescope.setup {
-        defaults = {
-          path_display = {
-            "truncate",
-            -- "shorten",
-            -- "smart",
-          },
-          mappings = {
-            -- i = {
-            --     ["<c-j>"] = "move_selection_next",
-            --     ["<c-k>"] = "move_selection_previous",
-            -- }
-          },
-        },
+        defaults = vim.tbl_extend(
+          "force",
+          require("telescope.themes").get_ivy(),
+          {
+            path_display = {
+              "truncate",
+              -- "shorten",
+              -- "smart",
+            },
+            mappings = {
+              -- i = {
+              --     ["<c-j>"] = "move_selection_next",
+              --     ["<c-k>"] = "move_selection_previous",
+              -- }
+            },
+          }),
         extensions = {
           ["ui-select"] = {
             -- FIXME(alvaro): Review this
@@ -119,7 +122,7 @@ return {
       -- Configure the mappings
       local opts = { silent = true }
       vim.keymap.set("n", "<Leader>ff", function()
-        return builtin.git_files { show_untracked = false }
+        return builtin.git_files { show_untracked = false, debounce = 100 }
       end, opts)
       -- TODO(alvaro): Make this mapping default to `find` if `fd` is not installed
       vim.keymap.set("n", "<Leader>fa", fd_all_with_excludes(), opts)
@@ -158,7 +161,7 @@ return {
       vim.keymap.set("n", "<Leader>fc", fd_all_with_excludes { "~/dotfiles" }, opts)
       -- Telescope + LSP
       vim.keymap.set("n", "<Leader>fs", builtin.lsp_document_symbols, opts)
-      vim.keymap.set("n", "<Leader>fS", builtin.lsp_workspace_symbols, opts)
+      vim.keymap.set("n", "<Leader>fw", builtin.lsp_workspace_symbols, opts)
       vim.keymap.set("n", "<Leader>fr", builtin.lsp_references, opts)
       vim.keymap.set("n", "<Leader>fe", function()
         return builtin.diagnostics { bufnr = 0 }
@@ -166,7 +169,9 @@ return {
       vim.keymap.set("n", "<Leader>fE", builtin.diagnostics, opts)
       -- Telescope + Grep
       vim.keymap.set("n", "<Leader>rg", builtin.grep_string, opts)
-      vim.keymap.set("n", "<Leader>rr", builtin.live_grep, opts)
+      vim.keymap.set("n", "<Leader>rr", function(...)
+        builtin.live_grep({ debounce = 100, max_results = 150 })
+      end, opts)
       vim.keymap.set("n", "<Leader>ra", function()
         -- Get the "root" of the project, whatever it may be
         local root = project_root()
@@ -177,7 +182,7 @@ return {
           cwd = root
         })
       end, opts)
-      vim.keymap.set("n", "<Leader>rw", function()
+      vim.keymap.set("n", "<Leader>ri", function()
         local query = vim.fn.input("Grep > ")
         return builtin.grep_string(
           { search = query }
