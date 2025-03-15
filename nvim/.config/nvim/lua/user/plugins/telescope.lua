@@ -14,6 +14,7 @@ local project_root = function()
   end
 end
 
+
 -- TODO(alvaro): Take a look at the trouble target https://github.com/folke/trouble.nvim?tab=readme-ov-file#telescope
 return {
   -- "nvim-telescope/telescope-fzy-native.nvim",
@@ -169,6 +170,9 @@ return {
       vim.keymap.set("n", "<Leader>fE", builtin.diagnostics, opts)
       -- Telescope + Grep
       vim.keymap.set("n", "<Leader>rg", builtin.grep_string, opts)
+      vim.keymap.set("n", "<Leader>rf", function() 
+        require("alvaro.telescope.custom").live_multigrep({ debounce = 100, max_results = 150 })
+      end, opts)
       vim.keymap.set("n", "<Leader>rr", function(...)
         builtin.live_grep({ debounce = 100, max_results = 150 })
       end, opts)
@@ -184,6 +188,9 @@ return {
       end, opts)
       vim.keymap.set("n", "<Leader>ri", function()
         local query = vim.fn.input("Grep > ")
+        if query == "" then
+          return
+        end
         return builtin.grep_string(
           { search = query }
         )
