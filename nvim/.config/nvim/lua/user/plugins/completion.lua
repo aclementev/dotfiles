@@ -20,7 +20,6 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lua",
       "saadparwaiz1/cmp_luasnip",
-      "PaterJason/cmp-conjure",
       "kristijanhusak/vim-dadbod-completion",
     },
     init = function()
@@ -87,8 +86,6 @@ return {
           { name = "lazydev", group_index = 0 },
           { name = "nvim_lua" },
           { name = "nvim_lsp", entry_filter = context_entry_filter },
-          -- TODO(alvaro): Configure this for the languages that are supported
-          -- { name = "conjure" }, -- This will only work on Conjure-compatible filetypes
           {
             name = "buffer",
             option = {

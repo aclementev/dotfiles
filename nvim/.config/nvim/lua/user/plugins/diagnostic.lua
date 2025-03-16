@@ -15,6 +15,7 @@ local opts = { silent = true }
 vim.keymap.set("n", "<LocalLeader>dq", vim.diagnostic.setqflist, opts)
 vim.keymap.set("n", "<LocalLeader>dl", vim.diagnostic.setloclist, opts)
 
+-- FIXME(alvaro): Review this setup, why do we setup lspsaga inside trouble?
 return {
   {
     "folke/trouble.nvim",
@@ -46,11 +47,11 @@ return {
     end,
     keys = {
       { "<Leader>xx", "<cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
-      { "<Leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<Leader>xQ", "<cmd>Trouble quickfix toggle<CR>", desc = "QuickFix List (Trouble)" },
-      { "<Leader>xL", "<cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
+      { "<Leader>xb", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<Leader>xq", "<cmd>Trouble quickfix toggle<CR>", desc = "QuickFix List (Trouble)" },
+      { "<Leader>xl", "<cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
       { "<Leader>xs", "<cmd>Trouble symbols toggle focus=false<CR>", desc = "LSP Symbols (Trouble)" },
-      { "<Leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<CR>", desc = "LSP Definitions / references / ... (Trouble)" },
+      { "<Leader>xd", "<cmd>Trouble lsp toggle focus=false win.position=right<CR>", desc = "LSP Definitions / references / ... (Trouble)" },
       { "<Leader>xr", "<cmd>Trouble lsp toggle<CR>", desc = "Open LSP References on Trouble" },
       {
         "<Leader>xn",

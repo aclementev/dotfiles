@@ -47,8 +47,6 @@ require("lazy").setup({
       dim_inactive = true,
     },
   },
-  -- NOTE(alvaro): This is un-maintained, we should look into a fork (e.g: Shatur/neovim-ayu or Luxed/ayu-vim)
-  { "Luxed/ayu-vim",        lazy = false, priority = 1000 },
   -- We use this as the light colorscheme
   { "ericbn/vim-solarized", lazy = false, priority = 1000 },
 
@@ -150,25 +148,6 @@ require("lazy").setup({
       vim.g.db_ui_use_nerd_fonts = 1
     end,
   },
-  -- Language specific
-  "guns/vim-sexp",
-  "tpope/vim-sexp-mappings-for-regular-people",
-  -- "jpalardy/vim-slime",
-  {
-    "Olical/conjure",
-    init = function()
-      vim.g["conjure#filetypes"] = { "clojure", "fennel", "janet", "hy", "racket", "scheme", "lisp" }
-      vim.g["conjure#filetype#julia"] = false
-      vim.g["conjure#filetype#lua"] = false
-      vim.g["conjure#filetype#python"] = false
-      vim.g["conjure#filetype#rust"] = false
-      vim.g["conjure#filetype#sql"] = false
-    end,
-  },
-  "clojure-vim/vim-jack-in",
-  "tpope/vim-dispatch",
-  "radenling/vim-dispatch-neovim",
-
   { import = "user.plugins" },
 }, {
   defaults = {
@@ -236,8 +215,7 @@ vim.keymap.set("n", "<LocalLeader>sg", ":<C-U>SynGroup<CR>", { silent = true })
 -- Load the basic configuration
 require "alvaro"
 
--- FIXME(alvaro): Move this to utilities or formatting file
----@diagnostic disable-next-line: unused-local, unused-function
+-- Formatting
 local function trim_whitespace()
   -- Store the current position of the cursor
   local pos = vim.fn.getpos "."
@@ -246,17 +224,10 @@ local function trim_whitespace()
   vim.cmd [[ silent g/\s\+$/s/\s*$// ]]
   -- Restore the position before the trimming
   vim.fn.setpos(".", pos)
+  -- Clear the highlight search
+  vim.cmd [[ nohlsearch ]]
 end
-
--- TODO(alvaro): Maybe enable this back?
--- Setup automatic space trimming on some files
--- autocmd FileType c,cpp,java,javascript,typescript,python,lua,vim autocmd BufWritePre <buffer> call TrimWhitespace()
-
--- Complex custom mappings
--- vim.keymap.set("n", "<LocalLeader>gg", ":<C-U>GithubOpen<CR>", { silent = true })
--- vim.keymap.set("n", "<LocalLeader>gG", ":<C-U>GithubOpenCurrent<CR>", { silent = true })
--- vim.keymap.set("n", "<LocalLeader>gg", ":GithubOpen<CR>", { silent = true })
--- vim.keymap.set("n", "<LocalLeader>gG", ":GithubOpenCurrent<CR>", { silent = true })
+vim.api.nvim_create_user_command("TrimWhitespace", function() trim_whitespace() end, { force = true, desc = "Trim the whitespace from the end of all lines in the file" })
 
 vim.api.nvim_create_user_command("JSONFormat", ":%! jq .", { desc = "Prettify JSON using jq" })
 vim.api.nvim_create_user_command("JSONCompact", ":%! jq -c .", { desc = "Compact JSON using jq" })
