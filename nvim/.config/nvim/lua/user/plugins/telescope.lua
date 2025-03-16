@@ -170,7 +170,7 @@ return {
       vim.keymap.set("n", "<Leader>fE", builtin.diagnostics, opts)
       -- Telescope + Grep
       vim.keymap.set("n", "<Leader>rg", builtin.grep_string, opts)
-      vim.keymap.set("n", "<Leader>rf", function() 
+      vim.keymap.set("n", "<Leader>rf", function()
         require("alvaro.telescope.custom").live_multigrep({ debounce = 100, max_results = 150 })
       end, opts)
       vim.keymap.set("n", "<Leader>rr", function(...)
@@ -194,6 +194,24 @@ return {
         return builtin.grep_string(
           { search = query }
         )
+      end, opts)
+      vim.keymap.set("n", "<Leader>rd", function()
+        local current_dir = vim.fn.expand("%:p:h")
+        if current_dir == "" then
+          current_dir = vim.loop.cwd() or vim.fn.expand("~")
+        end
+        vim.ui.input({ prompt = "Directory: ", default = current_dir, completion = "dir" }, function(dir)
+          if dir then
+            return builtin.live_grep { search_dirs = { dir } }
+          end
+        end)
+      end, opts)
+      vim.keymap.set("n", "<Leader>rD", function()
+        vim.ui.input({ prompt = "Directory: ", default = vim.fn.expand("~"), completion = "dir" }, function(dir)
+          if dir then
+            return builtin.live_grep { search_dirs = { dir } }
+          end
+        end)
       end, opts)
 
       -- Setup Telescope File Browser

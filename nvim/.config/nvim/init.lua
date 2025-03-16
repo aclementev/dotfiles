@@ -138,6 +138,7 @@ require("lazy").setup({
   --     { "<C-L>", 'copilot#Accept("")', mode = "i", silent = true, expr = true, replace_keycodes = false },
   --   },
   -- },
+  { "echasnovski/mini.ai", version = "*" },
 
   -- DB Access
   "tpope/vim-dadbod",
