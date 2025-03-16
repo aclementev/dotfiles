@@ -121,11 +121,10 @@ require("lazy").setup({
         -- Also enable the neovim APIs inside any installed plugins
         "~/.local/share/nvim/lazy",
         -- Load the luvit types if we find a reference to `vim.uv`
-        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
       },
     },
   },
-  { "Bilal2453/luvit-meta", lazy = true },
   -- AI Assistant
   -- TODO(alvaro): Checkout avante.nvim
   -- {

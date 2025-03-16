@@ -55,73 +55,78 @@ return {
   {
     "ThePrimeagen/harpoon",
     dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {
-      menu = {
-        width = 120,
-        height = 20,
+    branch = "harpoon2",
+    config = function()
+      local harpoon = require("harpoon")
+      harpoon.setup {
+        menu = {
+          width = 120,
+          height = 20,
+        }
       }
-    },
+    end,
     keys = {
       {
         "<LocalLeader>ha",
         function()
-          require("harpoon.mark").add_file()
+          require("harpoon"):list():add()
         end,
         desc = "Harpoon: Add file",
       },
       {
         "<LocalLeader>hh",
         function()
-          require("harpoon.ui").toggle_quick_menu()
+          local harpoon = require("harpoon")
+          harpoon.ui:toggle_quick_menu(harpoon:list())
         end,
         desc = "Harpoon: Open Quick Menu",
       },
       {
         "<LocalLeader>hn",
         function()
-          require("harpoon.ui").nav_next()
+          require("harpoon"):list():next()
         end,
         desc = "Harpoon: Navigate to next",
       },
       {
         "<LocalLeader>hp",
         function()
-          require("harpoon.ui").nav_prev()
+          require("harpoon"):list():prev()
         end,
         desc = "Harpoon: Navigate to previous",
       },
       {
         "<LocalLeader>1",
         function()
-          require("harpoon.ui").nav_file(1)
+          require("harpoon"):list():select(1)
         end,
         desc = "Harpoon: Navigate to entry #1",
       },
       {
         "<LocalLeader>2",
         function()
-          require("harpoon.ui").nav_file(2)
+          require("harpoon"):list():select(2)
         end,
         desc = "Harpoon: Navigate to entry #2",
       },
       {
         "<LocalLeader>3",
         function()
-          require("harpoon.ui").nav_file(3)
+          require("harpoon"):list():select(3)
         end,
         desc = "Harpoon: Navigate to entry #3",
       },
       {
         "<LocalLeader>4",
         function()
-          require("harpoon.ui").nav_file(4)
+          require("harpoon"):list():select(4)
         end,
         desc = "Harpoon: Navigate to entry #4",
       },
       {
         "<LocalLeader>5",
         function()
-          require("harpoon.ui").nav_file(5)
+          require("harpoon"):list():select(5)
         end,
         desc = "Harpoon: Navigate to entry #5",
       },
