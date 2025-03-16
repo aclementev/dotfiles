@@ -1,10 +1,8 @@
 local install_languages = {
   "bash",
-  "clojure",
   "comment",
   "css",
   "dockerfile",
-  "elixir",
   "gitcommit",
   "gitignore",
   "go",
@@ -13,6 +11,7 @@ local install_languages = {
   "javascript",
   "json",
   "just",
+  "kotlin",
   "lua",
   "markdown",
   "markdown_inline",
@@ -82,6 +81,14 @@ return {
               ["ab"] = "@block.outer",
             },
             include_surrounding_whitespace = true,
+            selection_modes = {
+              -- Make these selections line wise instead of characterwise
+              ["@function.inner"] = "V",
+              ["@function.outer"] = "V",
+              ["@class.inner"] = "V",
+              ["@class.outer"] = "V",
+              ["@block.outer"] = "V",
+            }
           },
           lsp_interop = {
             enable = true,
@@ -122,28 +129,6 @@ return {
           },
         },
       }
-
-      -- Add overrides so that
-      -- FIXME(alvaro): It's weird that I need this... I am 99% sure that it
-      -- has something to do with my current setup, and that these should work
-      -- by default.
-      -- See: https://github.com/folke/tokyonight.nvim/issues/534
-
-      -- NOTE(alvaro): You can use this to add missing links, but any issues most likely
-      -- mean that you are using an outdated version of the tree-sitter parser
-      local missing_links = {
-        --   ["@include"] = "Include",
-        --   ["@conditional"] = "Conditional",
-        --   ["@repeat"] = "Repeat",
-        --   ["@exception"] = "Exception",
-        --   -- Not sure if this is general or just applies to Tokyonight
-        --   ["@parameter"] = "@variable.parameter",
-        --   ["@field"] = "@variable.member",
-      }
-
-      for name, link in pairs(missing_links) do
-        vim.api.nvim_set_hl(0, name, { link = link })
-      end
     end,
   },
   { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesiter/nvim-treesitter" } },
