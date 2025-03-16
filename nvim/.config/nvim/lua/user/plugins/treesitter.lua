@@ -16,6 +16,7 @@ local install_languages = {
   "markdown",
   "markdown_inline",
   "python",
+  "query",
   "rust",
   "terraform",
   "toml",
