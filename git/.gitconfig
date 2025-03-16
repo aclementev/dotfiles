@@ -1,6 +1,9 @@
 [core]
 	editor = nvim
 	pager = less -FRX
+	# We use GNU stow to copy these files, we cannot use `.gitignore` as filename
+	# because stow ignores it by default 
+	excludesFile = "~/.gitignore-global"
 [user]
 	email = clemente.varo@gmail.com
 	name = Alvaro Clemente
