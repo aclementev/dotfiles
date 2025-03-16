@@ -155,9 +155,9 @@ require("lazy").setup({
 })
 
 -- Lua keymaps
-vim.keymap.set("n", "<LocalLeader>xf", "<cmd>source %<CR>", { desc = "Lua: Run File" })
-vim.keymap.set("n", "<LocalLeader>xx", ":.lua<CR>", { desc = "Lua: Run Current Line" })
-vim.keymap.set("v", "<LocalLeader>xx", ":lua<CR>", { desc = "Lua: Run Visual Selection" })
+vim.keymap.set("n", "<LocalLeader>xf", "<cmd>source %<CR>", { desc = "Lua: Run File", silent = true })
+vim.keymap.set("n", "<LocalLeader>xx", ":.lua<CR>", { desc = "Lua: Run Current Line", silent = true })
+vim.keymap.set("v", "<LocalLeader>xx", ":lua<CR>", { desc = "Lua: Run Visual Selection", silent = true })
 
 -- Fix the colorscheme so that the SignColumn does not have a different
 -- background
@@ -227,9 +227,16 @@ local function trim_whitespace()
   vim.cmd [[ nohlsearch ]]
 end
 vim.api.nvim_create_user_command("TrimWhitespace", function() trim_whitespace() end, { force = true, desc = "Trim the whitespace from the end of all lines in the file" })
+vim.keymap.set("n", "<Leader>td", "<cmd>TrimWhitespace<CR>", { silent = true, desc = "Trim the whitespace from the end of all lines in the file" })
 
 vim.api.nvim_create_user_command("JSONFormat", ":%! jq .", { desc = "Prettify JSON using jq" })
 vim.api.nvim_create_user_command("JSONCompact", ":%! jq -c .", { desc = "Compact JSON using jq" })
 
 -- Add custom filetype mappings
 vim.filetype.add { extension = { tf = "terraform" } }
+
+
+-- Other mappings
+vim.keymap.set("n", "<Leader>cp", function() vim.fn.setreg("+", vim.fn.expand("%")) end, { silent = true })
+vim.keymap.set("n", "<Leader>cP", function() vim.fn.setreg("+", vim.fn.expand("%:p")) end, { silent = true })
+vim.keymap.set("n", "<Leader>cf", function() vim.fn.setreg("+", "%:t") end, { silent = true })
