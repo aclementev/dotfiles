@@ -9,6 +9,7 @@ return {
   "vim-test/vim-test",
   {
     "nvim-neotest/neotest",
+    version = "5.*",
     dependencies = {
       "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",
@@ -94,7 +95,7 @@ return {
         silent = true,
       },
       {
-        "<Leader>td",
+        "<Leader>tD",
         function()
           require("neotest").run.run({ strategy = "dap" })
         end,
