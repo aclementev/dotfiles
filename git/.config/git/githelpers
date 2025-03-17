@@ -6,7 +6,7 @@ AUTHOR="%C(always,bold blue)%an%C(always,reset)"
 REFS="%C(always,red)%d%C(always,reset)"
 SUBJECT="%s"
 
-FORMAT="$HASH $RELATIVE_TIME{$AUTHOR{$REFS $SUBJECT"
+FORMAT="$HASH{$RELATIVE_TIME{$AUTHOR{$REFS $SUBJECT"
 
 # Heavily inspired by https://github.com/mrnugget/dotfiles/blob/c4624ed521d539856bcf764f04a295bb19093566/githelpers#L11-L15
 # which itself is inspired by a Gary Bernhardt screencast
