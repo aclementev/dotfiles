@@ -119,6 +119,13 @@ require("lazy").setup({
       },
     },
   },
+  {
+    "echasnovski/mini.indentscope",
+    version = "*",
+    opts = {
+      symbol = "│"
+    },
+  },
   -- Lua Neovim development
   {
     "folke/lazydev.nvim",
