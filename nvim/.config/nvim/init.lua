@@ -1,5 +1,5 @@
 -- Load the common configuration
-local status, _ =  pcall(vim.cmd.source, "~/.vimrc")
+local status, _ = pcall(vim.cmd.source, "~/.vimrc")
 if not status then
   vim.notify("Failed to base vim settings", vim.log.levels.ERROR)
 end
@@ -7,9 +7,10 @@ end
 -- General Options
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes:1" -- Merge the signcolumn and number column
-vim.opt.mouse = "a"          -- Setup the mouse
-vim.opt.scrolloff = 10       -- Space when scrolling UP and DOWN
+vim.opt.mouse = "a" -- Setup the mouse
+vim.opt.scrolloff = 10 -- Space when scrolling UP and DOWN
 vim.opt.mousemoveevent = true
+vim.opt.winborder = "rounded" -- Floating window styling
 
 -- FIXME(alvaro): This does not work, and hasn't for a long time
 -- Add an explicit python3 provider to avoid slow
@@ -54,10 +55,10 @@ require("lazy").setup({
   { "ericbn/vim-solarized", lazy = false, priority = 1000 },
 
   -- Some of tpope's must have plugins (all hail the almighty tpope)
-  "tpope/vim-surround",   -- Text objects for surrounding
+  "tpope/vim-surround", -- Text objects for surrounding
   -- "tpope/vim-commentary", -- Simple mapping for commenting
-  "tpope/vim-repeat",     -- Allow for repeating (some) plugin commands
-  "tpope/vim-sleuth",     -- Detect shiftwidth, tabstop from the current file
+  "tpope/vim-repeat", -- Allow for repeating (some) plugin commands
+  "tpope/vim-sleuth", -- Detect shiftwidth, tabstop from the current file
   "tpope/vim-scriptease", -- Tools for debugging vim plugins
 
   -- TODO(alvaro): Look into this
@@ -65,9 +66,9 @@ require("lazy").setup({
 
   -- Eye candy
   "junegunn/vim-easy-align",
-  { "nvim-tree/nvim-web-devicons", lazy = false,      priority = 2000, opts = { default = true } },
+  { "nvim-tree/nvim-web-devicons", lazy = false, priority = 2000, opts = { default = true } },
   "norcalli/nvim-colorizer.lua",
-  { "stevearc/dressing.nvim",      event = "VeryLazy" },
+  { "stevearc/dressing.nvim", event = "VeryLazy" },
   {
     "goolord/alpha-nvim",
     event = "VimEnter",
@@ -101,10 +102,10 @@ require("lazy").setup({
       {
         "<Leader>dd",
         function()
-          require("notify").dismiss({
+          require("notify").dismiss {
             pending = true,
             silent = true,
-          })
+          }
         end,
         desc = "Dismiss notifications",
       },
@@ -215,7 +216,6 @@ vim.api.nvim_create_user_command(
 )
 vim.keymap.set("n", "<LocalLeader>sg", ":<C-U>SynGroup<CR>", { silent = true })
 
-
 -- Formatting
 local function trim_whitespace()
   -- Store the current position of the cursor
@@ -228,8 +228,15 @@ local function trim_whitespace()
   -- Clear the highlight search
   vim.cmd [[ nohlsearch ]]
 end
-vim.api.nvim_create_user_command("TrimWhitespace", function() trim_whitespace() end, { force = true, desc = "Trim the whitespace from the end of all lines in the file" })
-vim.keymap.set("n", "<Leader>td", "<cmd>TrimWhitespace<CR>", { silent = true, desc = "Trim the whitespace from the end of all lines in the file" })
+vim.api.nvim_create_user_command("TrimWhitespace", function()
+  trim_whitespace()
+end, { force = true, desc = "Trim the whitespace from the end of all lines in the file" })
+vim.keymap.set(
+  "n",
+  "<Leader>td",
+  "<cmd>TrimWhitespace<CR>",
+  { silent = true, desc = "Trim the whitespace from the end of all lines in the file" }
+)
 
 vim.api.nvim_create_user_command("JSONFormat", ":%! jq .", { desc = "Prettify JSON using jq" })
 vim.api.nvim_create_user_command("JSONCompact", ":%! jq -c .", { desc = "Compact JSON using jq" })
@@ -237,8 +244,13 @@ vim.api.nvim_create_user_command("JSONCompact", ":%! jq -c .", { desc = "Compact
 -- Add custom filetype mappings
 vim.filetype.add { extension = { tf = "terraform" } }
 
-
 -- Other mappings
-vim.keymap.set("n", "<Leader>cp", function() vim.fn.setreg("+", vim.fn.expand("%")) end, { silent = true })
-vim.keymap.set("n", "<Leader>cP", function() vim.fn.setreg("+", vim.fn.expand("%:p")) end, { silent = true })
-vim.keymap.set("n", "<Leader>cf", function() vim.fn.setreg("+", "%:t") end, { silent = true })
+vim.keymap.set("n", "<Leader>cp", function()
+  vim.fn.setreg("+", vim.fn.expand "%")
+end, { silent = true })
+vim.keymap.set("n", "<Leader>cP", function()
+  vim.fn.setreg("+", vim.fn.expand "%:p")
+end, { silent = true })
+vim.keymap.set("n", "<Leader>cf", function()
+  vim.fn.setreg("+", "%:t")
+end, { silent = true })
