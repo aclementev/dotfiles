@@ -10,7 +10,10 @@ vim.opt.signcolumn = "yes:1" -- Merge the signcolumn and number column
 vim.opt.mouse = "a" -- Setup the mouse
 vim.opt.scrolloff = 10 -- Space when scrolling UP and DOWN
 vim.opt.mousemoveevent = true
-vim.opt.winborder = "rounded" -- Floating window styling
+-- FIXME(avlaro): This makes unstlyed windows look better, but breaks styling for other ones like `Telescope`'s
+-- Try with a more modern version of Telescope
+-- FIXME(alvaro): This is currently not supported in many plugins (plenary based like Telescope, notify, etc)
+-- vim.opt.winborder = "rounded" -- Floating window styling
 
 -- FIXME(alvaro): This does not work, and hasn't for a long time
 -- Add an explicit python3 provider to avoid slow
