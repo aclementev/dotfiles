@@ -35,7 +35,8 @@ return {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "nvimdev/lspsaga.nvim",
-      "hrsh7th/cmp-nvim-lsp",
+      -- "hrsh7th/cmp-nvim-lsp",
+      "saghen/blink.cmp",
       "antosha417/nvim-lsp-file-operations",
     },
     config = function()
@@ -51,10 +52,11 @@ return {
           },
         },
       }
-      local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+      -- local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local blink_capabilities = require("blink.cmp").get_lsp_capabilities({}, false)
       local file_capabilities = require("lsp-file-operations").default_capabilities()
       local common_capabilities =
-        vim.tbl_deep_extend("force", default_capabilities, basic_capabilities, cmp_capabilities, file_capabilities)
+        vim.tbl_deep_extend("force", default_capabilities, basic_capabilities, blink_capabilities, file_capabilities)
 
       -- There are some servers that we want to manage using Mason, which handles
       -- installing them and updating them and others that we want to manage
