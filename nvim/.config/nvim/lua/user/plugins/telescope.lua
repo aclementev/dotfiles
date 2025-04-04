@@ -14,17 +14,23 @@ local project_root = function()
   end
 end
 
-
 -- TODO(alvaro): Take a look at the trouble target https://github.com/folke/trouble.nvim?tab=readme-ov-file#telescope
 return {
   -- "nvim-telescope/telescope-fzy-native.nvim",
   "nvim-telescope/telescope-ui-select.nvim",
   "nvim-telescope/telescope-file-browser.nvim",
+  "nvim-telescope/telescope-dap.nvim",
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make"
+    build = "make",
   },
-  "nvim-telescope/telescope-dap.nvim",
+  {
+    "nvim-telescope/telescope-frecency.nvim",
+    version = "1.*",
+    config = function()
+      require("telescope").load_extension "frecency"
+    end,
+  },
   {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -70,22 +76,19 @@ return {
 
       -- Call the setup function
       telescope.setup {
-        defaults = vim.tbl_extend(
-          "force",
-          require("telescope.themes").get_ivy(),
-          {
-            path_display = {
-              "truncate",
-              -- "shorten",
-              -- "smart",
-            },
-            mappings = {
-              -- i = {
-              --     ["<c-j>"] = "move_selection_next",
-              --     ["<c-k>"] = "move_selection_previous",
-              -- }
-            }
-          }),
+        defaults = vim.tbl_extend("force", require("telescope.themes").get_ivy(), {
+          path_display = {
+            "truncate",
+            -- "shorten",
+            -- "smart",
+          },
+          mappings = {
+            -- i = {
+            --     ["<c-j>"] = "move_selection_next",
+            --     ["<c-k>"] = "move_selection_previous",
+            -- }
+          },
+        }),
         extensions = {
           ["ui-select"] = {
             -- FIXME(alvaro): Review this
@@ -109,7 +112,7 @@ return {
             override_generic_sorter = true,
             override_file_sorter = true,
             case_mode = "smart_case",
-          }
+          },
         },
       }
 
@@ -136,9 +139,9 @@ return {
         }
       end, opts)
       vim.keymap.set("n", "<Leader>fd", function()
-        local current_dir = vim.fn.expand("%:p:h")
+        local current_dir = vim.fn.expand "%:p:h"
         if current_dir == "" then
-          current_dir = vim.loop.cwd() or vim.fn.expand("~")
+          current_dir = vim.loop.cwd() or vim.fn.expand "~"
         end
         vim.ui.input({ prompt = "Directory: ", default = current_dir, completion = "dir" }, function(dir)
           if dir then
@@ -147,7 +150,7 @@ return {
         end)
       end, opts)
       vim.keymap.set("n", "<Leader>fD", function()
-        vim.ui.input({ prompt = "Directory: ", default = vim.fn.expand("~"), completion = "dir" }, function(dir)
+        vim.ui.input({ prompt = "Directory: ", default = vim.fn.expand "~", completion = "dir" }, function(dir)
           if dir then
             return builtin.find_files { cwd = dir }
           end
@@ -156,6 +159,8 @@ return {
       vim.keymap.set("n", "<Leader>fb", builtin.buffers, opts)
       vim.keymap.set("n", "<Leader>fh", builtin.help_tags, opts)
       vim.keymap.set("n", "<Leader>fo", builtin.oldfiles, opts)
+      vim.keymap.set("n", "<Leader>fk", "<cmd>Telescope frecency workspace=CWD<CR>", opts)
+      vim.keymap.set("n", "<Leader>fK", "<cmd>Telescope frecency<CR>", opts)
       vim.keymap.set("n", "<Leader>fC", builtin.commands, opts)
       vim.keymap.set("n", "<Leader>fz", builtin.current_buffer_fuzzy_find, opts)
       vim.keymap.set("n", "<Leader>fn", fd_all_with_excludes { "~/.config/nvim" }, opts)
@@ -171,10 +176,10 @@ return {
       -- Telescope + Grep
       vim.keymap.set("n", "<Leader>rg", builtin.grep_string, opts)
       vim.keymap.set("n", "<Leader>rf", function()
-        require("alvaro.telescope.custom").live_multigrep({ debounce = 100, max_results = 150 })
+        require("alvaro.telescope.custom").live_multigrep { debounce = 100, max_results = 150 }
       end, opts)
       vim.keymap.set("n", "<Leader>rr", function(...)
-        builtin.live_grep({ debounce = 100, max_results = 150 })
+        builtin.live_grep { debounce = 100, max_results = 150 }
       end, opts)
       vim.keymap.set("n", "<Leader>ra", function()
         -- Get the "root" of the project, whatever it may be
@@ -182,23 +187,21 @@ return {
         if not root then
           return
         end
-        builtin.live_grep({
-          cwd = root
-        })
+        builtin.live_grep {
+          cwd = root,
+        }
       end, opts)
       vim.keymap.set("n", "<Leader>ri", function()
-        local query = vim.fn.input("Grep > ")
+        local query = vim.fn.input "Grep > "
         if query == "" then
           return
         end
-        return builtin.grep_string(
-          { search = query }
-        )
+        return builtin.grep_string { search = query }
       end, opts)
       vim.keymap.set("n", "<Leader>rd", function()
-        local current_dir = vim.fn.expand("%:p:h")
+        local current_dir = vim.fn.expand "%:p:h"
         if current_dir == "" then
-          current_dir = vim.loop.cwd() or vim.fn.expand("~")
+          current_dir = vim.loop.cwd() or vim.fn.expand "~"
         end
         vim.ui.input({ prompt = "Directory: ", default = current_dir, completion = "dir" }, function(dir)
           if dir then
@@ -207,7 +210,7 @@ return {
         end)
       end, opts)
       vim.keymap.set("n", "<Leader>rD", function()
-        vim.ui.input({ prompt = "Directory: ", default = vim.fn.expand("~"), completion = "dir" }, function(dir)
+        vim.ui.input({ prompt = "Directory: ", default = vim.fn.expand "~", completion = "dir" }, function(dir)
           if dir then
             return builtin.live_grep { search_dirs = { dir } }
           end

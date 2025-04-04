@@ -19,6 +19,15 @@ return {
       ensure_installed = { "lua_ls", "vimls" },
     },
   },
+  -- File Operations
+  {
+    "antosha417/nvim-lsp-file-operations",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-tree.lua",
+    },
+    opts = {},
+  },
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -27,6 +36,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "nvimdev/lspsaga.nvim",
       "hrsh7th/cmp-nvim-lsp",
+      "antosha417/nvim-lsp-file-operations",
     },
     config = function()
       require("alvaro.lsp").setup()
@@ -42,8 +52,9 @@ return {
         },
       }
       local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local file_capabilities = require("lsp-file-operations").default_capabilities()
       local common_capabilities =
-        vim.tbl_deep_extend("force", default_capabilities, basic_capabilities, cmp_capabilities)
+        vim.tbl_deep_extend("force", default_capabilities, basic_capabilities, cmp_capabilities, file_capabilities)
 
       -- There are some servers that we want to manage using Mason, which handles
       -- installing them and updating them and others that we want to manage
