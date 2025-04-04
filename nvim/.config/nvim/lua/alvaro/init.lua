@@ -1,9 +1,9 @@
--- An alias easier to type
-function inspect(...)
-	print(vim.inspect(...))
+-- Show the current clients attached the the
+_G.lsp_buf_show_clients = function()
+	vim.print(vim.lsp.get_clients())
 end
 
--- Show the current clients attached the the
-function buf_show_clients()
-	print(vim.inspect(vim.lsp.get_clients()))
+_G.P = function(value)
+	vim.print(value)
+	return value
 end

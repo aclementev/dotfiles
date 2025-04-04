@@ -1,5 +1,8 @@
 -- Load the common configuration
-pcall(vim.cmd.source, "~/.vimrc")
+local status, _ =  pcall(vim.cmd.source, "~/.vimrc")
+if not status then
+  vim.notify("Failed to base vim settings", vim.log.levels.ERROR)
+end
 
 -- General Options
 vim.opt.termguicolors = true
@@ -12,8 +15,8 @@ vim.opt.mousemoveevent = true
 -- Add an explicit python3 provider to avoid slow
 vim.g.python3_host_prog = vim.fn.expand "~/.pyenv/versions/3.12.3/bin/python"
 
--- Install global helpers
-require("alvaro.globals")
+-- Load the basic configuration
+require "alvaro"
 
 -- Lazy.nvim setup
 -- Install Lazy (if necessary)
@@ -212,8 +215,6 @@ vim.api.nvim_create_user_command(
 )
 vim.keymap.set("n", "<LocalLeader>sg", ":<C-U>SynGroup<CR>", { silent = true })
 
--- Load the basic configuration
-require "alvaro"
 
 -- Formatting
 local function trim_whitespace()

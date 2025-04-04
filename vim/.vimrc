@@ -12,7 +12,9 @@ set vb t_vb=
 " Allows for changing buffer without saving (CAUTION!)
 set hidden
 nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
+if !has('nvim')
+    set pastetoggle=<F2>
+endif
 set showmode
 set ignorecase
 set smartcase

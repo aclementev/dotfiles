@@ -1,62 +1,4 @@
-local function on_lsp_attach(ev)
-  local bufmap = function(mode, lhs, rhs)
-    local opts = { buffer = ev.buf, silent = true }
-    vim.keymap.set(mode, lhs, rhs, opts)
-  end
-
-  -- Enable omnifunc completion (triggered by <C-X><C-O>)
-  vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-
-  bufmap("n", "gd", vim.lsp.buf.definition)
-  bufmap("n", "gD", vim.lsp.buf.declaration)
-  -- bufmap('n', 'K', vim.lsp.buf.hover)
-  bufmap("n", "gi", vim.lsp.buf.implementation)
-  bufmap("n", "gI", vim.lsp.buf.type_definition)
-  bufmap("n", "gk", vim.lsp.buf.signature_help)
-  bufmap("n", "gr", vim.lsp.buf.references)
-  bufmap("n", "g0", vim.lsp.buf.document_symbol)
-  bufmap("n", "gw", function()
-    local cword = vim.fn.expand "<cword>"
-    vim.lsp.buf.workspace_symbol(cword)
-  end)
-  bufmap("n", "gW", vim.lsp.buf.workspace_symbol)
-  bufmap("n", "gh", function()
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-  end)
-  bufmap("i", "<C-H>", vim.lsp.buf.signature_help)
-  bufmap("n", "<Leader>wa", vim.lsp.buf.add_workspace_folder)
-  bufmap("n", "<Leader>wr", vim.lsp.buf.remove_workspace_folder)
-  bufmap("n", "<Leader>wl", function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end)
-  -- NOTE(alvaro): Formatting is configured in its own file
-
-  -- LspSaga related commands
-  bufmap("n", "<LocalLeader>ca", "<cmd>Lspsaga code_action<CR>")
-  bufmap("v", "<LocalLeader>ca", "<cmd><C-U>Lspsaga range_code_action<CR>")
-  -- bufmap("n", "K", "<cmd>Lspsaga hover_doc<CR>")
-  -- FIXME(alvaro): update these mappings, although they may just work
-  -- bufmap("n", "<C-f>", function()
-  --   require("lspsaga.action").smart_scroll_with_saga(4)
-  -- end)
-  -- bufmap("n", "<C-b>", function()
-  --   require("lspsaga.action").smart_scroll_with_saga(-4)
-  -- end)
-  bufmap("n", "<LocalLeader>rn", "<cmd>Lspsaga rename<CR>")
-  bufmap("n", "<LocalLeader>rN", "<cmd>Lspsaga rename ++project<CR>")
-  bufmap("n", "gp", "<cmd>Lspsaga preview_definition<CR>")
-
-  -- Others
-  -- TODO(alvaro): Do this all in a custom command in lua, now is a bit flickery
-  bufmap("n", "gs", ":vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz")
-  bufmap("n", "gx", ":sp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz")
-end
-
 return {
-  {
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = { "neovim/nvim-lspconfig" },
-  },
   {
     "williamboman/mason.nvim",
     opts = {
@@ -71,6 +13,13 @@ return {
     },
   },
   {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    opts = {
+      ensure_installed = { "lua_ls", "vimls" },
+    },
+  },
+  {
     "neovim/nvim-lspconfig",
     dependencies = {
       "folke/neodev.nvim",
@@ -80,24 +29,28 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      local capabilities = nil
-      if pcall "cmp_nvim_lsp" then
-        capabilities = require("cmp_nvim_lsp").default_capabilities()
-      end
+      require("alvaro.lsp").setup()
 
       local lspconfig = require "lspconfig"
 
-      local common_settings = {
-        capabilities = capabilities,
-        flags = {
-          debounce_text_changes = 150, -- We want some debouncing
+      local default_capabilities = vim.lsp.protocol.make_client_capabilities()
+      local basic_capabilities = {
+        textDocument = {
+          semanticTokens = {
+            multilineTokenSupport = true,
+          },
         },
       }
+      local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local common_capabilities =
+        vim.tbl_deep_extend("force", default_capabilities, basic_capabilities, cmp_capabilities)
 
       -- There are some servers that we want to manage using Mason, which handles
       -- installing them and updating them and others that we want to manage
       -- using lspconfig direclty
 
+      -- FIXME(alvaro): Figure out how to move these settings to make use of the new
+      -- LSP config protocol with `lsp/<name>.lua` and `nvim-lspconfig`
       local servers = {
         pylsp = {
           settings = {
@@ -165,8 +118,12 @@ return {
         rust_analyzer = true,
       }
 
-      require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "vimls" },
+      local common_config = {
+        capabilities = common_capabilities,
+        flags = {
+          -- FIXME(alvaro): Not sure which servers actually use this
+          debounce_text_changes = 150,
+        },
       }
 
       -- Setup all the configured servers
@@ -174,19 +131,9 @@ return {
         if config == true then
           config = {}
         end
-
-        config = vim.tbl_deep_extend("force", {}, common_settings, config)
-
+        config = vim.tbl_deep_extend("force", {}, common_config, config)
         lspconfig[name].setup(config)
       end
-
-      -- Prepare the callback for when a server is attached
-      local group = vim.api.nvim_create_augroup("lsp_attach", { clear = true })
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = group,
-        desc = "Running LSP related actions",
-        callback = on_lsp_attach,
-      })
     end,
   },
   {
