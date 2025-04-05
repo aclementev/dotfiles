@@ -8,7 +8,8 @@ return {
       -- By default it uses 4 workers but we have more cores!
       -- maxWorkers = ...,
       keymaps = {
-        replace = { n = "<CR>" },
+        -- FIXME(alvaro): For some reason this does not work
+        -- replace = { n = "<CR>" },
         qflist = { n = "<C-q>" },
         nextInput = { i = "<Tab>" },
         prevInput = { i = "<S-Tab>" },
@@ -18,14 +19,14 @@ return {
       {
         "<Leader>sr",
         function()
-          require("grug-far").open()
+          require("grug-far").open { transient = true }
         end,
         desc = "Search and Replace",
       },
       {
         "<Leader>sa",
         function()
-          require("grug-far").open { engine = "astgrep" }
+          require("grug-far").open { engine = "astgrep", transient = true }
         end,
         desc = "Search and Replace",
       },
