@@ -1,0 +1,34 @@
+return {
+  {
+    "MagicDuck/grug-far.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      -- By default it uses 4 workers but we have more cores!
+      -- maxWorkers = ...,
+      keymaps = {
+        replace = { n = "<CR>" },
+        qflist = { n = "<C-q>" },
+        nextInput = { i = "<Tab>" },
+        prevInput = { i = "<S-Tab>" },
+      },
+    },
+    keys = {
+      {
+        "<Leader>sr",
+        function()
+          require("grug-far").open()
+        end,
+        desc = "Search and Replace",
+      },
+      {
+        "<Leader>sa",
+        function()
+          require("grug-far").open { engine = "astgrep" }
+        end,
+        desc = "Search and Replace",
+      },
+    },
+  },
+}
