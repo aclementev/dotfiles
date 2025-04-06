@@ -1,9 +1,10 @@
 return {
   {
     "stevearc/oil.nvim",
+    lazy = false,
     config = function()
-      require("oil").setup{
-        -- NOTE(alvaro): These contain most of the default keymaps, removing ones that 
+      require("oil").setup {
+        -- NOTE(alvaro): These contain most of the default keymaps, removing ones that
         -- I don't want (i.e. <C-h>)
         keymaps = {
           ["g?"] = { "actions.show_help", mode = "n" },
@@ -25,9 +26,14 @@ return {
           ["g."] = { "actions.toggle_hidden", mode = "n" },
           ["g\\"] = { "actions.toggle_trash", mode = "n" },
         },
-        use_default_keymaps = false
+        use_default_keymaps = false,
       }
-    end
+
+      -- Setup a keymap to open Oil.nvim in the current directory
+      vim.keymap.set("n", "g-", function()
+        require("oil").toggle_float()
+      end)
+    end,
   },
   {
     "nvim-tree/nvim-tree.lua",
@@ -57,12 +63,12 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     branch = "harpoon2",
     config = function()
-      local harpoon = require("harpoon")
+      local harpoon = require "harpoon"
       harpoon.setup {
         menu = {
           width = 120,
           height = 20,
-        }
+        },
       }
     end,
     keys = {
@@ -76,7 +82,7 @@ return {
       {
         "<LocalLeader>hh",
         function()
-          local harpoon = require("harpoon")
+          local harpoon = require "harpoon"
           harpoon.ui:toggle_quick_menu(harpoon:list())
         end,
         desc = "Harpoon: Open Quick Menu",

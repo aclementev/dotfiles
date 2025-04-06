@@ -159,12 +159,13 @@ return {
       vim.keymap.set("n", "<Leader>fb", builtin.buffers, opts)
       vim.keymap.set("n", "<Leader>fh", builtin.help_tags, opts)
       vim.keymap.set("n", "<Leader>fo", builtin.oldfiles, opts)
-      vim.keymap.set("n", "<Leader>fk", "<cmd>Telescope frecency workspace=CWD<CR>", opts)
-      vim.keymap.set("n", "<Leader>fK", "<cmd>Telescope frecency<CR>", opts)
+      vim.keymap.set("n", "<Leader>fl", "<cmd>Telescope frecency workspace=CWD<CR>", opts)
+      vim.keymap.set("n", "<Leader>fL", "<cmd>Telescope frecency<CR>", opts)
       vim.keymap.set("n", "<Leader>fC", builtin.commands, opts)
+      vim.keymap.set("n", "<Leader>fk", builtin.keymaps, opts)
       vim.keymap.set("n", "<Leader>fz", builtin.current_buffer_fuzzy_find, opts)
-      vim.keymap.set("n", "<Leader>fn", fd_all_with_excludes { "~/.config/nvim" }, opts)
-      vim.keymap.set("n", "<Leader>fc", fd_all_with_excludes { "~/dotfiles" }, opts)
+      vim.keymap.set("n", "<Leader>fn", fd_all_with_excludes { vim.fn.stdpath "config" }, opts)
+      vim.keymap.set("n", "<Leader>fc", fd_all_with_excludes { vim.fn.expand "~" .. "/dotfiles" }, opts)
       -- Telescope + LSP
       vim.keymap.set("n", "<Leader>fs", builtin.lsp_document_symbols, opts)
       vim.keymap.set("n", "<Leader>fw", builtin.lsp_workspace_symbols, opts)
@@ -178,7 +179,7 @@ return {
       vim.keymap.set("n", "<Leader>rf", function()
         require("alvaro.telescope.custom").live_multigrep { debounce = 100, max_results = 150 }
       end, opts)
-      vim.keymap.set("n", "<Leader>rr", function(...)
+      vim.keymap.set("n", "<Leader>rr", function()
         builtin.live_grep { debounce = 100, max_results = 150 }
       end, opts)
       vim.keymap.set("n", "<Leader>ra", function()
@@ -189,6 +190,17 @@ return {
         end
         builtin.live_grep {
           cwd = root,
+        }
+      end, opts)
+      vim.keymap.set("n", "<Leader>rR", function()
+        builtin.live_grep { debounce = 100, max_results = 150, additional_args = { "--hidden" } }
+      end, opts)
+      vim.keymap.set("n", "<Leader>rc", function()
+        builtin.live_grep {
+          search_dirs = { vim.fn.stdpath "config" },
+          debounce = 100,
+          max_results = 150,
+          additional_args = { "--hidden" },
         }
       end, opts)
       vim.keymap.set("n", "<Leader>ri", function()
