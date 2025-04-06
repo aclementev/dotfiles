@@ -16,10 +16,6 @@ end
 
 -- TODO(alvaro): Take a look at the trouble target https://github.com/folke/trouble.nvim?tab=readme-ov-file#telescope
 return {
-  -- "nvim-telescope/telescope-fzy-native.nvim",
-  "nvim-telescope/telescope-ui-select.nvim",
-  "nvim-telescope/telescope-file-browser.nvim",
-  "nvim-telescope/telescope-dap.nvim",
   {
     "nvim-telescope/telescope-fzf-native.nvim",
     build = "make",
@@ -27,13 +23,19 @@ return {
   {
     "nvim-telescope/telescope-frecency.nvim",
     version = "1.*",
-    config = function()
-      require("telescope").load_extension "frecency"
-    end,
+    config = function() end,
   },
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope-ui-select.nvim",
+      "nvim-telescope/telescope-file-browser.nvim",
+      "nvim-telescope/telescope-dap.nvim",
+      "nvim-telescope/telescope-fzf-native.nvim",
+      "nvim-telescope/telescope-frecency.nvim",
+      "nvim-telescope/telescope-live-grep-args.nvim",
+    },
     config = function()
       local telescope = require "telescope"
       local builtin = require "telescope.builtin"
@@ -113,6 +115,18 @@ return {
             override_file_sorter = true,
             case_mode = "smart_case",
           },
+          live_grep_args = {
+            auto_quoting = true,
+            mappings = { -- extend mappings
+              i = {
+                ["<C-k>"] = require("telescope-live-grep-args.actions").quote_prompt(),
+                ["<C-i>"] = require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " },
+                ["<C-t>"] = require("telescope-live-grep-args.actions").quote_prompt { postfix = " -t" },
+                -- freeze the current list and start a fuzzy search in the frozen list
+                ["<C-s>"] = require("telescope-live-grep-args.actions").to_fuzzy_refine,
+              },
+            },
+          },
         },
       }
 
@@ -122,6 +136,8 @@ return {
       telescope.load_extension "ui-select"
       telescope.load_extension "file_browser"
       telescope.load_extension "dap"
+      telescope.load_extension "frecency"
+      telescope.load_extension "live_grep_args"
 
       -- Configure the mappings
       local opts = { silent = true }
@@ -177,8 +193,11 @@ return {
       -- Telescope + Grep
       vim.keymap.set("n", "<Leader>rg", builtin.grep_string, opts)
       vim.keymap.set("n", "<Leader>rf", function()
-        require("alvaro.telescope.custom").live_multigrep { debounce = 100, max_results = 150 }
+        require("telescope").extensions.live_grep_args.live_grep_args()
       end, opts)
+      -- vim.keymap.set("n", "<Leader>rf", function()
+      --   require("alvaro.telescope.custom").live_multigrep { debounce = 100, max_results = 150 }
+      -- end, opts)
       vim.keymap.set("n", "<Leader>rr", function()
         builtin.live_grep { debounce = 100, max_results = 150 }
       end, opts)
