@@ -7,3 +7,6 @@ _G.P = function(value)
 	vim.print(value)
 	return value
 end
+
+-- Load the relevant part of the configuration
+require("alvaro.terminal")

@@ -155,6 +155,7 @@ nnoremap <Leader>cw :%s/\<<C-R><C-W>\>/
 " }}}
 "
 
+" FIXME(alvaro): This has been moved to nvim config
 " Integrated terminal mappings
 " Make the terminal usable
 " Regain control of escape key
@@ -162,9 +163,9 @@ nnoremap <Leader>cw :%s/\<<C-R><C-W>\>/
 " bindings
 " set termwinkey=<C-]>
 " tnoremap <C-W> <C-]><C-W>
-tnoremap <ESC> <C-\><C-N>
-" Simulate i_CTRL-R in terminal mode
-tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+"tnoremap <ESC> <C-\><C-N>
+"" Simulate i_CTRL-R in terminal mode
+"tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
 
 " For when we forget to open vim with sudo

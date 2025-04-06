@@ -1,14 +1,5 @@
 return {
   {
-    "chomosuke/term-edit.nvim",
-    lazy = false,
-    version = "1.*",
-    opts = {
-      -- NOTE(alvaro): This is how this detects the end of the prompt, so you must set it
-      prompt_end = "❯ ",
-    },
-  },
-  {
     "akinsho/toggleterm.nvim",
     lazy = false,
     opts = {
@@ -29,10 +20,10 @@ return {
       },
     },
     keys = {
-      { "<LocalLeader>tv", ":ToggleTerm direction=vertical<CR>", desc = "Open Toggleterm in a vertical split" },
-      { "<LocalLeader>tx", ":ToggleTerm direction=horizontal<CR>", desc = "Open Toggleterm in a horizontal split" },
-      { "<LocalLeader>tl", ":ToggleTermSendCurrentLine<CR>", desc = "Send current line to Toggleterm" },
-      { "<LocalLeader>tl", ":ToggleTermSendCurrentVisualSelection<CR>", desc = "Send current line to Toggleterm", mode = "v" },
+      { "<LocalLeader>tv", "<cmd>ToggleTerm direction=vertical<CR>", desc = "Open Toggleterm in a vertical split" },
+      { "<LocalLeader>tx", "<cmd>ToggleTerm direction=horizontal<CR>", desc = "Open Toggleterm in a horizontal split" },
+      { "<LocalLeader>tl", "<cmd>ToggleTermSendCurrentLine<CR>", desc = "Send current line to Toggleterm" },
+      { "<LocalLeader>tl", "<cmd>ToggleTermSendCurrentVisualSelection<CR>", desc = "Send current line to Toggleterm", mode = "v" },
     },
   },
 }

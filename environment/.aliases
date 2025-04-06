@@ -6,4 +6,6 @@ alias la='eza -la'
 alias lld='eza -l --sort=date'
 alias dbl='psql -c "\l"'
 
+alias lg='lazygit'
+
 # vim: set ft=sh :
