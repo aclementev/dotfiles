@@ -10,6 +10,8 @@ vim.opt.signcolumn = "yes:1" -- Merge the signcolumn and number column
 vim.opt.mouse = "a" -- Setup the mouse
 vim.opt.scrolloff = 10 -- Space when scrolling UP and DOWN
 vim.opt.mousemoveevent = true
+vim.opt.exrc = true
+
 -- FIXME(avlaro): This makes unstlyed windows look better, but breaks styling for other ones like `Telescope`'s
 -- Try with a more modern version of Telescope
 -- FIXME(alvaro): This is currently not supported in many plugins (plenary based like Telescope, notify, etc)

@@ -37,7 +37,7 @@ return {
       {
         "<Leader>dt",
         function()
-          Snacks.notifier.get_history()
+          Snacks.notifier.show_history()
         end,
         desc = "Navigate notification history",
       },
