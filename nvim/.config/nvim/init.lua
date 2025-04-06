@@ -71,6 +71,7 @@ require("lazy").setup({
   "junegunn/vim-easy-align",
   { "nvim-tree/nvim-web-devicons", lazy = false, priority = 2000, opts = { default = true } },
   "norcalli/nvim-colorizer.lua",
+  -- FIXME(alvaro): Move to use `snacks.nvim`
   { "stevearc/dressing.nvim", event = "VeryLazy" },
   {
     "goolord/alpha-nvim",
@@ -123,8 +124,12 @@ require("lazy").setup({
     "echasnovski/mini.indentscope",
     version = "*",
     opts = {
-      symbol = "│"
+      symbol = "│",
     },
+  },
+  {
+    "sphamba/smear-cursor.nvim",
+    opts = {},
   },
   -- Lua Neovim development
   {
