@@ -129,7 +129,9 @@ require("lazy").setup({
   },
   {
     "sphamba/smear-cursor.nvim",
-    opts = {},
+    opts = {
+      vertical_bar_cursor_insert_mode = true,
+    },
   },
   -- Lua Neovim development
   {
