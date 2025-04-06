@@ -181,7 +181,7 @@ return {
       vim.keymap.set("n", "<Leader>fk", builtin.keymaps, opts)
       vim.keymap.set("n", "<Leader>fz", builtin.current_buffer_fuzzy_find, opts)
       vim.keymap.set("n", "<Leader>fn", fd_all_with_excludes { vim.fn.stdpath "config" }, opts)
-      vim.keymap.set("n", "<Leader>fc", fd_all_with_excludes { vim.fn.expand "~" .. "/dotfiles" }, opts)
+      vim.keymap.set("n", "<Leader>fc", fd_all_with_excludes { vim.fs.joinpath(vim.fn.expand "~", "/dotfiles") }, opts)
       -- Telescope + LSP
       vim.keymap.set("n", "<Leader>fs", builtin.lsp_document_symbols, opts)
       vim.keymap.set("n", "<Leader>fw", builtin.lsp_workspace_symbols, opts)

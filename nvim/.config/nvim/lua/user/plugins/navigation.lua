@@ -33,7 +33,7 @@ return {
         require("oil").toggle_float()
       end)
       vim.keymap.set("n", "g.", function()
-        require("oil").toggle_float(vim.fn.expand("%:h"))
+        require("oil").toggle_float(vim.fs.root(0, { ".git", ".hg" }) or vim.uv.cwd())
       end)
     end,
   },
