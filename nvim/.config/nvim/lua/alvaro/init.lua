@@ -10,3 +10,4 @@ end
 
 -- Load the relevant part of the configuration
 require("alvaro.terminal")
+require("alvaro.quickfix")
