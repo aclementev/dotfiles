@@ -29,9 +29,11 @@ return {
         use_default_keymaps = false,
       }
 
-      -- Setup a keymap to open Oil.nvim in the current directory
       vim.keymap.set("n", "g-", function()
         require("oil").toggle_float()
+      end)
+      vim.keymap.set("n", "g.", function()
+        require("oil").toggle_float(vim.fn.expand("%:h"))
       end)
     end,
   },
