@@ -70,56 +70,7 @@ require("lazy").setup({
   -- Eye candy
   "junegunn/vim-easy-align",
   { "nvim-tree/nvim-web-devicons", lazy = false, priority = 2000, opts = { default = true } },
-  "norcalli/nvim-colorizer.lua",
-  -- FIXME(alvaro): Move to use `snacks.nvim`
-  { "stevearc/dressing.nvim", event = "VeryLazy" },
-  {
-    "goolord/alpha-nvim",
-    event = "VimEnter",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-      "nvim-lua/plenary.nvim",
-    },
-    config = function()
-      require("alpha").setup(require("alpha.themes.theta").config)
-    end,
-  },
-  {
-    "rcarriga/nvim-notify",
-    lazy = false,
-    -- Start before the rest of the plugins
-    priority = 100,
-    config = function()
-      local notify = require "notify"
-      ---@diagnostic disable-next-line: missing-fields
-      notify.setup {
-        -- See render styles in documentation
-        render = "compact",
-        stages = "fade_in_slide_out",
-        timeout = 5000,
-        top_down = true,
-      }
-      -- Set notify as the default notification handler for vim
-      vim.notify = notify
-    end,
-    keys = {
-      {
-        "<Leader>dd",
-        function()
-          require("notify").dismiss {
-            pending = true,
-            silent = true,
-          }
-        end,
-        desc = "Dismiss notifications",
-      },
-      {
-        "<Leader>dt",
-        "<cmd>Telescope notify<CR>",
-        desc = "Navigate notification history",
-      },
-    },
-  },
+  { "norcalli/nvim-colorizer.lua", opts = {} },
   {
     "echasnovski/mini.indentscope",
     version = "*",
