@@ -90,6 +90,10 @@ M.setup = function()
       for _, map_opts in ipairs(lsp_mappings) do
         vim.keymap.set(map_opts[1], map_opts[2], map_opts[3], { buffer = ev.buf, silent = true })
       end
+
+      -- Fix an issue where the semantic token highlighting for comments overrides the nice comment tag
+      -- highlights introduced by `treesitter-comment`
+      vim.api.nvim_set_hl(0, "@lsp.type.comment", {})
     end,
   })
 end
