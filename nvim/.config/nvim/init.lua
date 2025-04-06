@@ -255,6 +255,9 @@ vim.api.nvim_create_user_command("JSONCompact", ":%! jq -c .", { desc = "Compact
 vim.filetype.add { extension = { tf = "terraform" } }
 
 -- Other mappings
+vim.keymap.set("c", "<M-b>", "<S-Left>", { noremap = true })  -- This is actually <M-Left> 
+vim.keymap.set("c", "<M-f>", "<S-Right>", { noremap = true }) -- This is actually <M-Ritgh> 
+
 vim.keymap.set("n", "<Leader>cp", function()
   vim.fn.setreg("+", vim.fn.expand "%")
 end, { silent = true })
