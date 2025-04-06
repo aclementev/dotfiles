@@ -1,14 +1,10 @@
 -- Define a :Browse command so that fugitive knows how to open a url without Netrw
-vim.api.nvim_create_user_command(
-  "Browse",
-  function(opts)
-    local url = opts.args
-    vim.ui.open(url)
-  end,
-  { nargs = 1 }
-)
+vim.api.nvim_create_user_command("Browse", function(opts)
+  local url = opts.args
+  vim.ui.open(url)
+end, { nargs = 1 })
 
-local main_branch_name = os.getenv("GIT_BASE_BRANCH") or "main"
+local main_branch_name = os.getenv "GIT_BASE_BRANCH" or "main"
 
 return {
   "tpope/vim-rhubarb",
@@ -41,15 +37,15 @@ return {
         -- NOTE(alvaro): I could not figure out how to handle properly the visual range using <cmd>
         ":<C-U>'<,'>GBrowse<CR>",
         desc = "Fugitive: Git browse (visual range)",
-        mode = "v"
+        mode = "v",
       },
       {
         "<LocalLeader>gm",
         desc = "Fugitive: Git browse (visual range)",
         string.format(":<C-U>'<,'>GBrowse %s:%%<CR>", main_branch_name),
-        mode = "v"
+        mode = "v",
       },
-    }
+    },
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -76,25 +72,23 @@ return {
         "]c",
         function()
           if vim.wo.diff then
-            vim.cmd.normal({ "]c", bang = true })
+            vim.cmd.normal { "]c", bang = true }
           else
-            require("gitsigns").nav_hunk("next")
+            require("gitsigns").nav_hunk "next"
           end
         end,
         desc = "Git: Navigate to next hunk",
-
       },
       {
         "]c",
         function()
           if vim.wo.diff then
-            vim.cmd.normal({ "[c", bang = true })
+            vim.cmd.normal { "[c", bang = true }
           else
-            require("gitsigns").nav_hunk("prev")
+            require("gitsigns").nav_hunk "prev"
           end
         end,
         desc = "Git: Navigate to prev hunk",
-
       },
       {
         "<LocalLeader>gs",
@@ -177,6 +171,26 @@ return {
       },
       -- Text Object
       { "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git: Hunk text object" },
+    },
+  },
+  {
+    "kdheepak/lazygit.nvim",
+    lazy = true,
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+      { "<leader>lg", "<cmd>LazyGit<CR>", desc = "LazyGit" },
     },
   },
 }
