@@ -227,3 +227,40 @@ end, { silent = true })
 vim.keymap.set("n", "<Leader>cf", function()
   vim.fn.setreg("+", "%:t")
 end, { silent = true })
+
+-- Comment Reflower
+-- Prepare a reflow comments command with a keybind this is a very very very long comment this is another line Prepare a reflow comments command with a
+-- Prepare a reflow comments command with a keybind this is a very very very long comment this is another line Prepare a reflow comments command with a
+vim.api.nvim_create_user_command("ReflowComment", function(args)
+  local old_formatexpr = vim.bo.formatexpr
+  local old_textwidth = vim.bo.textwidth
+
+  -- Remove the default formatexpr, which may be set to LSP formatting, so that
+  -- we use vim's builtin formatting that will use textwidth
+  vim.bo.formatexpr = ""
+  -- FIXME(alvaro): Create a mechanism for passing another value to this
+  vim.bo.textwidth = old_textwidth or 80
+
+  -- We have to manually run `gq` on the target lines
+  local n_lines
+  if args.range == 0 or args.range == 1 then
+    n_lines = 1
+  elseif args.range == 2 then
+    n_lines = args.line2 - args.line1 + 1
+  end
+  local cmd = string.format("%dgqq", n_lines)
+
+  -- Call this protected so that we always reset the options back
+  pcall(vim.cmd.normal, cmd)
+
+  -- Reset the options
+  vim.bo.formatexpr = old_formatexpr
+  vim.bo.textwidth = old_textwidth
+end, {
+  range = true,
+  desc = "Reformat a multiline comment making sure it does not go over the line width limit",
+  force = true,
+})
+
+vim.keymap.set("n", "<LocalLeader>cf", "<cmd>ReflowComment<CR>", { desc = "Reflow selected comment" })
+vim.keymap.set("x", "<LocalLeader>cf", "<cmd>ReflowComment<CR>", { desc = "Reflow selected comment" })
