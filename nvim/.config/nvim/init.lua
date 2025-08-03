@@ -17,10 +17,6 @@ vim.opt.exrc = true
 -- FIXME(alvaro): This is currently not supported in many plugins (plenary based like Telescope, notify, etc)
 -- vim.opt.winborder = "rounded" -- Floating window styling
 
--- FIXME(alvaro): This does not work, and hasn't for a long time
--- Add an explicit python3 provider to avoid slow
-vim.g.python3_host_prog = vim.fn.expand "~/.pyenv/versions/3.12.3/bin/python"
-
 -- Load the basic configuration
 require "alvaro"
 
@@ -38,6 +34,19 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   }
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- Prepare a callback for when all the plugins are configured
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LazyDone",
+  once = true,
+  callback = function()
+    -- Setup the LSP
+    require("alvaro.lsp").setup()
+
+    -- Set the colorscheme
+    require "alvaro.colorscheme"
+  end,
+})
 
 -- FIXME(alvaro): Review the colorscheme setup now that we have Lazy with priority and whatnot
 -- Setup the plugins
@@ -146,9 +155,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   group = transparent_augroup,
   command = "highlight SignColumn guibg=NONE",
 })
-
--- Set the colorscheme
-require "alvaro.colorscheme"
 
 -- FIXME(alvaro): Review if we are using these, since we are now using `term-edit`
 -- Terminal Settings

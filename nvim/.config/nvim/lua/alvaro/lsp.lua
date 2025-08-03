@@ -1,6 +1,15 @@
 -- Basic LSP configuration
 local M = {}
 
+-- TODO(alvaro): Figure out how we want to handle languages with multiple language servers (e.g. Python)
+-- There are several options that I can think of, depending on what vim.lsp.config/vim.lsp.enable actually supports
+-- Can we have all of the servers "enabled" and somehow select which one to enable on buffer attach?
+-- Options that I can think of:
+--    - Pick a default, use env vars to override
+--    - Pick a default, use .nvim.lua local file to override (at runtime)
+--    - Don't pick a default, try to read common project config files and guess which one we should use
+--      based on which of them are configured (e.g. pyproject.toml with mypy config)
+
 -- TODO(alvaro): Should we just set these up every time
 -- Mappings
 local lsp_mappings = {
@@ -49,36 +58,62 @@ local lsp_mappings = {
   { "n", "gx", ":sp<CR><cmd>lua vim.lsp.buf.definition()<CR>zz" },
 }
 
--- TODO(alvaro): Figure out if we can mvoe these to static `lsp/<name>.lua` based configurations
--- At the moemnt I don't think we can since we would depend on `nvim-lspconfig` which is a plugin
+-- Get which LSP server we should use for the current project
+-- By default we use `pylsp`, but we can use others
+-- TODO(alvaro): try to guess based on the project's config if there's no override
+-- set by
+M.get_configured_python_lsp = function()
+  local override = vim.fn.getenv "ALVARO_USE_TY"
+  if override == "1" then
+    return "ty"
+  end
+  return "pylsp"
+end
 
 -- Setup the LSP configuration using Neovim builtin LSP config protocol
 M.setup = function()
-  -- TODO(alvaro): Figure out how to configure stuff using these there, not by
-  -- using `nvim-lspconfig.setup(opts)`
-  -- local default_capabilities = vim.lsp.protocol.make_client_capabilities()
-  -- local basic_capabilities = {
-  --   textDocument = {
-  --     semanticTokens = {
-  --       multilineTokenSupport = true,
-  --     },
-  --   },
-  -- }
-  -- local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
-  -- local common_capabilities = vim.tbl_deep_extend("force", default_capabilities, basic_capabilities, cmp_capabilities)
+  -- Check if we are ready to configure LSP, which requires extra plugins to be installed
+  -- FIXME(alvaro): Do we really require plugins at this point? or can we just reduce
+  -- the capabilities and continue working
+  local ok, _ = pcall(require, "blink.cmp")
+  if not ok then
+    vim.notify("The plugins are not setup", vim.log.levels.ERROR)
+    return
+  end
 
-  -- Default configuration to be shared by all servers
-  -- vim.lsp.config("*", {
-  --   root_markers = { ".git", ".hg" },
-  --   capabilities = common_capabilities,
-  --   flags = {
-  --     -- FIXME(alvaro): Not sure which servers actually use this
-  --     debounce_text_changes = 150,
-  --   },
-  -- })
+  -- Prepare the capabilities
+  local default_capabilities = vim.lsp.protocol.make_client_capabilities()
+  local basic_capabilities = {
+    textDocument = {
+      semanticTokens = {
+        multilineTokenSupport = true,
+      },
+    },
+  }
+  local blink_capabilities = require("blink.cmp").get_lsp_capabilities({}, false)
+  local file_capabilities = require("lsp-file-operations").default_capabilities()
+  local common_capabilities =
+    vim.tbl_deep_extend("force", default_capabilities, basic_capabilities, blink_capabilities, file_capabilities)
 
-  -- FIXME(alvaro): List of LSP servers to enable
-  -- vim.lsp.enable {}
+  vim.lsp.config("*", {
+    root_markers = { ".git", ".hg" },
+    capabilities = common_capabilities,
+  })
+
+  local lsp_servers = {
+    "lua_ls",
+    "vimls",
+    "gopls",
+    "rust_analyzer",
+    M.get_configured_python_lsp(),
+  }
+  -- TODO(alvaro): Figure out a better way of selecing the right server for languages
+  -- that support many and we may change per project (i.e. env var? .nvim.lua file?)
+  -- TODO(alvaro): Can we have multiple servers enabled, and have the on attach buffer
+  -- pick only one based on the buffer? or do we need to globally configure one for the
+  -- whole nvim session as we do now
+
+  vim.lsp.enable(lsp_servers)
 
   -- Add LspAttach handler
   local augroup = vim.api.nvim_create_augroup("alvaro.lsp.config", { clear = true })
