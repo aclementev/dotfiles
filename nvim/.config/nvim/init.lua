@@ -42,9 +42,6 @@ vim.api.nvim_create_autocmd("User", {
   callback = function()
     -- Setup the LSP
     require("alvaro.lsp").setup()
-
-    -- Set the colorscheme
-    require "alvaro.colorscheme"
   end,
 })
 
@@ -143,6 +140,9 @@ require("lazy").setup({
 vim.keymap.set("n", "<LocalLeader>xf", "<cmd>source %<CR>", { desc = "Lua: Run File", silent = true })
 vim.keymap.set("n", "<LocalLeader>xx", ":.lua<CR>", { desc = "Lua: Run Current Line", silent = true })
 vim.keymap.set("v", "<LocalLeader>xx", ":lua<CR>", { desc = "Lua: Run Visual Selection", silent = true })
+
+-- Set the colorscheme
+require "alvaro.colorscheme"
 
 -- Fix the colorscheme so that the SignColumn does not have a different
 -- background
