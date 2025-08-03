@@ -27,11 +27,29 @@ return {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
-    opts = {
-      lightbulb = {
-        enable = false,
-      },
-    },
+    config = function()
+      require("lspsaga").setup {
+        lightbulb = {
+          enable = false,
+        },
+      }
+      -- Setup diagnostics
+      local saga_diag = require "lspsaga.diagnostic"
+
+      vim.keymap.set("n", "<LocalLeader>dd", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
+      vim.keymap.set("n", "]e", function()
+        saga_diag:goto_next { severity = vim.diagnostic.severity.ERROR }
+      end, opts)
+      vim.keymap.set("n", "[e", function()
+        saga_diag:goto_prev { severity = vim.diagnostic.severity.ERROR }
+      end, opts)
+      vim.keymap.set("n", "]w", function()
+        saga_diag:goto_next { severity = vim.diagnostic.severity.WARN }
+      end, opts)
+      vim.keymap.set("n", "[w", function()
+        saga_diag:goto_prev { severity = vim.diagnostic.severity.WARN }
+      end, opts)
+    end,
   },
   -- LSP Progress notifications
   "j-hui/fidget.nvim",

@@ -23,7 +23,8 @@ require "alvaro"
 -- Lazy.nvim setup
 -- Install Lazy (if necessary)
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
+---@diagnostic disable-next-line: undefined-field
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system {
     "git",
     "clone",
@@ -93,32 +94,6 @@ require("lazy").setup({
       vertical_bar_cursor_insert_mode = true,
     },
   },
-  -- Lua Neovim development
-  {
-    "folke/lazydev.nvim",
-    ft = "lua",
-    opts = {
-      library = {
-        -- Also enable the neovim APIs inside any installed plugins
-        "~/.local/share/nvim/lazy",
-        -- Load the luvit types if we find a reference to `vim.uv`
-        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-      },
-    },
-  },
-  -- AI Assistant
-  -- TODO(alvaro): Checkout avante.nvim
-  -- {
-  --   "github/copilot.vim",
-  --   lazy = false,
-  --   init = function()
-  --     -- Make sure that <Tab> is not mapped automatically
-  --     -- vim.g.copilot_no_tab_map = true
-  --   end,
-  --   keys = {
-  --     { "<C-L>", 'copilot#Accept("")', mode = "i", silent = true, expr = true, replace_keycodes = false },
-  --   },
-  -- },
   { "echasnovski/mini.ai", version = "*" },
 
   -- DB Access
@@ -140,6 +115,9 @@ require("lazy").setup({
 vim.keymap.set("n", "<LocalLeader>xf", "<cmd>source %<CR>", { desc = "Lua: Run File", silent = true })
 vim.keymap.set("n", "<LocalLeader>xx", ":.lua<CR>", { desc = "Lua: Run Current Line", silent = true })
 vim.keymap.set("v", "<LocalLeader>xx", ":lua<CR>", { desc = "Lua: Run Visual Selection", silent = true })
+
+-- Set up the diagnostics
+require "alvaro.diagnostics"
 
 -- Set the colorscheme
 require "alvaro.colorscheme"

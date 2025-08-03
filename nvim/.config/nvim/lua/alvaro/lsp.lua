@@ -62,6 +62,11 @@ local lsp_mappings = {
 -- By default we use `pylsp`, but we can use others
 -- TODO(alvaro): try to guess based on the project's config if there's no override
 -- set by
+-- You can trivially override this permanently for a project using `.nvim.lua` file
+--    ```lua
+--    vim.lsp.enable("pylsp", false)
+--    vim.lsp.enable("ty")
+--    ```
 M.get_configured_python_lsp = function()
   local override = vim.fn.getenv "ALVARO_USE_TY"
   if override == "1" then
@@ -90,7 +95,8 @@ M.setup = function()
       },
     },
   }
-  local blink_capabilities = require("blink.cmp").get_lsp_capabilities({}, false)
+  -- FIXME(alvaro): According to blink this may not be necessary anymore?
+  local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
   local file_capabilities = require("lsp-file-operations").default_capabilities()
   local common_capabilities =
     vim.tbl_deep_extend("force", default_capabilities, basic_capabilities, blink_capabilities, file_capabilities)
@@ -105,6 +111,7 @@ M.setup = function()
     "vimls",
     "gopls",
     "rust_analyzer",
+    "pylsp",
     M.get_configured_python_lsp(),
   }
   -- TODO(alvaro): Figure out a better way of selecing the right server for languages
