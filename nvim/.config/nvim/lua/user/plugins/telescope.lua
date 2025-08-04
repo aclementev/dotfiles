@@ -23,7 +23,7 @@ return {
   {
     "nvim-telescope/telescope-frecency.nvim",
     version = "1.*",
-    config = function() end,
+    opts = {},
   },
   {
     "nvim-telescope/telescope.nvim",
@@ -127,6 +127,10 @@ return {
               },
             },
           },
+          frecency = {
+            -- Make it not super laggy for large workspaces
+            show_unindexed = false,
+          },
         },
       }
 
@@ -175,8 +179,8 @@ return {
       vim.keymap.set("n", "<Leader>fb", builtin.buffers, opts)
       vim.keymap.set("n", "<Leader>fh", builtin.help_tags, opts)
       vim.keymap.set("n", "<Leader>fo", builtin.oldfiles, opts)
-      vim.keymap.set("n", "<Leader>fl", "<cmd>Telescope frecency workspace=CWD<CR>", opts)
-      vim.keymap.set("n", "<Leader>fL", "<cmd>Telescope frecency<CR>", opts)
+      vim.keymap.set("n", "<Leader>fl", "<cmd>Telescope frecency workspace=CWD debounce=150<CR>", opts)
+      vim.keymap.set("n", "<Leader>fL", "<cmd>Telescope frecency debounce=150<CR>", opts)
       vim.keymap.set("n", "<Leader>fC", builtin.commands, opts)
       vim.keymap.set("n", "<Leader>fk", builtin.keymaps, opts)
       vim.keymap.set("n", "<Leader>fz", builtin.current_buffer_fuzzy_find, opts)

@@ -10,7 +10,7 @@ return {
       conform.setup {
         timeout_ms = 1000,
         format_on_save = function(bufnr)
-          -- Get the filetype of the language 
+          -- Get the filetype of the language
           if vim.tbl_contains(LANGUAGES_ON_SAVE, vim.bo[bufnr].filetype) then
             return {
               timeout_ms = 500,
@@ -26,10 +26,9 @@ return {
           justfile = { "just" },
           lua = { "stylua" },
           ocaml = { "ocamlformat" },
-          -- TODO(alvaro): enable ruff if it's available and configured
           python = function(bufnr)
             if conform.get_formatter_info("ruff_format", bufnr).available then
-              return { "ruff_organize_imports", "ruff_format" }
+              return { "ruff_format", "ruff_organize_imports" }
             else
               return { "isort", "black" }
             end

@@ -83,6 +83,7 @@ require("lazy").setup({
   {
     "sphamba/smear-cursor.nvim",
     opts = {
+      cursor_color = "none",
       vertical_bar_cursor_insert_mode = true,
     },
   },
@@ -225,7 +226,7 @@ vim.keymap.set("n", "<Leader>cP", function()
   vim.fn.setreg("+", vim.fn.expand "%:p")
 end, { silent = true })
 vim.keymap.set("n", "<Leader>cf", function()
-  vim.fn.setreg("+", "%:t")
+  vim.fn.setreg("+", vim.fn.expand "%:t")
 end, { silent = true })
 
 -- Comment Reflower

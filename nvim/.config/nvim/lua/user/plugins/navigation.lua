@@ -66,7 +66,11 @@ return {
     branch = "harpoon2",
     config = function()
       local harpoon = require "harpoon"
-      harpoon.setup {
+      harpoon:setup {
+        settings = {
+          save_on_toggle = true,
+          sync_on_ui_close = true,
+        },
         menu = {
           width = 120,
           height = 20,
@@ -137,6 +141,34 @@ return {
           require("harpoon"):list():select(5)
         end,
         desc = "Harpoon: Navigate to entry #5",
+      },
+      {
+        "<LocalLeader>6",
+        function()
+          require("harpoon"):list():select(6)
+        end,
+        desc = "Harpoon: Navigate to entry #6",
+      },
+      {
+        "<LocalLeader>7",
+        function()
+          require("harpoon"):list():select(7)
+        end,
+        desc = "Harpoon: Navigate to entry #7",
+      },
+      {
+        "<LocalLeader>8",
+        function()
+          require("harpoon"):list():select(8)
+        end,
+        desc = "Harpoon: Navigate to entry #8",
+      },
+      {
+        "<LocalLeader>9",
+        function()
+          require("harpoon"):list():select(9)
+        end,
+        desc = "Harpoon: Navigate to entry #9",
       },
     },
   },
