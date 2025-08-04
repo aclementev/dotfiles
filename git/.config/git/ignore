@@ -1,3 +1,4 @@
 # Global gitignore files
 .nvim.lua
 **/.DS_Store
+*.code-workspace
