@@ -1,15 +1,6 @@
 -- Basic LSP configuration
 local M = {}
 
--- TODO(alvaro): Figure out how we want to handle languages with multiple language servers (e.g. Python)
--- There are several options that I can think of, depending on what vim.lsp.config/vim.lsp.enable actually supports
--- Can we have all of the servers "enabled" and somehow select which one to enable on buffer attach?
--- Options that I can think of:
---    - Pick a default, use env vars to override
---    - Pick a default, use .nvim.lua local file to override (at runtime)
---    - Don't pick a default, try to read common project config files and guess which one we should use
---      based on which of them are configured (e.g. pyproject.toml with mypy config)
-
 -- TODO(alvaro): Should we just set these up every time
 -- Mappings
 local lsp_mappings = {
