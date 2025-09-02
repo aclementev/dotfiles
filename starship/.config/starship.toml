@@ -1,132 +1,43 @@
-[aws]
-symbol = "  "
-disabled = true
-
-[buf]
-symbol = " "
-
-[c]
-symbol = " "
-
-[conda]
-symbol = " "
-
-[dart]
-symbol = " "
+format = """
+$python\
+$directory\
+$git_branch\
+$git_state\
+$cmd_duration\
+$line_break\
+$character"""
 
 [directory]
-read_only = " "
+style = "blue"
 
-[docker_context]
-symbol = " "
-disabled = true
-
-[elixir]
-symbol = " "
-
-[elm]
-symbol = " "
-
-[gcloud]
-disabled = true
+[character]
+success_symbol = "[❯](purple)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](green)"
 
 [git_branch]
-symbol = " "
+format = '[\[$branch\]]($style)'
+style = "bright-black"
 
-[golang]
-symbol = " "
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
 
-[guix_shell]
-symbol = " "
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
 
-[haskell]
-symbol = " "
-
-[haxe]
-symbol = "⌘ "
-
-[hg_branch]
-symbol = " "
-
-[java]
-symbol = " "
-
-[julia]
-symbol = " "
-
-[lua]
-symbol = " "
-
-[memory_usage]
-symbol = " "
-
-[meson]
-symbol = "喝 "
-
-[nim]
-symbol = " "
-
-[nix_shell]
-symbol = " "
-
-[nodejs]
-symbol = " "
-
-[os.symbols]
-Alpine = " "
-Amazon = " "
-Android = " "
-Arch = " "
-CentOS = " "
-Debian = " "
-DragonFly = " "
-Emscripten = " "
-EndeavourOS = " "
-Fedora = " "
-FreeBSD = " "
-Garuda = "﯑ "
-Gentoo = " "
-HardenedBSD = "ﲊ "
-Illumos = " "
-Linux = " "
-Macos = " "
-Manjaro = " "
-Mariner = " "
-MidnightBSD = " "
-Mint = " "
-NetBSD = " "
-NixOS = " "
-OpenBSD = " "
-openSUSE = " "
-OracleLinux = " "
-Pop = " "
-Raspbian = " "
-Redhat = " "
-RedHatEnterprise = " "
-Redox = " "
-Solus = "ﴱ "
-SUSE = " "
-Ubuntu = " "
-Unknown = " "
-Windows = " "
-
-[package]
-symbol = " "
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
 
 [python]
-symbol = " "
-
-[rlang]
-symbol = "ﳒ "
-
-[ruby]
-symbol = " "
-
-[rust]
-symbol = " "
-
-[scala]
-symbol = " "
-
-[spack]
-symbol = "🅢 "
+format = '[(\($virtualenv\))]($style) '
+style = "bright-black"
