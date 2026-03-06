@@ -10,6 +10,7 @@
 [alias]
 	l = "!. ~/.config/git/githelpers && pretty_git_log"
 	lol = "log --graph --oneline --abbrev-commit --all"
+	lolb = "log --graph --oneline --abbrev-commit"
 	lola = "!git l --all"
 	lr = "!git l --all -30"
 	co = checkout
@@ -24,6 +25,8 @@
 	sync = !git switch ${GIT_BASE_BRANCH:-main} && git pull --prune && git branch --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" { print $1 }' | xargs -r git branch -D
 	pff = pull --ff-only
 	pr = pull --rebase
+	switch-interactive = "!git switch $(git branch --format='%(refname:short)' | fzf)"
+	swi = "!git switch $(git branch --format='%(refname:short)' | fzf)"
 [pull]
 	rebase = true
 [fetch]
