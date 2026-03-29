@@ -8,6 +8,7 @@ local install_languages = {
   "go",
   "html",
   "htmldjango",
+  "http",
   "javascript",
   "json",
   "just",
