@@ -103,6 +103,7 @@ M.setup = function()
     "gopls",
     "rust_analyzer",
     "pylsp",
+    "ts_ls",
     M.get_configured_python_lsp(),
   }
   -- TODO(alvaro): Figure out a better way of selecing the right server for languages
@@ -130,5 +131,22 @@ M.setup = function()
     end,
   })
 end
+
+vim.api.nvim_create_user_command("LspCapabilities", function()
+  local clients = vim.lsp.get_clients { bufnr = 0 }
+
+  for _, client in pairs(clients) do
+    local caps = {}
+    for key, value in pairs(client.server_capabilities) do
+      if value and key:find "Provider" then
+        local capability = key:gsub("Provider$", "")
+        table.insert(caps, "- " .. capability)
+      end
+    end
+    table.sort(caps)
+    local msg = "# " .. client.name .. "\n" .. table.concat(caps, "\n")
+    vim.notify(msg, vim.log.levels.INFO)
+  end
+end, {})
 
 return M
