@@ -26,7 +26,8 @@
 ---
 --- Note: This is a community fork of `pyls`.
 return {
-  cmd = { "pylsp" },
+  -- cmd = { "pylsp" },
+  cmd = { "pylsp", "-vvv", "--log-file", "/tmp/lsp.log" },
   filetypes = { "python" },
   root_markers = {
     "pyproject.toml",
