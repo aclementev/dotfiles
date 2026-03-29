@@ -50,6 +50,12 @@ vim.api.nvim_create_autocmd("User", {
 -- Setup the plugins
 -- FIXME(alvaro): Review which of these are used directly and which can be declared as dependency
 require("lazy").setup({
+  -- For luarocks management, which will be used by other plugins
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
+    config = true,
+  },
   -- The base depenencies
   "nvim-lua/plenary.nvim",
   "nvim-lua/popup.nvim",
