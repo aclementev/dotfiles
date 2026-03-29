@@ -14,12 +14,12 @@ return {
           if vim.tbl_contains(LANGUAGES_ON_SAVE, vim.bo[bufnr].filetype) then
             return {
               timeout_ms = 500,
-              lsp_fallback = true,
+              lsp_format = "fallback",
             }
           end
         end,
         formatters_by_ft = {
-          go = { "goimports", "gofmt" },
+          go = { "gofmt", "goimports" },
           html = { "prettierd", "prettier", stop_after_first = true },
           htmldjango = { "prettierd", "prettier", stop_after_first = true },
           javascript = { "prettierd", "prettier", stop_after_first = true },
