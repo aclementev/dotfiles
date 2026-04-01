@@ -4,11 +4,27 @@ vim.g.maplocalleader = "-"
 vim.keymap.set("n", "<Space>", "<NOP>", { silent = true })
 vim.keymap.set("n", "-", "<NOP>", { silent = true })
 
+
 -- General Editor Configuration
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.signcolumn = "yes:1"
+vim.opt.mouse = "a"
+vim.opt.scrolloff = 10
+vim.opt.mousemoveevent = true
+vim.opt.exrc = true
+
+-- Color
+vim.opt.termguicolors = true
+vim.api.nvim_create_autocmd("TextYankPost", {
+    pattern = "*",
+    group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
+    callback = function() vim.hl.on_yank { timeout = 300 } end
+})
+
+-- Buffer management
 vim.opt.hidden = true
 
 vim.opt.tabstop = 4
@@ -49,7 +65,8 @@ vim.keymap.set("n", "<Leader>u", "viWUE")
 -- vim.keymap.set("n", "<Leader>td", "mz:%s/\s\+$//<CR>`z")
 vim.keymap.set("n", "<leader>td", function()
   local view = vim.fn.winsaveview()
-  vim.cmd([[%s/\s\+$//e]])
+  vim.cmd [[ silent g/\s\+$/s/\s*$// ]]
+  vim.cmd [[ nohlsearch ]]
   vim.fn.winrestview(view)
 end, { silent = true })
 
@@ -78,6 +95,8 @@ vim.keymap.set("n", "<Left>", ":resize -2<CR>", { silent = true })
 
 -- Command Mode Niceties
 vim.keymap.set("c", "<C-a>", "<C-b>")
+vim.keymap.set("c", "<M-b>", "<S-Left>", { noremap = true }) -- This is actually <M-Left>
+vim.keymap.set("c", "<M-f>", "<S-Right>", { noremap = true }) -- This is actually <M-Ritgh>
 
 -- Common typos when exiting or saving
 vim.api.nvim_create_user_command("W", "w", {})
@@ -96,3 +115,24 @@ vim.keymap.set("n", "<LocalLeader>ln", ":lnext<CR>", { silent = true })
 vim.keymap.set("n", "<LocalLeader>lp", ":lprev<CR>", { silent = true })
 vim.keymap.set("n", "<LocalLeader>lo", ":lopen<CR>", { silent = true })
 vim.keymap.set("n", "<LocalLeader>lc", ":lclose<CR>", { silent = true })
+
+-- Plugin Configuration
+-- Setup Lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Configure lazy.nvim
+require("lazy").setup("plugins")
