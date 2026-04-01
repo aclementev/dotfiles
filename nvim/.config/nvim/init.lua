@@ -4,7 +4,6 @@ vim.g.maplocalleader = "-"
 vim.keymap.set("n", "<Space>", "<NOP>", { silent = true })
 vim.keymap.set("n", "-", "<NOP>", { silent = true })
 
-
 -- General Editor Configuration
 vim.opt.number = true
 vim.opt.relativenumber = true
