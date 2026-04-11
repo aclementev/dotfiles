@@ -57,6 +57,9 @@ vim.opt.foldlevelstart = 10
 vim.opt.foldnestmax = 10
 vim.opt.foldmethod = "indent"
 
+-- Eye candy
+vim.opt.winborder = "rounded"
+
 -- General Editing
 vim.keymap.set("n", "<Leader>h", ":nohlsearch<CR>", { silent = true })
 vim.keymap.set("n", "<Leader>u", "viWUE")
@@ -135,6 +138,8 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Configure lazy.nvim
 require("lazy").setup("plugins")
+
+require("config.lsp")
 
 -- Setup the colorscheme
 -- TODO(alvaro): Dynamic colorscheme
