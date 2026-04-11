@@ -146,6 +146,7 @@ require("lazy").setup("plugins")
 
 require("config.diagnostic")
 require("config.lsp")
+require("config.quickfix")
 
 -- Setup the colorscheme
 -- TODO(alvaro): Dynamic colorscheme
