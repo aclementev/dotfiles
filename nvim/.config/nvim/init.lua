@@ -135,3 +135,12 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Configure lazy.nvim
 require("lazy").setup("plugins")
+
+-- Setup the colorscheme
+-- TODO(alvaro): Dynamic colorscheme
+
+vim.o.background = "light"
+vim.cmd [[ colorscheme solarized ]]
+
+-- vim.o.background = "dark"
+-- vim.cmd [[ colorscheme tokyonight ]]

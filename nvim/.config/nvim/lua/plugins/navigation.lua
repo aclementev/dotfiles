@@ -32,7 +32,7 @@ return {
             use_default_keymaps = false,
         },
         keys = {
-            { "g-", function() require("oil").toggle() end, desc = "Toggle Oil.nvim" },
+            { "g-", function() require("oil").toggle_float() end, desc = "Toggle Oil.nvim" },
             { "g.", function() 
                 require("oil").toggle_float(vim.fs.root(0, { ".git", ".hg" }) or vim.uv.cwd()) 
             end, desc = "Toggle Oil.nvim on repo root" },
