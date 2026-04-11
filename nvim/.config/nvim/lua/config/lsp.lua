@@ -37,6 +37,12 @@ vim.keymap.set(
 )
 vim.keymap.set(
   "n",
+  "gH",
+  function() vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled()) end,
+  { silent = true, desc = "[LSP] Toggle CodeLens" }
+)
+vim.keymap.set(
+  "n",
   "<Leader>wa",
   vim.lsp.buf.add_workspace_folder,
   { silent = true, desc = "[LSP] Add folder to workspace" }

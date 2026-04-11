@@ -57,6 +57,9 @@ vim.opt.foldlevelstart = 10
 vim.opt.foldnestmax = 10
 vim.opt.foldmethod = "indent"
 
+-- Built-in opt plugins
+vim.cmd.packadd("nvim.undotree")
+
 -- Eye candy
 vim.opt.winborder = "rounded"
 
