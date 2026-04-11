@@ -1,7 +1,12 @@
 return {
   {
+    "kristijanhusak/vim-dadbod-completion",
+    ft = { "sql", "mysql", "plsql" },
+  },
+  {
     "saghen/blink.cmp",
     version = "1.*",
+    dependencies = { "kristijanhusak/vim-dadbod-completion" },
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -35,14 +40,14 @@ return {
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
-        -- per_filetype = { sql = { "dadbod" } },
+        per_filetype = { sql = { "dadbod", "buffer" } },
         providers = {
           path = {
             opts = {
               get_cwd = function() return vim.fn.getcwd() end,
             },
           },
-          -- dadbod = { module = "vim_dadbod_completion.blink" },
+          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
       },
       fuzzy = { implementation = "prefer_rust_with_warning" },

@@ -139,6 +139,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Configure lazy.nvim
 require("lazy").setup("plugins")
 
+require("config.diagnostic")
 require("config.lsp")
 
 -- Setup the colorscheme
