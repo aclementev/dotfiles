@@ -18,9 +18,9 @@ vim.opt.exrc = true
 -- Color
 vim.opt.termguicolors = true
 vim.api.nvim_create_autocmd("TextYankPost", {
-    pattern = "*",
-    group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
-    callback = function() vim.hl.on_yank { timeout = 300 } end
+  pattern = "*",
+  group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
+  callback = function() vim.hl.on_yank({ timeout = 300 }) end,
 })
 
 -- Buffer management
@@ -67,8 +67,8 @@ vim.keymap.set("n", "<Leader>u", "viWUE")
 -- vim.keymap.set("n", "<Leader>td", "mz:%s/\s\+$//<CR>`z")
 vim.keymap.set("n", "<leader>td", function()
   local view = vim.fn.winsaveview()
-  vim.cmd [[ silent g/\s\+$/s/\s*$// ]]
-  vim.cmd [[ nohlsearch ]]
+  vim.cmd([[ silent g/\s\+$/s/\s*$// ]])
+  vim.cmd([[ nohlsearch ]])
   vim.fn.winrestview(view)
 end, { silent = true })
 
@@ -145,7 +145,7 @@ require("config.lsp")
 -- TODO(alvaro): Dynamic colorscheme
 
 vim.o.background = "light"
-vim.cmd [[ colorscheme solarized ]]
+vim.cmd([[ colorscheme solarized ]])
 
 -- vim.o.background = "dark"
 -- vim.cmd [[ colorscheme tokyonight ]]
