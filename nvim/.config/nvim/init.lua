@@ -118,6 +118,11 @@ vim.keymap.set("n", "<LocalLeader>lp", ":lprev<CR>", { silent = true })
 vim.keymap.set("n", "<LocalLeader>lo", ":lopen<CR>", { silent = true })
 vim.keymap.set("n", "<LocalLeader>lc", ":lclose<CR>", { silent = true })
 
+-- Lua Execution
+vim.keymap.set("n", "<LocalLeader>xf", "<cmd>source %<CR>", { desc = "Lua: Run File", silent = true })
+vim.keymap.set("n", "<LocalLeader>xx", ":.lua<CR>", { desc = "Lua: Run Current Line", silent = true })
+vim.keymap.set("v", "<LocalLeader>xx", ":lua<CR>", { desc = "Lua: Run Visual Selection", silent = true })
+
 -- Plugin Configuration
 -- Setup Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
