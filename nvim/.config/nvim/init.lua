@@ -123,6 +123,9 @@ vim.keymap.set("n", "<LocalLeader>xf", "<cmd>source %<CR>", { desc = "Lua: Run F
 vim.keymap.set("n", "<LocalLeader>xx", ":.lua<CR>", { desc = "Lua: Run Current Line", silent = true })
 vim.keymap.set("v", "<LocalLeader>xx", ":lua<CR>", { desc = "Lua: Run Visual Selection", silent = true })
 
+-- Terminal
+vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { desc = "Escape to Normal mode inside Terminal", silent = true })
+
 -- Plugin Configuration
 -- Setup Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
