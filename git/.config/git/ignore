@@ -2,3 +2,5 @@
 .nvim.lua
 **/.DS_Store
 *.code-workspace
+
+**/.claude/settings.local.json
