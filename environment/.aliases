@@ -3,7 +3,7 @@ alias scheme='rlwrap scheme'
 alias l='eza'
 alias ll='eza -l'
 alias la='eza -la'
-alias lld='eza -l --sort=date'
+alias llsd='eza -l --sort=date'
 alias dbl='psql -c "\l"'
 
 alias lg='lazygit'
