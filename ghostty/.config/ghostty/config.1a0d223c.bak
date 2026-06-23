@@ -1,5 +1,5 @@
 # Theme
-theme = iTerm2 Solarized Light
+theme = Builtin Solarized Light
 # theme = tokyonight-storm
 
 # Font
@@ -13,7 +13,3 @@ cursor-style = block
 cursor-style-blink = false
 # This makes it so that the shell (zsh/bash) do not override the cursor setting for Ghostty
 shell-integration-features = no-cursor
-keybind = shift+enter=text:\x1b\r
-# Workaround for the issue with Zoom In keybind
-keybind = cmd+equal=unbind
-keybind = cmd+==increase_font_size:1
