@@ -1,3 +1,27 @@
+-- Fuzzy-pick an immediate subdirectory under `cwd` (via fd), then run `action(abs_dir)`.
+-- If the user cancels, `action` is never called.
+local function pick_directory(opts, action)
+  opts = opts or {}
+  local cwd = opts.cwd or vim.fn.expand("%:p:h")
+  if cwd == nil or cwd == "" then
+    cwd = vim.uv.cwd()
+  end
+  local res = vim.system(
+    { "fd", "--type", "d", "--color", "never", "--max-depth", "1" },
+    { cwd = cwd, text = true }
+  ):wait()
+  local dirs = vim.split(vim.trim(res.stdout or ""), "\n", { trimempty = true })
+  if #dirs == 0 then
+    vim.notify("No directories found under " .. cwd, vim.log.levels.WARN)
+    return
+  end
+  Snacks.picker.select(dirs, { prompt = "Directory to search" }, function(choice)
+    if choice then
+      action(vim.fs.joinpath(cwd, choice))
+    end
+  end)
+end
+
 return {
   {
     "folke/snacks.nvim",
@@ -6,12 +30,22 @@ return {
     ---@type snacks.Config
     opts = {
       picker = {},
+      -- FIXME(alvaro): bigfile breaks on .git/index (e.g. opening :Git via fugitive)
+      bigfile = { enabled = false },
     },
     keys = {
       { "<Leader>ff", function() Snacks.picker.git_files() end, desc = "Find git files" },
       { "<Leader>fa", function() Snacks.picker.files() end, desc = "Find all files" },
-      -- TODO(alvaro): Find in directory / Grep in directory
-      -- {"<Leader>fd", function() Snacks.picker.files() end, desc = "Find all files"},
+      {
+        "<Leader>fd",
+        function() pick_directory({}, function(dir) Snacks.picker.files({ cwd = dir }) end) end,
+        desc = "Find files in directory",
+      },
+      {
+        "<Leader>fD",
+        function() pick_directory({ cwd = vim.fn.expand("~") }, function(dir) Snacks.picker.files({ cwd = dir }) end) end,
+        desc = "Find files in directory (from home)",
+      },
       { "<Leader>fb", function() Snacks.picker.buffers() end, desc = "Find buffers" },
       { "<Leader>fh", function() Snacks.picker.help() end, desc = "Find in Neovim help" },
       { "<Leader>fo", function() Snacks.picker.recent() end, desc = "Find old files" },
@@ -35,6 +69,16 @@ return {
       { "<Leader>fE", function() Snacks.picker.diagnostics() end, desc = "Find diagnostics" },
       { "<Leader>fe", function() Snacks.picker.icons() end, desc = "Find emoji" },
       { "<Leader>rr", function() Snacks.picker.grep() end, desc = "Live Grep" },
+      {
+        "<Leader>rd",
+        function() pick_directory({}, function(dir) Snacks.picker.grep({ cwd = dir }) end) end,
+        desc = "Grep in directory",
+      },
+      {
+        "<Leader>rD",
+        function() pick_directory({ cwd = vim.fn.expand("~") }, function(dir) Snacks.picker.grep({ cwd = dir }) end) end,
+        desc = "Grep in directory (from home)",
+      },
       {
         "<Leader>rg",
         function()

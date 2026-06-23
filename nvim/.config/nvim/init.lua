@@ -15,6 +15,10 @@ vim.opt.scrolloff = 10
 vim.opt.mousemoveevent = true
 vim.opt.exrc = true
 
+-- Disable the python3 provider for faster startup (notably for python files).
+-- If a plugin needs it, point it at an explicit interpreter instead.
+vim.g.loaded_python3_provider = 0
+
 -- Color
 vim.opt.termguicolors = true
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -34,6 +38,9 @@ vim.opt.smartindent = true
 vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.showmatch = true
+
+-- Don't auto-insert the comment leader / auto-wrap text while typing
+vim.opt.formatoptions:remove("t")
 
 vim.opt.backspace = { "indent", "eol", "start" }
 
