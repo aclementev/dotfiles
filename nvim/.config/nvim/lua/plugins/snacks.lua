@@ -1,10 +1,15 @@
 -- Fuzzy-pick an immediate subdirectory under `cwd` (via fd), then run `action(abs_dir)`.
 -- If the user cancels, `action` is never called.
+-- Pick a TOP-LEVEL directory ("project") under `opts.cwd` (default: the repo root),
+-- then run `action(abs_dir)`. Only immediate children are listed so the list stays
+-- small in a large monorepo; the follow-up find/grep then recurses within the chosen
+-- directory. If the user cancels, `action` is never called.
 local function pick_directory(opts, action)
   opts = opts or {}
-  local cwd = opts.cwd or vim.fn.expand("%:p:h")
+  local cwd = opts.cwd
   if cwd == nil or cwd == "" then
-    cwd = vim.uv.cwd()
+    -- Default to the repository root (fall back to the current working dir)
+    cwd = vim.fs.root(0, { ".git", ".hg", ".svn" }) or vim.uv.cwd()
   end
   local res = vim.system(
     { "fd", "--type", "d", "--color", "never", "--max-depth", "1" },
@@ -15,7 +20,7 @@ local function pick_directory(opts, action)
     vim.notify("No directories found under " .. cwd, vim.log.levels.WARN)
     return
   end
-  Snacks.picker.select(dirs, { prompt = "Directory to search" }, function(choice)
+  Snacks.picker.select(dirs, { prompt = "Project under " .. vim.fn.fnamemodify(cwd, ":~") }, function(choice)
     if choice then
       action(vim.fs.joinpath(cwd, choice))
     end
