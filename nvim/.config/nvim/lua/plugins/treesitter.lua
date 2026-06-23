@@ -123,7 +123,7 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
-    dependencies = { "nvim-treesiter/nvim-treesitter" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
       max_lines = 5,
       min_window_height = 20,
