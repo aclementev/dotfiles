@@ -87,6 +87,10 @@ vim.keymap.set("v", "<leader>y", '"+y')
 vim.keymap.set("n", "Y", "y$")
 vim.keymap.set("n", "<Leader>yy", ":%y+<CR>")
 vim.keymap.set("n", "<Leader>yap", 'vap"+y')
+-- Yank the current file's path / absolute path / name to the system clipboard
+vim.keymap.set("n", "<Leader>yp", function() vim.fn.setreg("+", vim.fn.expand("%")) end, { silent = true })
+vim.keymap.set("n", "<Leader>yP", function() vim.fn.setreg("+", vim.fn.expand("%:p")) end, { silent = true })
+vim.keymap.set("n", "<Leader>yf", function() vim.fn.setreg("+", vim.fn.expand("%:t")) end, { silent = true })
 
 -- Window Navigation
 vim.keymap.set("n", "<C-h>", "<C-w>h")
@@ -135,6 +139,47 @@ vim.keymap.set("v", "<LocalLeader>xx", ":lua<CR>", { desc = "Lua: Run Visual Sel
 
 -- Terminal
 vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { desc = "Escape to Normal mode inside Terminal", silent = true })
+
+-- Comment reflower: reflow a comment block so it does not exceed the line width.
+-- Accepts an optional explicit textwidth (e.g. `:ReflowComment 100`).
+vim.api.nvim_create_user_command("ReflowComment", function(opts)
+  local old_formatexpr = vim.bo.formatexpr
+  local old_textwidth = vim.bo.textwidth
+
+  -- Remove the default formatexpr, which may be set to LSP formatting, so that
+  -- we use vim's builtin formatting that will use textwidth
+  vim.bo.formatexpr = ""
+
+  if opts.fargs[1] then
+    -- We requested a specific textwidth
+    vim.bo.textwidth = tonumber(opts.fargs[1])
+  else
+    vim.bo.textwidth = old_textwidth or 80
+  end
+
+  -- We have to manually run `gq` on the target lines
+  local n_lines
+  if opts.range == 0 or opts.range == 1 then
+    n_lines = 1
+  elseif opts.range == 2 then
+    n_lines = opts.line2 - opts.line1 + 1
+  end
+  local cmd = string.format("%dgqq", n_lines)
+
+  -- Call this protected so that we always reset the options back
+  pcall(vim.cmd.normal, cmd)
+
+  -- Reset the options
+  vim.bo.formatexpr = old_formatexpr
+  vim.bo.textwidth = old_textwidth
+end, {
+  nargs = "?",
+  range = true,
+  desc = "Reformat a multiline comment making sure it does not go over the line width limit",
+  force = true,
+})
+vim.keymap.set("n", "<LocalLeader>cf", "<cmd>ReflowComment<CR>", { desc = "Reflow selected comment" })
+vim.keymap.set("x", "<LocalLeader>cf", "<cmd>ReflowComment<CR>", { desc = "Reflow selected comment" })
 
 -- Plugin Configuration
 -- Setup Lazy.nvim
