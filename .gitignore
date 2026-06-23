@@ -4,3 +4,6 @@ karabiner/
 
 # OS specific
 **/.DS_Store
+
+# Editor/tool backup files
+*.bak
