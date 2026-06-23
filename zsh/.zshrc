@@ -71,16 +71,9 @@ DISABLE_MAGIC_FUNCTIONS=true
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-# Lazy load NVM when it's used
-# NOTE(alvaro): If you notice that node things start (e.g: vim/nvim plugins 
-# that require `node` but that session hasn't triggered a load) take a look at 
-export NVM_LAZY_LOAD_EXTRA_COMMANDS=('nvim')
-export NVM_LAZY_LOAD=true
-
 plugins=(
     git
     docker
-    zsh-nvm  # For lazy loading NVM
     zsh-autosuggestions
     zsh-syntax-highlighting # This one MUST be last
 )
@@ -141,3 +134,8 @@ try-source "$HOME/.system-env.sh"
 # Setup ZOxide
 # NOTE(alvaro): This must be called at the end, since it must run after `compinit` is called
 command -v zoxide >/dev/null && eval "$(zoxide init --hook pwd zsh)"
+
+# Ghostty shell integration
+if [[ -n "${GHOSTTY_RESOURCES_DIR}" ]]; then
+    source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
+fi
